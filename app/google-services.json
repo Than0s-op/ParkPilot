@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "307871515051",
+    "project_id": "parkpilot-8fccb",
+    "storage_bucket": "parkpilot-8fccb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:307871515051:android:8fe41e0305880b47a192ee",
+        "android_client_info": {
+          "package_name": "com.application.parkpilot"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcdjFjcQqX9gR_NRLdHxxt2pCBY4G0fcI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
