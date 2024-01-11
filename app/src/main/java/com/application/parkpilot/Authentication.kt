@@ -1,5 +1,6 @@
 package com.application.parkpilot
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -62,7 +63,9 @@ class Authentication: AppCompatActivity() {
 
             // Credential match (OTP is correct)
             if(phoneAuth.storedTaskResult.value != null){
-
+                val intent = Intent(this,Home::class.java)
+                intent.putExtra("result",phoneAuth.storedTaskResult.value)
+                startActivity(intent)
             }
             else{
                 OTPPinView.visibility = View.GONE
