@@ -46,4 +46,13 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+
+    /* Add Third party dependencies here. (don't forget to drop the comment) */
+
+    // country code picker
+    implementation("com.hbb20:ccp:2.7.0")
+
+    // OTP Box view
+    implementation("io.github.chaosleung:pinview:1.4.4")
 }
