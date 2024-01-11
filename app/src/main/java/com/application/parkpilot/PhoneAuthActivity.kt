@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthMissingActivityForRecaptchaException
@@ -27,6 +28,7 @@ class PhoneAuthActivity<Act : Activity>(private val obj: Act) {
 
 //    var storedVerificationId: String? = ""
     var storedVerificationId = MutableLiveData<String?>()
+    var storedTaskResult = MutableLiveData<AuthResult?>()
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
 
@@ -64,6 +66,11 @@ class PhoneAuthActivity<Act : Activity>(private val obj: Act) {
                 } else if (e is FirebaseAuthMissingActivityForRecaptchaException) {
                     // reCAPTCHA verification attempted with null Activity
                 }
+
+                Toast.makeText(obj.baseContext,"Failed to send OTP",Toast.LENGTH_SHORT).show()
+
+                // set verification Id to null for handel some cases (don't remove)
+                storedVerificationId.value = null
 
                 // Show a message and update the UI
             }
@@ -109,6 +116,8 @@ class PhoneAuthActivity<Act : Activity>(private val obj: Act) {
 
     fun verifyPhoneNumberWithCode(verificationId: String?, code: String) {
         // [START verify_with_code]
+        println(verificationId)
+        println(code)
         val credential = PhoneAuthProvider.getCredential(verificationId!!, code)
         // [END verify_with_code]
 
@@ -141,14 +150,17 @@ class PhoneAuthActivity<Act : Activity>(private val obj: Act) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
 
-                    val user = task.result?.user
-                    println(user)
+                    storedTaskResult.value = task.result
+                    Toast.makeText(obj.baseContext,"Login Successfully",Toast.LENGTH_SHORT).show()
+
                 } else {
                     // Sign in failed, display a message and update the UI
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         // The verification code entered was invalid
                     }
+                    storedTaskResult.value = null
+                    Toast.makeText(obj.baseContext,"Failed to Login.Invalid Credential",Toast.LENGTH_SHORT).show()
                     // Update UI
                 }
             }
