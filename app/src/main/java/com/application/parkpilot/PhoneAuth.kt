@@ -1,8 +1,8 @@
 package com.application.parkpilot
 
-import android.app.Activity
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseException
@@ -11,7 +11,6 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthMissingActivityForRecaptchaException
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
@@ -20,13 +19,13 @@ import java.util.concurrent.TimeUnit
 
 
 // command: "./gradlew signingReport" to get SHA1 and SHA256
-class PhoneAuthActivity<Act : Activity>(private val obj: Act) {
+class PhoneAuth<Act : AppCompatActivity>(private val obj: Act) {
 
     // [START declare_auth]
     private var auth: FirebaseAuth = Firebase.auth
     // [END declare_auth]
 
-//    var storedVerificationId: String? = ""
+    //    var storedVerificationId: String? = ""
     var storedVerificationId = MutableLiveData<String?>()
     var storedTaskResult = MutableLiveData<AuthResult?>()
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
@@ -67,7 +66,7 @@ class PhoneAuthActivity<Act : Activity>(private val obj: Act) {
                     // reCAPTCHA verification attempted with null Activity
                 }
 
-                Toast.makeText(obj.baseContext,"Failed to send OTP",Toast.LENGTH_SHORT).show()
+                Toast.makeText(obj.baseContext, "Failed to send OTP", Toast.LENGTH_SHORT).show()
 
                 // set verification Id to null for handel some cases (don't remove)
                 storedVerificationId.value = null
@@ -116,8 +115,6 @@ class PhoneAuthActivity<Act : Activity>(private val obj: Act) {
 
     fun verifyPhoneNumberWithCode(verificationId: String?, code: String) {
         // [START verify_with_code]
-        println(verificationId)
-        println(code)
         val credential = PhoneAuthProvider.getCredential(verificationId!!, code)
         // [END verify_with_code]
 
@@ -151,7 +148,7 @@ class PhoneAuthActivity<Act : Activity>(private val obj: Act) {
                     Log.d(TAG, "signInWithCredential:success")
 
                     storedTaskResult.value = task.result
-                    Toast.makeText(obj.baseContext,"Login Successfully",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(obj.baseContext, "Login Successfully", Toast.LENGTH_SHORT).show()
 
                 } else {
                     // Sign in failed, display a message and update the UI
@@ -160,7 +157,11 @@ class PhoneAuthActivity<Act : Activity>(private val obj: Act) {
                         // The verification code entered was invalid
                     }
                     storedTaskResult.value = null
-                    Toast.makeText(obj.baseContext,"Failed to Login.Invalid Credential",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        obj.baseContext,
+                        "Failed to Login.Invalid Credential",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     // Update UI
                 }
             }

@@ -13,12 +13,12 @@ class MainActivity : AppCompatActivity() {
         val user = Firebase.auth.currentUser
         if (user != null) {
             // User is signed in
-            val intent = Intent(this,Home::class.java)
+            val intent = Intent(this,HomeActivity::class.java)
             intent.putExtra("result",user)
             startActivity(intent)
         } else {
             // No user is signed in
-            startActivity(Intent(this,Authentication::class.java))
+            startActivity(Intent(this,AuthenticationActivity::class.java))
         }
     }
 }
