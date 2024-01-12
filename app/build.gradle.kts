@@ -58,5 +58,8 @@ dependencies {
     implementation("io.github.chaosleung:pinview:1.4.4")
 
     // openStreetMap
-    implementation("org.osmdroid:osmdroid-android:6.1.14")
+    implementation("org.osmdroid:osmdroid-android:6.1.18")
+
+    // google play integrity
+//    implementation("com.google.android.play:integrity:1.3.0")
 }

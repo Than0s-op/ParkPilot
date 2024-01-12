@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/logoutItem"
-        android:title="Logout"
-        android:icon="@drawable/logout_icon" />
+        android:id="@+id/searchbarProfile"
+        android:contentDescription="profile"
+        app:showAsAction="always"
+        android:icon="@drawable/user_alert_icon">
+        <menu>
+                <item
+                    android:id="@+id/logoutButton"
+                    android:title="Logout"
+                    android:orderInCategory="100"
+                    android:icon="@drawable/logout_icon"/>
+        </menu>
+    </item>
+
 </menu>

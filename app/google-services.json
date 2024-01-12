@@ -12,7 +12,20 @@
           "package_name": "com.application.parkpilot"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "307871515051-3k77dt8qilb5n30h95eeg2ud9eiblam9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.application.parkpilot",
+            "certificate_hash": "78867d3ef9153513fb5665708ba26b8ce035f408"
+          }
+        },
+        {
+          "client_id": "307871515051-r5qqktvnvidp88upiev664bck9mgb0o2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCcdjFjcQqX9gR_NRLdHxxt2pCBY4G0fcI"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "307871515051-r5qqktvnvidp88upiev664bck9mgb0o2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

@@ -1,8 +1,8 @@
 package com.application.parkpilot
 
-import android.app.Activity
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseException
@@ -19,13 +19,13 @@ import java.util.concurrent.TimeUnit
 
 
 // command: "./gradlew signingReport" to get SHA1 and SHA256
-class PhoneAuth<Act : Activity>(private val obj: Act) {
+class PhoneAuth<Act : AppCompatActivity>(private val obj: Act) {
 
     // [START declare_auth]
     private var auth: FirebaseAuth = Firebase.auth
     // [END declare_auth]
 
-//    var storedVerificationId: String? = ""
+    //    var storedVerificationId: String? = ""
     var storedVerificationId = MutableLiveData<String?>()
     var storedTaskResult = MutableLiveData<AuthResult?>()
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
@@ -37,7 +37,6 @@ class PhoneAuth<Act : Activity>(private val obj: Act) {
         // [START initialize_auth]
         // Initialize Firebase Auth
         // [END initialize_auth]
-
 
         // Initialize phone auth callbacks
         // [START phone_auth_callbacks]
@@ -67,7 +66,7 @@ class PhoneAuth<Act : Activity>(private val obj: Act) {
                     // reCAPTCHA verification attempted with null Activity
                 }
 
-                Toast.makeText(obj.baseContext,"Failed to send OTP",Toast.LENGTH_SHORT).show()
+                Toast.makeText(obj.baseContext, "Failed to send OTP", Toast.LENGTH_SHORT).show()
 
                 // set verification Id to null for handel some cases (don't remove)
                 storedVerificationId.value = null
@@ -149,7 +148,7 @@ class PhoneAuth<Act : Activity>(private val obj: Act) {
                     Log.d(TAG, "signInWithCredential:success")
 
                     storedTaskResult.value = task.result
-                    Toast.makeText(obj.baseContext,"Login Successfully",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(obj.baseContext, "Login Successfully", Toast.LENGTH_SHORT).show()
 
                 } else {
                     // Sign in failed, display a message and update the UI
@@ -158,7 +157,11 @@ class PhoneAuth<Act : Activity>(private val obj: Act) {
                         // The verification code entered was invalid
                     }
                     storedTaskResult.value = null
-                    Toast.makeText(obj.baseContext,"Failed to Login.Invalid Credential",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        obj.baseContext,
+                        "Failed to Login.Invalid Credential",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     // Update UI
                 }
             }

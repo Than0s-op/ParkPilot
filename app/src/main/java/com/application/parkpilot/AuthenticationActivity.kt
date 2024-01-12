@@ -15,6 +15,9 @@ class AuthenticationActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.authentication)
+
+        println("OnCreate")
+
         val editTextPhoneNumber:EditText = findViewById(R.id.editTextPhoneNumber)
         val buttonVerifyPhoneNumber: Button = findViewById(R.id.buttonVerifyPhoneNumber)
         val progressBar: ProgressBar = findViewById(R.id.progressBar)
@@ -46,10 +49,11 @@ class AuthenticationActivity: AppCompatActivity() {
                 loginScrollView.visibility = View.GONE
                 OTPScrollView.visibility = View.VISIBLE
                 OTPPinView.text = null
+                println("successfully")
             }
             // if OTP not send (error)
             else {
-
+                println("failed")
             }
         }
 
@@ -72,5 +76,19 @@ class AuthenticationActivity: AppCompatActivity() {
             }
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        println("Resume")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        println("Start")
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        println("Destroy")
     }
 }
