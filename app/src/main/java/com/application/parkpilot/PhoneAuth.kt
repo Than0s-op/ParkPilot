@@ -11,7 +11,6 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthMissingActivityForRecaptchaException
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
@@ -20,7 +19,7 @@ import java.util.concurrent.TimeUnit
 
 
 // command: "./gradlew signingReport" to get SHA1 and SHA256
-class PhoneAuthActivity<Act : Activity>(private val obj: Act) {
+class PhoneAuth<Act : Activity>(private val obj: Act) {
 
     // [START declare_auth]
     private var auth: FirebaseAuth = Firebase.auth
@@ -38,6 +37,7 @@ class PhoneAuthActivity<Act : Activity>(private val obj: Act) {
         // [START initialize_auth]
         // Initialize Firebase Auth
         // [END initialize_auth]
+
 
         // Initialize phone auth callbacks
         // [START phone_auth_callbacks]
@@ -116,8 +116,6 @@ class PhoneAuthActivity<Act : Activity>(private val obj: Act) {
 
     fun verifyPhoneNumberWithCode(verificationId: String?, code: String) {
         // [START verify_with_code]
-        println(verificationId)
-        println(code)
         val credential = PhoneAuthProvider.getCredential(verificationId!!, code)
         // [END verify_with_code]
 

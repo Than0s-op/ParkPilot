@@ -9,17 +9,16 @@ import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import com.chaos.view.PinView
 
-class Authentication: AppCompatActivity() {
+class AuthenticationActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.authentication)
         val editTextPhoneNumber:EditText = findViewById(R.id.editTextPhoneNumber)
         val buttonVerifyPhoneNumber: Button = findViewById(R.id.buttonVerifyPhoneNumber)
         val progressBar: ProgressBar = findViewById(R.id.progressBar)
-        val phoneAuth = PhoneAuthActivity(this)
+        val phoneAuth = PhoneAuth(this)
         val loginScrollView: ScrollView = findViewById(R.id.loginScrollView)
         val OTPScrollView:ScrollView = findViewById(R.id.OTPScrollView)
 
@@ -63,12 +62,12 @@ class Authentication: AppCompatActivity() {
 
             // Credential match (OTP is correct)
             if(phoneAuth.storedTaskResult.value != null){
-                val intent = Intent(this,Home::class.java)
+                val intent = Intent(this,HomeActivity::class.java)
                 intent.putExtra("result",phoneAuth.storedTaskResult.value)
                 startActivity(intent)
             }
             else{
-                OTPPinView.visibility = View.GONE
+                OTPScrollView.visibility = View.GONE
                 loginScrollView.visibility = View.VISIBLE
             }
         }
