@@ -27,12 +27,15 @@
 
         <activity
             android:name=".AuthenticationActivity"
-            android:exported="true"
-            android:noHistory="true"></activity>
+            android:exported="true"/>
 
         <activity
             android:name=".HomeActivity"
-            android:exported="true"></activity>
+            android:exported="true"/>
+
+        <activity
+            android:name=".GoogleSignIn"
+            android:exported="true"/>
 
     </application>
 

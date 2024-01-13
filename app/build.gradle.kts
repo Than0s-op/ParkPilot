@@ -60,6 +60,9 @@ dependencies {
     // openStreetMap
     implementation("org.osmdroid:osmdroid-android:6.1.18")
 
-    // google play integrity
-//    implementation("com.google.android.play:integrity:1.3.0")
+    // add the dependency for the Google Play services library and specify its version
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
 }
