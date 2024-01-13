@@ -30,6 +30,7 @@ class AuthenticationActivity : AppCompatActivity() {
 
 //      ..........  phone auth  ................
 
+
         val phoneAuth = PhoneAuth(this)
 
         loginScrollView.visibility = View.VISIBLE
@@ -97,6 +98,8 @@ class AuthenticationActivity : AppCompatActivity() {
 
         val buttonGoogleSignIn: Button = findViewById(R.id.buttonGoogleLogin)
         buttonGoogleSignIn.setOnClickListener {
+
+            // start Google Sign In activity
             val intent = Intent(this, GoogleSignIn::class.java)
             resultLauncher.launch(intent)
         }
