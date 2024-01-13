@@ -14,6 +14,10 @@ class MainActivity : AppCompatActivity() {
         if (user != null) {
             // User is signed in
             val intent = Intent(this,HomeActivity::class.java)
+
+            // clear the activity stack
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
             intent.putExtra("result",user)
             startActivity(intent)
         } else {

@@ -143,7 +143,6 @@
                         android:tooltipText="Text" />
 
                     <TextView
-                        android:id="@+id/textView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -163,6 +162,7 @@
                     android:layout_marginTop="30dp">
 
                     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/buttonGoogleLogin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="15dp"
