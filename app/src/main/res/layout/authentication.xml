@@ -172,16 +172,6 @@
                         app:icon="@drawable/google_icon"
                         app:iconTint="@null" />
 
-                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="15dp"
-                        android:layout_marginVertical="25dp"
-                        android:outlineAmbientShadowColor="@color/textViewColor"
-                        android:outlineSpotShadowColor="@color/textViewColor"
-                        app:icon="@drawable/gmail_icon"
-                        app:iconTint="@null" />
-
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
