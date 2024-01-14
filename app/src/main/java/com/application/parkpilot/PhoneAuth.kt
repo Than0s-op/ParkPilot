@@ -1,8 +1,8 @@
 package com.application.parkpilot
 
+import android.app.Activity
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseException
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
 
 
 // command: "./gradlew signingReport" to get SHA1 and SHA256
-class PhoneAuth<Act : AppCompatActivity>(private val obj: Act) {
+class PhoneAuth<Act : Activity>(private val obj: Act) {
 
     // [START declare_auth]
     private var auth: FirebaseAuth = Firebase.auth
