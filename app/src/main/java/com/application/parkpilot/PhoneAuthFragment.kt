@@ -16,8 +16,6 @@ class PhoneAuthFragment : Fragment(R.layout.fragment_phone_auth) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
         val editTextPhoneNumber: EditText = view.findViewById(R.id.editTextPhoneNumber)
         val buttonVerifyPhoneNumber: Button = view.findViewById(R.id.buttonVerifyPhoneNumber)
         val buttonEmailLogin: Button = view.findViewById(R.id.buttonEmailLogin)

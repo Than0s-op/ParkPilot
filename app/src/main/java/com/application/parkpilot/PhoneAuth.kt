@@ -25,21 +25,14 @@ class PhoneAuth<Act : Activity>(private val obj: Act) {
     private var auth: FirebaseAuth = Firebase.auth
     // [END declare_auth]
 
-    //    var storedVerificationId: String? = ""
     var storedVerificationId = MutableLiveData<String?>()
     var storedTaskResult = MutableLiveData<AuthResult?>()
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+    private val TAG = "PhoneAuthActivity"
 
-    //    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
     init {
-        // [START initialize_auth]
-        // Initialize Firebase Auth
-        // [END initialize_auth]
 
-        // Initialize phone auth callbacks
-        // [START phone_auth_callbacks]
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
@@ -91,15 +84,6 @@ class PhoneAuth<Act : Activity>(private val obj: Act) {
         }
         // [END phone_auth_callbacks]
     }
-
-    // [START on_start_check_user]
-//    override fun onStart() {
-//        super.onStart()
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        val currentUser = auth.currentUser
-//        updateUI(currentUser)
-//    }
-    // [END on_start_check_user]
 
     fun startPhoneNumberVerification(phoneNumber: String) {
         // [START start_phone_auth]
@@ -167,11 +151,4 @@ class PhoneAuth<Act : Activity>(private val obj: Act) {
             }
     }
     // [END sign_in_with_phone]
-
-//    private fun updateUI(user: FirebaseUser? = auth.currentUser) {
-//    }
-
-    companion object {
-        private const val TAG = "PhoneAuthActivity"
-    }
 }

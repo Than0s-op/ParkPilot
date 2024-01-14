@@ -39,5 +39,11 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
+
+
+        // temp
+
+        val obj = EmailPassword(this)
+        obj.sendEmailVerification()
     }
 }
