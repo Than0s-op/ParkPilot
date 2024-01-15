@@ -66,4 +66,10 @@ dependencies {
 
     // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+
+    // kotlin coroutine library
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+
+    // fused location provider to get last known location
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 }
