@@ -4,26 +4,30 @@ import android.location.Address
 import android.location.Geocoder
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 
-class OSM<Act : AppCompatActivity>(val mapView: MapView, private val obj:Act) {
+class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val obj: Act) {
 
-    private lateinit var geocoder: Geocoder;
-    init{
-        // object creation of geocoder
-        geocoder = Geocoder(obj)
+    // object creation of geocoder
+    private val geocoder: Geocoder = Geocoder(obj)
 
-        mapView.setTileSource(TileSourceFactory.MAPNIK)
-        mapView.controller.setZoom(15.0)
+    // object creation of fusedLocation
+    private val fusedLocationClient: FusedLocationProviderClient =
+        LocationServices.getFusedLocationProviderClient(obj)
+
+    init {
+
+        mapView.setTileSource(TileSourceFactory.PUBLIC_TRANSPORT)
+        mapView.controller.setZoom(17.0)
         mapView.setMultiTouchControls(true)
 
         //temp
-        mapView.controller.setCenter(GeoPoint(18.50099198033669, 73.85907568230525))
-        mapView.mapCenter
+        setCenter(18.50099198033669, 73.85907568230525)
 
-        mapView.invalidate()
         mapView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 onTouch(event)
@@ -31,6 +35,7 @@ class OSM<Act : AppCompatActivity>(val mapView: MapView, private val obj:Act) {
             false
         }
     }
+
     private fun onTouch(event: MotionEvent): Array<Double>? {
         if (event.action == MotionEvent.ACTION_UP) {
 //            val projection = mapView.projection
@@ -45,8 +50,26 @@ class OSM<Act : AppCompatActivity>(val mapView: MapView, private val obj:Act) {
         return null
     }
 
+    fun setCenter(latitude: Double, longitude: Double) {
+        mapView.controller.setCenter(GeoPoint(latitude, longitude))
+        mapView.invalidate()
+    }
+
     fun search(searchQuery: String): Address? {
         // this is deprecated in API 33
         return geocoder.getFromLocationName(searchQuery, 1)?.first()
+    }
+
+    fun getLastKnowLocation() {
+
+//        fusedLocationClient.lastLocation
+//            .addOnSuccessListener { location : Location? ->
+//                // Got last known location. In some rare situations this can be null.
+//                location?.
+//            }
+        // request for location permission
+//        if(PermissionRequest(obj).locationPermissionRequest()) {
+//            fusedLocationClient.lastLocation
+//        }
     }
 }

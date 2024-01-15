@@ -5,7 +5,6 @@
     android:layout_height="match_parent">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -14,13 +13,21 @@
         android:elevation="5dp">
 
         <com.google.android.material.search.SearchBar
-            android:id="@+id/search_bar"
+            android:id="@+id/searchBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search..."
-            app:hideNavigationIcon="true"
+            android:hint="Search here"
             app:menu="@menu/searchbar_menu"
             app:navigationIcon="@drawable/menu_icon" />
+
+        <com.google.android.material.search.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Search here"
+            app:layout_anchor="@id/searchBar">
+            <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
+        </com.google.android.material.search.SearchView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -28,5 +35,24 @@
         android:id="@+id/OSMMapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/buttonCurrentLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginVertical="25dp"
+            android:outlineAmbientShadowColor="@color/textViewColor"
+            android:outlineSpotShadowColor="@color/textViewColor"
+            app:icon="@drawable/location_disabled_icon" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
