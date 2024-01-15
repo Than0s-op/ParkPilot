@@ -1,6 +1,7 @@
 package com.application.parkpilot
 
-import android.app.Activity
+import android.location.Address
+import android.location.Geocoder
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -8,7 +9,12 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 
 class OSM<Act : AppCompatActivity>(val mapView: MapView, private val obj:Act) {
+
+    private lateinit var geocoder: Geocoder;
     init{
+        // object creation of geocoder
+        geocoder = Geocoder(obj)
+
         mapView.setTileSource(TileSourceFactory.MAPNIK)
         mapView.controller.setZoom(15.0)
         mapView.setMultiTouchControls(true)
@@ -37,5 +43,10 @@ class OSM<Act : AppCompatActivity>(val mapView: MapView, private val obj:Act) {
             println("onTouch")
         }
         return null
+    }
+
+    fun search(searchQuery: String): Address? {
+        // this is deprecated in API 33
+        return geocoder.getFromLocationName(searchQuery, 1)?.first()
     }
 }
