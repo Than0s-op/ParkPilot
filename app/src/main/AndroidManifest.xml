@@ -40,9 +40,6 @@
             android:name=".GoogleSignIn"
             android:exported="true"/>
 
-        <activity android:name=".PermissionRequest"
-            android:exported="true"/>
-
     </application>
 
 </manifest>

@@ -1,44 +1,71 @@
 package com.application.parkpilot
 
 import android.Manifest
-import android.app.Activity
-import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContracts
+import android.content.pm.PackageManager
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsResult
+import com.google.android.gms.location.LocationSettingsStatusCodes
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class PermissionRequest : AppCompatActivity() {
+class PermissionRequest<Act : AppCompatActivity>(private val obj: Act) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val requestPermissionLauncher =
-            registerForActivityResult(
-                ActivityResultContracts.RequestPermission()
-            ) {
-                isGranted: Boolean ->
-                if (isGranted) {
-                    // Permission is granted. Continue the action or workflow in your
-                    // app.
-                } else {
-                    // Explain to the user that the feature is unavailable because the
-                    // feature requires a permission that the user has denied. At the
-                    // same time, respect the user's decision. Don't link to system
-                    // settings in an effort to convince the user to change their
-                    // decision.
-                }
-                println("permission Request")
-            }
-        locationPermissionRequest()
+    private fun hasLocationPermission(): Boolean {
+        val read = ContextCompat.checkSelfPermission(
+            obj,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+        return read == PackageManager.PERMISSION_GRANTED
     }
 
-    fun locationPermissionRequest() {
+    fun locationPermissionRequest(): Boolean {
+        if (hasLocationPermission()) return true
         ActivityCompat.requestPermissions(
-            this,
+            obj,
             arrayOf(
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ),
             123
         )
+        return hasLocationPermission()
     }
+
+    fun GPSPermissionRequest() {
+        val interval: Long = 1000 * 60 * 1
+        val fastestInterval: Long = 1000 * 50
+
+        try {
+            val googleApiClient = GoogleApiClient.Builder(obj).addApi(LocationServices.API).build()
+            googleApiClient.connect()
+            val locationRequest: LocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY).setInterval(interval)
+                .setFastestInterval(fastestInterval)
+            val locationSettingsRequestBuilder =
+                LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+            locationSettingsRequestBuilder.setAlwaysShow(false)
+
+            // coroutine scope
+            GlobalScope.launch {
+                val locationSettingsResult: LocationSettingsResult =
+                    LocationServices.SettingsApi.checkLocationSettings(
+                        googleApiClient,
+                        locationSettingsRequestBuilder.build()
+                    ).await()
+                if (locationSettingsResult.status.statusCode == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
+                    locationSettingsResult.status.startResolutionForResult(obj, 0)
+                }
+            }
+
+        } catch (e: Exception) {
+            Log.d("Permission Request", "${e.stackTrace}")
+        }
+    }
+
 }
