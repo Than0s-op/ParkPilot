@@ -68,7 +68,11 @@ class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val obj
 
     fun search(searchQuery: String): Address? {
         // this is deprecated in API 33
-        return geocoder.getFromLocationName(searchQuery, 1)?.first()
+        val result = geocoder.getFromLocationName(searchQuery,1)
+        if(result != null && result.size != 0){
+            return result.first()
+        }
+        return null
     }
 
     suspend fun getLastKnowLocation():GeoPoint? {

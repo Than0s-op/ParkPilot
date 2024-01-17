@@ -55,12 +55,18 @@ class HomeActivity : AppCompatActivity() {
                 // progress bar start
 
                 // synchronized function. it will block processes ( you can run this function on another thread/coroutine)
+                val address = OSMMap.search(searchView.text.toString())
                 GlobalScope.launch(Dispatchers.Main) {
-                    val address = OSMMap.search(searchView.text.toString())
-                    if (address != null) {
-                        OSMMap.setCenter(address.latitude, address.longitude)
-                    } else {
-                        Toast.makeText(baseContext, "Invalid request", Toast.LENGTH_SHORT).show()
+                    try {
+                        if (address != null) {
+                            OSMMap.setCenter(address.latitude, address.longitude)
+                        } else {
+                            Toast.makeText(baseContext, "Invalid request", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                    catch(e:Exception){
+                        println(e.printStackTrace())
                     }
                 }
 
