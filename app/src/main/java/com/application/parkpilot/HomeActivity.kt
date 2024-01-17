@@ -57,16 +57,11 @@ class HomeActivity : AppCompatActivity() {
                 // synchronized function. it will block processes ( you can run this function on another thread/coroutine)
                 val address = OSMMap.search(searchView.text.toString())
                 GlobalScope.launch(Dispatchers.Main) {
-                    try {
-                        if (address != null) {
-                            OSMMap.setCenter(address.latitude, address.longitude)
-                        } else {
-                            Toast.makeText(baseContext, "Invalid request", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    }
-                    catch(e:Exception){
-                        println(e.printStackTrace())
+                    if (address != null) {
+                        OSMMap.setCenter(address.latitude, address.longitude)
+                    } else {
+                        Toast.makeText(baseContext, "Invalid request", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
 
@@ -74,14 +69,14 @@ class HomeActivity : AppCompatActivity() {
                 false
             }
 
-            currentLocationButton.setOnClickListener {
-                GlobalScope.launch(Dispatchers.Main) {
-                    val currentLocation = OSMMap.getLastKnowLocation()
-                    if(currentLocation != null){
-                        OSMMap.setCenter(currentLocation.latitude,currentLocation.longitude)
-                    }
+        currentLocationButton.setOnClickListener {
+            GlobalScope.launch(Dispatchers.Main) {
+                val currentLocation = OSMMap.getLastKnowLocation()
+                if (currentLocation != null) {
+                    OSMMap.setCenter(currentLocation.latitude, currentLocation.longitude)
                 }
             }
+        }
 //        18.51800310120699, 73.85377755662797
         OSMMap.setMarkerOnPosition(GeoPoint(18.51800310120699, 73.85377755662797))
 //         18.518681520319543, 73.85263281356345
