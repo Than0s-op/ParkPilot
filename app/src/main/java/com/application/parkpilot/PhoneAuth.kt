@@ -34,6 +34,10 @@ class PhoneAuth<Act : AppCompatActivity>(private val obj: Act) {
     //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
     init {
+
+        // Disable reCaptcha
+        // auth.firebaseAuthSettings.setAppVerificationDisabledForTesting(true)
+
         // [START initialize_auth]
         // Initialize Firebase Auth
         // [END initialize_auth]
