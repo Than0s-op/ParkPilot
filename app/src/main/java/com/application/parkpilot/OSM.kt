@@ -97,7 +97,6 @@ class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val obj
                         currentLocation = GeoPoint(location.latitude,location.longitude)
                     }
                 }.await()
-
         }
         return currentLocation
     }
