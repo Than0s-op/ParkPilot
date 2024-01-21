@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.application.parkpilot.bottom_sheet.VehicleType
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import com.google.firebase.Firebase
@@ -106,7 +107,7 @@ class HomeActivity : AppCompatActivity() {
 
         // creating the lambda function to pass with "set pins on position" method
         val singleTapTask = { UID: String ->
-            ModalBottomSheet().show(supportFragmentManager, "ModalBottomSheet")
+            VehicleType().show(supportFragmentManager,null)
         }
 
         // fetching data from fire-store's "@string/station" collection
@@ -142,4 +143,3 @@ class HomeActivity : AppCompatActivity() {
             }
     }
 }
-
