@@ -9,6 +9,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class VehicleType : BottomSheetDialogFragment(R.layout.vehicle_type) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // init views
         val imageViewBike: ImageView = view.findViewById(R.id.imageViewBike)
         val imageViewCar: ImageView = view.findViewById(R.id.imageViewCar)
         val imageViewHeavyVehicle:ImageView = view.findViewById(R.id.imageViewHeavyVehicle)

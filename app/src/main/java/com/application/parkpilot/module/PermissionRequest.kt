@@ -1,4 +1,4 @@
-package com.application.parkpilot
+package com.application.parkpilot.module
 
 import android.Manifest
 import android.content.pm.PackageManager
