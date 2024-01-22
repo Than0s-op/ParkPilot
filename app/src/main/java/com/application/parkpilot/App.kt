@@ -7,7 +7,7 @@ import com.google.firebase.FirebaseApp
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        DynamicColors.applyToActivitiesIfAvailable(this)
+//        DynamicColors.applyToActivitiesIfAvailable(this)
         FirebaseApp.initializeApp(this)
     }
 }
