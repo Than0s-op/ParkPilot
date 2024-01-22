@@ -1,11 +1,13 @@
 package com.application.parkpilot
 
+import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.icu.util.TimeZone
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.time.LocalDate
+import java.util.Locale
 
 class DatePicker(private val activity: AppCompatActivity) {
 
@@ -27,8 +29,6 @@ class DatePicker(private val activity: AppCompatActivity) {
         return calendar.timeInMillis
     }
     fun showDatePicker(message: String, start: String?, end: String?) {
-        // creating the copy above datePicker
-        val datePicker = datePicker
 
         // if start and end have "date" (both required) then, set calendar constraints
         if (start != null && end != null) {
@@ -36,13 +36,24 @@ class DatePicker(private val activity: AppCompatActivity) {
             val constraintsBuilder = CalendarConstraints.Builder()
                 .setStart(dateToMillis(start))
                 .setEnd(dateToMillis(end))
-            // setting up calendar constraints to [***Local*** date picker]
+            // setting up calendar constraints to date picker
             datePicker.setCalendarConstraints(constraintsBuilder.build())
         }
 
-        // set message to the date picker, then build it and show
-        datePicker.setTitleText(message)
+        // set message to the date picker, then build it
+        val builtDatePicker = datePicker.setTitleText(message)
             .build()
-            .show(activity.supportFragmentManager, null)
+
+        // show the date picker
+        builtDatePicker.show(activity.supportFragmentManager, null)
+
+        // when date picker will gone
+        builtDatePicker.addOnDismissListener {
+            if(builtDatePicker.selection != null) {
+                val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                val dateString = simpleDateFormat.format(builtDatePicker.selection)
+                println(dateString)
+            }
+        }
     }
 }
