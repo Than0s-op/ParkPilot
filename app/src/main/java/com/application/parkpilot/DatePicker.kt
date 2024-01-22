@@ -4,6 +4,7 @@ import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.icu.util.TimeZone
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.MutableLiveData
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.time.LocalDate
@@ -15,6 +16,9 @@ class DatePicker(private val activity: AppCompatActivity) {
     private var datePicker: MaterialDatePicker.Builder<Long> = MaterialDatePicker.Builder
         .datePicker()
         .setInputMode(MaterialDatePicker.INPUT_MODE_TEXT)
+
+    // to observe date, hence other classes can access date, when it will change
+    var date = MutableLiveData<String?>()
 
     // below function will take string(date) as input and convert it into millis(Long)
     private fun dateToMillis(date:String):Long{
@@ -49,10 +53,13 @@ class DatePicker(private val activity: AppCompatActivity) {
 
         // when date picker will gone
         builtDatePicker.addOnDismissListener {
+            // date has been selected
             if(builtDatePicker.selection != null) {
-                val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-                val dateString = simpleDateFormat.format(builtDatePicker.selection)
-                println(dateString)
+                // creating a date format
+                val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.US)
+
+                // converting selected date into string and set to the data variable
+                date.value = simpleDateFormat.format(builtDatePicker.selection)
             }
         }
     }
