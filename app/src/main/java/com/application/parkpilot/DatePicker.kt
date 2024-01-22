@@ -13,25 +13,25 @@ import java.util.Locale
 class DatePicker(private val activity: AppCompatActivity) {
 
     // just init date picker (not build)
-    private var datePicker: MaterialDatePicker.Builder<Long> = MaterialDatePicker.Builder
-        .datePicker()
-        .setInputMode(MaterialDatePicker.INPUT_MODE_TEXT)
+    private var datePicker: MaterialDatePicker.Builder<Long> =
+        MaterialDatePicker.Builder.datePicker()
 
     // to observe date, hence other classes can access date, when it will change
-    var date = MutableLiveData<String?>()
+    var pickedDate = MutableLiveData<String?>()
 
     // below function will take string(date) as input and convert it into millis(Long)
-    private fun dateToMillis(date:String):Long{
+    private fun dateToMillis(date: String): Long {
         // date format should be in yyyy-mm-dd
         val localDate = LocalDate.parse(date)
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
 
         // set date to the calendar, here monthValue is reduce by 1 to handel a case
-        calendar.set(localDate.year,localDate.monthValue-1,localDate.dayOfMonth)
+        calendar.set(localDate.year, localDate.monthValue - 1, localDate.dayOfMonth)
 
         // return date as millis
         return calendar.timeInMillis
     }
+
     fun showDatePicker(message: String, start: String?, end: String?) {
 
         // if start and end have "date" (both required) then, set calendar constraints
@@ -54,12 +54,12 @@ class DatePicker(private val activity: AppCompatActivity) {
         // when date picker will gone
         builtDatePicker.addOnDismissListener {
             // date has been selected
-            if(builtDatePicker.selection != null) {
+            if (builtDatePicker.selection != null) {
                 // creating a date format
-                val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.US)
+                val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
 
                 // converting selected date into string and set to the data variable
-                date.value = simpleDateFormat.format(builtDatePicker.selection)
+                pickedDate.value = simpleDateFormat.format(builtDatePicker.selection)
             }
         }
     }

@@ -5,12 +5,11 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
 
@@ -19,6 +18,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
             android:gravity="center_vertical">
 
             <!--   below code   For round circle around profile           -->
@@ -30,37 +31,42 @@
             <!--                app:cardBackgroundColor="@color/materialCardViewColor">-->
 
             <androidx.cardview.widget.CardView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_gravity="center"
-                app:cardCornerRadius="250dp">
+                android:layout_marginEnd="15dp"
+                app:cardCornerRadius="250dp"
+                app:cardElevation="10dp">
 
                 <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:id="@+id/imageViewProfilePicture"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_background" />
+                    android:src="@drawable/person_icon" />
 
             </androidx.cardview.widget.CardView>
 
             <!--            </androidx.cardview.widget.CardView>-->
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/userEmailLayout"
-                android:layout_width="wrap_content"
+            <!--            <com.google.android.material.textfield.TextInputLayout-->
+            <!--                android:id="@+id/userEmailLayout"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                app:startIconDrawable="@drawable/mobile_icon">-->
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextUserName"
+                android:layout_width="175dp"
                 android:layout_height="wrap_content"
-                app:startIconDrawable="@drawable/mobile_icon">
+                android:drawableStart="@drawable/person_icon"
+                android:drawablePadding="5dp"
+                android:hint="User Name"
+                android:inputType="text"
+                android:maxLength="20"
+                android:singleLine="true" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextPhoneNumber"
-                    android:layout_width="175dp"
-                    android:layout_height="wrap_content"
-                    android:hint="User Name"
-                    android:inputType="text"
-                    android:maxLength="20"
-                    android:singleLine="true" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+            <!--            </com.google.android.material.textfield.TextInputLayout>-->
 
 
         </LinearLayout>
@@ -71,19 +77,23 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:text="Personal Details"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/materialCardViewColor"
+            app:cardElevation="10dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="15dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -139,8 +149,8 @@
                             android:id="@+id/editTextBirthDate"
                             android:layout_width="250dp"
                             android:layout_height="wrap_content"
-                            android:hint="Birth Date"
                             android:focusable="false"
+                            android:hint="Birth Date"
                             android:inputType="textEmailAddress"
                             android:singleLine="true" />
 
@@ -163,6 +173,27 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:checkedButton="@+id/radioButtonFemale"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radioButtonFemale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:text="Female" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male" />
+
+                </RadioGroup>
 
             </LinearLayout>
 
