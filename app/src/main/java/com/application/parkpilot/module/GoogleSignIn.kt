@@ -1,9 +1,10 @@
-package com.application.parkpilot
+package com.application.parkpilot.module
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import com.application.parkpilot.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -71,7 +72,6 @@ class GoogleSignIn : Activity() {
 
                     // return result to the previous activity
                     val returnIntent = Intent()
-                    returnIntent.putExtra("result",task.result)
                     setResult(RESULT_OK, returnIntent)
                     finish()
 

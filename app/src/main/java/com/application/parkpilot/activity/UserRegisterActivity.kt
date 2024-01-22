@@ -1,11 +1,15 @@
-package com.application.parkpilot
+package com.application.parkpilot.activity
 
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.application.parkpilot.R
+import com.application.parkpilot.module.DatePicker
+import com.application.parkpilot.module.PhotoPicker
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import java.time.LocalDate
 
 class UserRegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,6 +22,8 @@ class UserRegisterActivity : AppCompatActivity() {
 
         val datePicker = DatePicker(this)
         val photoPicker = PhotoPicker(this)
+        val user = Firebase.auth.currentUser
+
 
         editTextBirthDate.setOnClickListener {
             // date format should be yyyy-mm-dd
@@ -38,11 +44,17 @@ class UserRegisterActivity : AppCompatActivity() {
         photoPicker.pickedImage.observe(this){
             if(photoPicker.pickedImage.value != null){
                 imageViewProfilePicture.setImageURI(photoPicker.pickedImage.value)
-            }/
+            }
         }
     }
 
     private fun getAge(birthDate: String): Int {
-        return 0
+        val current = LocalDate.now()
+        val birthYear = birthDate.substring(6).toInt()
+        val birthMonth = birthDate.substring(3,5).toInt()
+        val birthDay = birthDate.substring(0,2).toInt()
+        var age = current.year - birthYear - 1;
+        if(birthMonth < current.monthValue || (birthMonth == current.monthValue && birthDay <= current.dayOfMonth)) age++
+        return age
     }
 }

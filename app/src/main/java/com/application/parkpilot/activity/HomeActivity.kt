@@ -1,11 +1,14 @@
-package com.application.parkpilot
+package com.application.parkpilot.activity
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.application.parkpilot.ParkPilotMapLegend
+import com.application.parkpilot.R
 import com.application.parkpilot.bottom_sheet.VehicleType
+import com.application.parkpilot.module.OSM
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import com.google.firebase.Firebase
@@ -116,7 +119,7 @@ class HomeActivity : AppCompatActivity() {
             .addOnSuccessListener { collection ->
 
                 // creating arraylist of ParkPilotMapPin (title,UID,GeoPoint) "data class"
-                val mapViewPins = ArrayList<ParkPilotMapPin>()
+                val mapViewPins = ArrayList<ParkPilotMapLegend>()
 
                 // iterate the collection
                 for (document in collection) {
@@ -127,7 +130,7 @@ class HomeActivity : AppCompatActivity() {
 
                     // adding "ParkPilotMapPin" data-class object in arraylist
                     mapViewPins.add(
-                        ParkPilotMapPin(
+                        ParkPilotMapLegend(
                             "Park Pilot pin",
                             document.id, GeoPoint(geoPoint.latitude, geoPoint.longitude)
                         )

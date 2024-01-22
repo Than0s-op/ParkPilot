@@ -1,4 +1,4 @@
-package com.application.parkpilot
+package com.application.parkpilot.module
 
 import android.net.Uri
 import androidx.activity.result.PickVisualMediaRequest
