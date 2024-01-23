@@ -1,19 +1,22 @@
 package com.application.parkpilot.activity
 
 import android.os.Bundle
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import com.application.parkpilot.CompanionObjects
 import com.application.parkpilot.R
 import com.application.parkpilot.module.DatePicker
 import com.application.parkpilot.module.PhotoPicker
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
 import java.time.LocalDate
 
 class UserRegisterActivity : AppCompatActivity() {
+
+    private lateinit var editTextPhoneNumber: EditText
+    private lateinit var editTextEmail: EditText
+    private lateinit var buttonVerifyPhoneNumber: com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    private lateinit var buttonVerifyEmail: com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,15 +24,15 @@ class UserRegisterActivity : AppCompatActivity() {
 
         //
         val imageViewProfilePicture: ImageView = findViewById(R.id.imageViewProfilePicture)
-        val editTextUserName:EditText = findViewById(R.id.editTextUserName)
-        val editTextFirstName:EditText = findViewById(R.id.editTextFirstName)
-        val editTextLastName:EditText = findViewById(R.id.editTextLastName)
+        val editTextUserName: EditText = findViewById(R.id.editTextUserName)
+        val editTextFirstName: EditText = findViewById(R.id.editTextFirstName)
+        val editTextLastName: EditText = findViewById(R.id.editTextLastName)
         val editTextBirthDate: EditText = findViewById(R.id.editTextBirthDate)
         val editTextAge: EditText = findViewById(R.id.editTextAge)
-        val editTextPhoneNumber:EditText = findViewById(R.id.editTextPhoneNumber)
-        val editTextEmail:EditText = findViewById(R.id.editTextEmail)
-        val buttonVerifyPhoneNumber: com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton = findViewById(R.id.buttonVerifyPhoneNumber)
-        val buttonVerifyEmail:com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton = findViewById(R.id.buttonVerifyEmail)
+        editTextPhoneNumber = findViewById(R.id.editTextPhoneNumber)
+        editTextEmail = findViewById(R.id.editTextEmail)
+        buttonVerifyPhoneNumber = findViewById(R.id.buttonVerifyPhoneNumber)
+        buttonVerifyEmail = findViewById(R.id.buttonVerifyEmail)
 
         //
         imageViewProfilePicture.setImageURI(CompanionObjects.currentUser?.photoUrl)
@@ -37,18 +40,18 @@ class UserRegisterActivity : AppCompatActivity() {
         editTextPhoneNumber.setText(CompanionObjects.currentUser?.phoneNumber)
         editTextEmail.setText(CompanionObjects.currentUser?.email)
 
-        if(editTextPhoneNumber.text.isNotEmpty()){
+        if (editTextPhoneNumber.text.isNotEmpty()) {
             editTextPhoneNumber.isEnabled = false
             buttonVerifyPhoneNumber.isEnabled = false
             buttonVerifyPhoneNumber.text = "Verified"
-            buttonVerifyPhoneNumber.icon = getDrawable(R.drawable.check_icon)
+            buttonVerifyPhoneNumber.icon = AppCompatResources.getDrawable(this,R.drawable.check_icon)
         }
 
-        if(editTextEmail.text.isNotEmpty()){
+        if (editTextEmail.text.isNotEmpty()) {
             editTextEmail.isEnabled = false
             buttonVerifyEmail.isEnabled = false
             buttonVerifyEmail.text = "Verified"
-            buttonVerifyEmail.icon = getDrawable(R.drawable.check_icon)
+            buttonVerifyEmail.icon = AppCompatResources.getDrawable(this,R.drawable.check_icon)
         }
 
         val datePicker = DatePicker(this)
@@ -57,7 +60,7 @@ class UserRegisterActivity : AppCompatActivity() {
 
         editTextBirthDate.setOnClickListener {
             // start and end dates format should be yyyy-mm-dd (modify this function)
-            datePicker.showDatePicker("Select Birth Date",null,null)
+            datePicker.showDatePicker("Select Birth Date", null, null)
         }
 
         imageViewProfilePicture.setOnClickListener {
@@ -65,12 +68,13 @@ class UserRegisterActivity : AppCompatActivity() {
         }
 
         buttonVerifyEmail.setOnClickListener {
-            CompanionObjects.currentUser!!.verifyBeforeUpdateEmail(buttonVerifyEmail.text.toString()).addOnSuccessListener {
-                println("success")
-            }.addOnCompleteListener {
+            CompanionObjects.currentUser!!.verifyBeforeUpdateEmail(editTextEmail.text.toString())
+                .addOnSuccessListener {
+                    println("success")
+                }.addOnCompleteListener {
                 println("complete")
             }.addOnFailureListener {
-                println(it.localizedMessage[])
+                println(it.localizedMessage)
             }
         }
 
@@ -81,10 +85,20 @@ class UserRegisterActivity : AppCompatActivity() {
             }
         }
 
-        photoPicker.pickedImage.observe(this){
-            if(photoPicker.pickedImage.value != null){
+        photoPicker.pickedImage.observe(this) {
+            if (photoPicker.pickedImage.value != null) {
                 imageViewProfilePicture.setImageURI(photoPicker.pickedImage.value)
             }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (CompanionObjects.currentUser?.isEmailVerified == true) {
+            editTextEmail.isEnabled = false
+            buttonVerifyEmail.isEnabled = false
+            buttonVerifyEmail.icon = getDrawable(R.drawable.check_icon)
+            buttonVerifyEmail.text = "Verified"
         }
     }
 
@@ -94,14 +108,14 @@ class UserRegisterActivity : AppCompatActivity() {
 
         // parsing the "birthDate" string to get birth (day, month, year)
         val birthYear = birthDate.substring(6).toInt()
-        val birthMonth = birthDate.substring(3,5).toInt()
-        val birthDay = birthDate.substring(0,2).toInt()
+        val birthMonth = birthDate.substring(3, 5).toInt()
+        val birthDay = birthDate.substring(0, 2).toInt()
 
         // finding the age of the user ( "-1"  to handel current year)
         var age = current.year - birthYear - 1
 
         // to check user birthDay has gone or not in current year. if yes increment age by 1
-        if(birthMonth < current.monthValue || (birthMonth == current.monthValue && birthDay <= current.dayOfMonth)) age++
+        if (birthMonth < current.monthValue || (birthMonth == current.monthValue && birthDay <= current.dayOfMonth)) age++
 
         // return the age
         return age
