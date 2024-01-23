@@ -138,8 +138,8 @@ class AuthenticationActivity : AppCompatActivity() {
     }
 
     private fun startNextActivity() {
-        // init intent to Home activity
-        val intent = Intent(this, HomeActivity::class.java)
+        // init intent to Main activity
+        val intent = Intent(this, AuthenticationActivity::class.java)
         // clear task stack
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         // start activity
