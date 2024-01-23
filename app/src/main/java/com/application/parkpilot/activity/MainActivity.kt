@@ -18,16 +18,26 @@ class MainActivity : AppCompatActivity() {
         if (CompanionObjects.currentUser != null) {
 
             // if user is signIn but not filled the registration information
-            // do something
+            println(CompanionObjects.currentUser!!.email!!.isEmpty())
+            println(CompanionObjects.currentUser!!.phoneNumber!!.isEmpty())
 
+            if(CompanionObjects.currentUser!!.email!!.isEmpty() || CompanionObjects.currentUser!!.phoneNumber!!.isEmpty()){
+                // through user to the authentication activity
+                startActivity(Intent(this, UserRegisterActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                })
+            }
 
-            // creating the home activity intent
-            val intent = Intent(this, HomeActivity::class.java)
+            else {
+                // creating the home activity intent
+                val intent = Intent(this, HomeActivity::class.java)
 
-            // clear the activity stack
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                // clear the activity stack
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
-            startActivity(intent)
+                startActivity(intent)
+            }
+
         }
         // No user is signed in
         else {
