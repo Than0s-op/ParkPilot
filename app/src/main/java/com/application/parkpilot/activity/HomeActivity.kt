@@ -55,6 +55,7 @@ class HomeActivity : AppCompatActivity() {
 
                     Toast.makeText(this, "Logout Successfully", Toast.LENGTH_SHORT).show()
                     startActivity(intent)
+
                     return@setOnMenuItemClickListener true
                 }
 

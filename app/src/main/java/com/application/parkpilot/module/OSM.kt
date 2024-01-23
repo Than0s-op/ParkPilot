@@ -5,6 +5,7 @@ import android.location.Geocoder
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.application.parkpilot.ParkPilotMapLegend
 import com.application.parkpilot.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -111,7 +112,7 @@ class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val act
         return currentLocation
     }
 
-    fun setPinsOnPosition(geoPoints:ArrayList<ParkPilotMapPin>, singleTapTask:(String)-> Unit) {
+    fun setPinsOnPosition(geoPoints:ArrayList<ParkPilotMapLegend>, singleTapTask:(String)-> Unit) {
 
         // contain all pins with "single tap" and "long press" binding
         val overlayItemArrayList = ArrayList<OverlayItem>()
