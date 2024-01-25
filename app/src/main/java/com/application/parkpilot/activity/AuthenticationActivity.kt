@@ -133,7 +133,7 @@ class AuthenticationActivity : AppCompatActivity() {
                     startNextActivity()
                 } else {
                     // otherwise show toast "Invalid request"
-                    Toast.makeText(this, "Invalid Request", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Failed to Login", Toast.LENGTH_SHORT).show()
                 }
             }
 
