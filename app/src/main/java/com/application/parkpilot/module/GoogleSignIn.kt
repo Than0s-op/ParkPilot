@@ -32,6 +32,10 @@ class GoogleSignIn : Activity() {
 
 //        println("Yes I'm here")
         googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        // force user to select google account again
+        googleSignInClient.revokeAccess()
+
         // [END config_signIn]
 
         // [START initialize_auth]
