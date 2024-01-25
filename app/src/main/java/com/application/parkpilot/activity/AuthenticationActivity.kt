@@ -77,10 +77,14 @@ class AuthenticationActivity : AppCompatActivity() {
 
                 // clear OTP box
                 OTPPinView.setText("")
+
+                // show successful toast
+                Toast.makeText(this, "OTP Send Successfully", Toast.LENGTH_SHORT).show()
             }
             // if OTP not send (error)
             else {
-
+                // show failed toast
+                Toast.makeText(this, "Failed to send OTP", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -97,6 +101,9 @@ class AuthenticationActivity : AppCompatActivity() {
 
             // Credential match (OTP is correct)
             if (phoneAuth.storedTaskResult.value != null) {
+                // show successful toast
+                Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show()
+
                 // just start the next activity
                 startNextActivity()
             } else {
@@ -106,6 +113,9 @@ class AuthenticationActivity : AppCompatActivity() {
 
                 // clear phone number text view
                 editTextPhoneNumber.setText("")
+
+                // show failed toast
+                Toast.makeText(this, "Invalid OTP", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -121,10 +131,9 @@ class AuthenticationActivity : AppCompatActivity() {
                 if (result.resultCode == RESULT_OK) {
                     // just start the next activity
                     startNextActivity()
-                }
-                else{
+                } else {
                     // otherwise show toast "Invalid request"
-                    Toast.makeText(this,"Invalid Request", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Invalid Request", Toast.LENGTH_SHORT).show()
                 }
             }
 
