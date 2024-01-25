@@ -1,8 +1,7 @@
 package com.application.parkpilot.module
 
+import android.app.Activity
 import android.util.Log
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseException
@@ -19,31 +18,29 @@ import java.util.concurrent.TimeUnit
 
 
 // command: "./gradlew signingReport" to get SHA1 and SHA256
-class PhoneAuth<Act : AppCompatActivity>(private val obj: Act) {
+class PhoneAuth(private val activity: Activity) {
 
-    // [START declare_auth]
+    // fire auth initialization
     private var auth: FirebaseAuth = Firebase.auth
-    // [END declare_auth]
 
-    //    var storedVerificationId: String? = ""
+    // live data to observe verificationID (OTP)
     var storedVerificationId = MutableLiveData<String?>()
+
+    // live data to observe result (user credential)
     var storedTaskResult = MutableLiveData<AuthResult?>()
-    private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
+
+    // It is use full to resend OTP
+    lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
+
+    // to store call backs (onComplete, onFailed , onSend)
     private var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
 
-    //    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
     init {
 
         // Disable reCaptcha
         // auth.firebaseAuthSettings.setAppVerificationDisabledForTesting(true)
 
-        // [START initialize_auth]
-        // Initialize Firebase Auth
-        // [END initialize_auth]
-
         // Initialize phone auth callbacks
-        // [START phone_auth_callbacks]
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
@@ -53,14 +50,14 @@ class PhoneAuth<Act : AppCompatActivity>(private val obj: Act) {
                 // 2 - Auto-retrieval. On some devices Google Play services can automatically
                 //     detect the incoming verification SMS and perform verification without
                 //     user action.
-                Log.d(TAG, "onVerificationCompleted:$credential")
+                Log.d("PhoneAuthActivity", "onVerificationCompleted:$credential")
                 signInWithPhoneAuthCredential(credential)
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
                 // This callback is invoked in an invalid request for verification is made,
                 // for instance if the the phone number format is not valid.
-                Log.w(TAG, "onVerificationFailed", e)
+                Log.w("PhoneAuthActivity", "onVerificationFailed", e)
 
                 if (e is FirebaseAuthInvalidCredentialsException) {
                     // Invalid request
@@ -70,112 +67,82 @@ class PhoneAuth<Act : AppCompatActivity>(private val obj: Act) {
                     // reCAPTCHA verification attempted with null Activity
                 }
 
-                Toast.makeText(obj.baseContext, "Failed to send OTP", Toast.LENGTH_SHORT).show()
-
-                // set verification Id to null for handel some cases (don't remove)
+                // setting null to do some task (because it is a observer)
                 storedVerificationId.value = null
-
-                // Show a message and update the UI
             }
 
             override fun onCodeSent(
-                verificationId: String,
-                token: PhoneAuthProvider.ForceResendingToken,
+                verificationId: String, token: PhoneAuthProvider.ForceResendingToken
             ) {
                 // The SMS verification code has been sent to the provided phone number, we
                 // now need to ask the user to enter the code and then construct a credential
                 // by combining the code with a verification ID.
-                Log.d(TAG, "onCodeSent:$verificationId")
+                Log.d("PhoneAuthActivity", "onCodeSent:$verificationId")
 
-                // Save verification ID and resending token so we can use them later
+                // assigning some value to do some task (because it is a observer)
                 storedVerificationId.value = verificationId
+
+                // storing resendToken. It will need to resend OTP
                 resendToken = token
-                Toast.makeText(obj.baseContext, "OTP Send Successfully", Toast.LENGTH_SHORT).show()
             }
         }
-        // [END phone_auth_callbacks]
     }
-
-    // [START on_start_check_user]
-//    override fun onStart() {
-//        super.onStart()
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        val currentUser = auth.currentUser
-//        updateUI(currentUser)
-//    }
-    // [END on_start_check_user]
 
     fun startPhoneNumberVerification(phoneNumber: String) {
-        // [START start_phone_auth]
-        val options = PhoneAuthOptions.newBuilder(auth)
-            .setPhoneNumber(phoneNumber) // Phone number to verify
-            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-            .setActivity(obj) // Activity (for callback binding)
-            .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
-            .build()
+        val options =
+            PhoneAuthOptions.newBuilder(auth).setPhoneNumber(phoneNumber) // Phone number to verify
+                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                .setActivity(activity) // Activity (for callback binding)
+                .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
+                .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
-        // [END start_phone_auth]
     }
 
-    fun verifyPhoneNumberWithCode(verificationId: String?, code: String) {
-        // [START verify_with_code]
-        val credential = PhoneAuthProvider.getCredential(verificationId!!, code)
-        // [END verify_with_code]
+    fun verifyPhoneNumberWithCode(verificationId: String?, OTP: String) {
+        // requesting for credential by using correct OTP and user entered OTP
+        val credential = PhoneAuthProvider.getCredential(verificationId!!, OTP)
 
+        // checking is got credential valid or not
+        // if, it is Invalid user, it means user entered OTP is wrong
         signInWithPhoneAuthCredential(credential)
     }
 
-    // [START resend_verification]
     private fun resendVerificationCode(
-        phoneNumber: String,
-        token: PhoneAuthProvider.ForceResendingToken?,
+        phoneNumber: String, token: PhoneAuthProvider.ForceResendingToken?
     ) {
-        val optionsBuilder = PhoneAuthOptions.newBuilder(auth)
-            .setPhoneNumber(phoneNumber) // Phone number to verify
-            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-            .setActivity(obj) // (optional) Activity for callback binding
-            // If no activity is passed, reCAPTCHA verification can not be used.
-            .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
+        val optionsBuilder =
+            PhoneAuthOptions.newBuilder(auth).setPhoneNumber(phoneNumber) // Phone number to verify
+                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                .setActivity(activity) // (optional) Activity for callback binding
+                // If no activity is passed, reCAPTCHA verification can not be used.
+                .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
         if (token != null) {
             optionsBuilder.setForceResendingToken(token) // callback's ForceResendingToken
         }
         PhoneAuthProvider.verifyPhoneNumber(optionsBuilder.build())
     }
-    // [END resend_verification]
 
-    // [START sign_in_with_phone]
+
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(obj) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
+        auth.signInWithCredential(credential).addOnCompleteListener(activity) { task ->
+            // entered OTP is correct
+            if (task.isSuccessful) {
+                // Sign in success, update UI with the signed-in user's information
+                Log.d("PhoneAuthActivity", "signInWithCredential:success")
 
-                    storedTaskResult.value = task.result
-                    Toast.makeText(obj.baseContext, "Login Successfully", Toast.LENGTH_SHORT).show()
+                // assigning result value to do some task (because it is a observer)
+                storedTaskResult.value = task.result
+            } else {
+                // Sign in failed, display a message and update the UI
+                Log.w("PhoneAuthActivity", "signInWithCredential:failure", task.exception)
 
-                } else {
-                    // Sign in failed, display a message and update the UI
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                        // The verification code entered was invalid
-                    }
-                    storedTaskResult.value = null
-                    Toast.makeText(
-                        obj.baseContext,
-                        "Failed to Login.Invalid Credential",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    // Update UI
+                if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                    // The verification code entered was invalid
                 }
+
+                // assigning null to do some task (because it is a observer)
+                storedTaskResult.value = null
             }
-    }
-    // [END sign_in_with_phone]
-
-//    private fun updateUI(user: FirebaseUser? = auth.currentUser) {
-//    }
-
-    companion object {
-        private const val TAG = "PhoneAuthActivity"
+        }
     }
 }

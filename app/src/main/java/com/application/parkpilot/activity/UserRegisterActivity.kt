@@ -67,16 +67,16 @@ class UserRegisterActivity : AppCompatActivity() {
             photoPicker.showPhotoPicker()
         }
 
-        buttonVerifyEmail.setOnClickListener {
-            CompanionObjects.currentUser!!.verifyBeforeUpdateEmail(editTextEmail.text.toString())
-                .addOnSuccessListener {
-                    println("success")
-                }.addOnCompleteListener {
-                println("complete")
-            }.addOnFailureListener {
-                println(it.localizedMessage)
-            }
-        }
+//        buttonVerifyEmail.setOnClickListener {
+//            CompanionObjects.currentUser!!.verifyBeforeUpdateEmail(editTextEmail.text.toString())
+//                .addOnSuccessListener {
+//                    println("success")
+//                }.addOnCompleteListener {
+//                println("complete")
+//            }.addOnFailureListener {
+//                println(it.localizedMessage)
+//            }
+//        }
 
         datePicker.pickedDate.observe(this) {
             if (datePicker.pickedDate.value != null) {
@@ -89,16 +89,6 @@ class UserRegisterActivity : AppCompatActivity() {
             if (photoPicker.pickedImage.value != null) {
                 imageViewProfilePicture.setImageURI(photoPicker.pickedImage.value)
             }
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (CompanionObjects.currentUser?.isEmailVerified == true) {
-            editTextEmail.isEnabled = false
-            buttonVerifyEmail.isEnabled = false
-            buttonVerifyEmail.icon = getDrawable(R.drawable.check_icon)
-            buttonVerifyEmail.text = "Verified"
         }
     }
 

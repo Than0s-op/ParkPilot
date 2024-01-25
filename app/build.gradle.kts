@@ -42,7 +42,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.google.firebase:firebase-auth:22.3.0")
+    implementation("com.google.firebase:firebase-auth:22.3.1")
     implementation("androidx.leanback:leanback:1.0.0")
     implementation("com.google.firebase:firebase-firestore:24.10.1")
     testImplementation("junit:junit:4.13.2")
@@ -69,7 +69,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
 
     // kotlin coroutine library
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     // fused location provider to get last known location
     implementation("com.google.android.gms:play-services-location:21.0.1")
