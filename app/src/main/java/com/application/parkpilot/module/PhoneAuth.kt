@@ -107,7 +107,7 @@ class PhoneAuth(private val activity: Activity) {
         signInWithPhoneAuthCredential(credential)
     }
 
-    private fun resendVerificationCode(
+    fun resendVerificationCode(
         phoneNumber: String, token: PhoneAuthProvider.ForceResendingToken?
     ) {
         val optionsBuilder =

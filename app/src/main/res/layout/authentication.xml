@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.AuthenticationActivity">
@@ -22,18 +21,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/appIcon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:contentDescription="application icon"
-        app:layout_constraintBottom_toTopOf="@+id/card"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/gmail_icon" />
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="450dp"
         android:layout_marginBottom="-10dp"
@@ -46,7 +42,7 @@
         <!--  Login Scroll View  -->
 
         <ScrollView
-            android:id="@+id/loginScrollView"
+            android:id="@+id/scrollViewLogin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone">
@@ -101,7 +97,6 @@
                         app:ccp_showPhoneCode="false" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/userEmailLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:startIconDrawable="@drawable/mobile_icon">
@@ -180,7 +175,7 @@
 
 
         <ScrollView
-            android:id="@+id/OTPScrollView"
+            android:id="@+id/scrollViewOTP"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone">
@@ -191,39 +186,39 @@
                 android:layout_gravity="center_vertical"
                 android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/textViewColor"
-                android:text="We have sent a verification code to" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="We have sent a verification code to"
+                    android:textColor="@color/textViewColor" />
 
-            <TextView
-                android:id="@+id/numberTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textViewColor"
-                android:layout_gravity="center_horizontal"
-                android:text="+91-XXX-XXX-XXX" />
+                <TextView
+                    android:id="@+id/textViewNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="+91-XXX-XXX-XXX"
+                    android:textColor="@color/textViewColor" />
 
 
                 <com.chaos.view.PinView
-                    android:id="@+id/OTPPinView"
-                    app:itemCount="6"
-                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/pinViewOTP"
+                    style="@style/PinWidget.PinView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:itemBackground="@color/materialCardViewColor"
-                    android:inputType="number"
-                    android:cursorVisible="true"
-                    app:hideLineWhenFilled="false"
-                    app:itemRadius="10dp"
-                    android:textColor="@color/textViewColor"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="30dp"
-                    style="@style/PinWidget.PinView" />
+                    android:cursorVisible="true"
+                    android:inputType="number"
+                    android:itemBackground="@color/materialCardViewColor"
+                    android:textColor="@color/textViewColor"
+                    app:hideLineWhenFilled="false"
+                    app:itemCount="6"
+                    app:itemRadius="10dp" />
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                    android:id="@+id/OTPVerificationButton"
+                    android:id="@+id/buttonOTPVerification"
                     android:layout_width="275dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -238,16 +233,17 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="30dp"
-                    android:textColor="@color/textViewColor"
-                    android:text="Didn't get the OTP?" />
+                    android:text="Didn't get the OTP?"
+                    android:textColor="@color/textViewColor" />
 
-                <TextView
-                    android:id="@+id/resendSMSButton"
+                <Button
+                    android:id="@+id/buttonResendOTP"
+                    style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:textColor="@color/md_theme_light_primary"
-                    android:text="Resend SMS" />
+                    android:text="Resend SMS"
+                    android:textColor="@color/md_theme_light_primary" />
 
             </LinearLayout>
         </ScrollView>

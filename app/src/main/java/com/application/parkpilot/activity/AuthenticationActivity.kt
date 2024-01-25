@@ -15,6 +15,7 @@ import com.application.parkpilot.R
 import com.application.parkpilot.module.GoogleSignIn
 import com.application.parkpilot.module.PhoneAuth
 import com.chaos.view.PinView
+import com.hbb20.CountryCodePicker
 
 
 class AuthenticationActivity : AppCompatActivity() {
@@ -26,11 +27,14 @@ class AuthenticationActivity : AppCompatActivity() {
         val editTextPhoneNumber: EditText = findViewById(R.id.editTextPhoneNumber)
         val buttonVerifyPhoneNumber: Button = findViewById(R.id.buttonVerifyPhoneNumber)
         val progressBar: ProgressBar = findViewById(R.id.progressBar)
-        val loginScrollView: ScrollView = findViewById(R.id.loginScrollView)
-        val OTPScrollView: ScrollView = findViewById(R.id.OTPScrollView)
-        val OTPPinView: PinView = findViewById(R.id.OTPPinView)
-        val OTPVerificationButton: Button = findViewById(R.id.OTPVerificationButton)
-
+        val scrollViewLogin: ScrollView = findViewById(R.id.scrollViewLogin)
+        val scrollViewOTP: ScrollView = findViewById(R.id.scrollViewOTP)
+        val pinViewOTP: PinView = findViewById(R.id.pinViewOTP)
+        val buttonOTPVerification: Button = findViewById(R.id.buttonOTPVerification)
+        val countryCodePicker: CountryCodePicker = findViewById(R.id.countryCodePicker)
+        val textViewNumber: TextView = findViewById(R.id.textViewNumber)
+        val buttonResendOTP: Button = findViewById(R.id.buttonResendOTP)
+        var phoneNumberWithCountryCode = ""
 
 //      ..........  phone auth  ................
 
@@ -38,26 +42,23 @@ class AuthenticationActivity : AppCompatActivity() {
         val phoneAuth = PhoneAuth(this)
 
         // show login view to user and hide OTP view
-        loginScrollView.visibility = View.VISIBLE
-        OTPScrollView.visibility = View.GONE
+        scrollViewLogin.visibility = View.VISIBLE
+        scrollViewOTP.visibility = View.GONE
 
 
         buttonVerifyPhoneNumber.setOnClickListener {
             // show progress bar
             progressBar.visibility = View.VISIBLE
 
-            // creating objects of login view
-            val countryCodePicker: com.hbb20.CountryCodePicker =
-                findViewById(R.id.countryCodePicker)
-            val numberTextView: TextView = findViewById(R.id.numberTextView)
-            val phoneNumber: String =
+            // storing user number with country code
+            phoneNumberWithCountryCode =
                 countryCodePicker.selectedCountryCodeWithPlus + editTextPhoneNumber.text.toString()
 
             // set phone number with country code to OTP view's message (We have sent a verification code to)
-            numberTextView.text = phoneNumber
+            textViewNumber.text = "${countryCodePicker.selectedCountryCodeWithPlus} - ${editTextPhoneNumber.text}"
 
             // pass the phone number to phone auth manager
-            phoneAuth.startPhoneNumberVerification(phoneNumber)
+            phoneAuth.startPhoneNumberVerification(phoneNumberWithCountryCode)
         }
 
         // phone auth verification Id observer, It will be react when verification Id changed
@@ -72,11 +73,11 @@ class AuthenticationActivity : AppCompatActivity() {
             // if OTP send successfully
             if (phoneAuth.storedVerificationId.value != null) {
                 // hide logIn view and show OTP view
-                loginScrollView.visibility = View.GONE
-                OTPScrollView.visibility = View.VISIBLE
+                scrollViewLogin.visibility = View.GONE
+                scrollViewOTP.visibility = View.VISIBLE
 
                 // clear OTP box
-                OTPPinView.setText("")
+                pinViewOTP.setText("")
 
                 // show successful toast
                 Toast.makeText(this, "OTP Send Successfully", Toast.LENGTH_SHORT).show()
@@ -88,11 +89,11 @@ class AuthenticationActivity : AppCompatActivity() {
             }
         }
 
-        OTPVerificationButton.setOnClickListener {
+        buttonOTPVerification.setOnClickListener {
             // pass user entered OTP and verification_ID to check entered OTP correct or not
             phoneAuth.verifyPhoneNumberWithCode(
                 phoneAuth.storedVerificationId.value,
-                OTPPinView.text.toString()
+                pinViewOTP.text.toString()
             )
         }
 
@@ -108,8 +109,8 @@ class AuthenticationActivity : AppCompatActivity() {
                 startNextActivity()
             } else {
                 // disable OTP view and show login view again
-                OTPScrollView.visibility = View.GONE
-                loginScrollView.visibility = View.VISIBLE
+                scrollViewOTP.visibility = View.GONE
+                scrollViewLogin.visibility = View.VISIBLE
 
                 // clear phone number text view
                 editTextPhoneNumber.setText("")
@@ -119,9 +120,13 @@ class AuthenticationActivity : AppCompatActivity() {
             }
         }
 
+        buttonResendOTP.setOnClickListener {
+            phoneAuth.resendVerificationCode(phoneNumberWithCountryCode, phoneAuth.resendToken)
+        }
 
 //      ..........  google singIn  ................
 
+        // initializing google sign in button
         val buttonGoogleSignIn: Button = findViewById(R.id.buttonGoogleLogin)
 
         // this will capture the google sign in auth activity result
@@ -132,7 +137,7 @@ class AuthenticationActivity : AppCompatActivity() {
                     // just start the next activity
                     startNextActivity()
                 } else {
-                    // otherwise show toast "Invalid request"
+                    // otherwise show toast "Failed to Login"
                     Toast.makeText(this, "Failed to Login", Toast.LENGTH_SHORT).show()
                 }
             }
