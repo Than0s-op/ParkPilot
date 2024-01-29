@@ -12,8 +12,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.application.parkpilot.R
-import com.application.parkpilot.module.GoogleSignIn
-import com.application.parkpilot.module.PhoneAuth
+import com.application.parkpilot.module.firebase.authentication.GoogleSignIn
+import com.application.parkpilot.module.firebase.authentication.PhoneAuth
 import com.chaos.view.PinView
 import com.hbb20.CountryCodePicker
 

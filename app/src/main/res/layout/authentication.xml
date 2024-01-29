@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/materialCardViewColor"
-        android:elevation="10dp"
+        android:elevation="25dp"
         android:indeterminate="true"
         android:padding="10dp"
         android:visibility="gone"
@@ -34,6 +34,7 @@
         android:layout_height="450dp"
         android:layout_marginBottom="-10dp"
         app:cardBackgroundColor="@color/materialCardViewColor"
+        app:cardElevation="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -50,19 +51,23 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:paddingHorizontal="10dp"
                 android:layout_gravity="center_vertical"
+                android:clipToPadding="false"
                 android:orientation="vertical">
 
                 <androidx.coordinatorlayout.widget.CoordinatorLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="30dp">
 
                     <com.google.android.material.divider.MaterialDivider
-                        android:layout_width="350dp"
+                        android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_gravity="center_vertical"
+
                         android:tooltipText="Text" />
 
                     <TextView
@@ -79,7 +84,7 @@
                 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="30dp">
@@ -97,13 +102,13 @@
                         app:ccp_showPhoneCode="false" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:startIconDrawable="@drawable/mobile_icon">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextPhoneNumber"
-                            android:layout_width="275dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Enter Phone Number"
                             android:inputType="number"
@@ -116,23 +121,21 @@
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/buttonVerifyPhoneNumber"
-                    android:layout_width="275dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="30dp"
-                    android:outlineAmbientShadowColor="@color/textViewColor"
-                    android:outlineSpotShadowColor="@color/textViewColor"
                     android:text="Continue"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/textViewColor" />
 
                 <androidx.coordinatorlayout.widget.CoordinatorLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="30dp">
 
                     <com.google.android.material.divider.MaterialDivider
-                        android:layout_width="350dp"
+                        android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_gravity="center_vertical"
                         android:tooltipText="Text" />
@@ -150,24 +153,16 @@
 
                 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-                <LinearLayout
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/buttonGoogleLogin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginVertical="30dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="30dp">
+                    app:icon="@drawable/google_icon"
+                    app:iconTint="@null" />
 
-                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                        android:id="@+id/buttonGoogleLogin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="15dp"
-                        android:layout_marginVertical="25dp"
-                        android:outlineAmbientShadowColor="@color/textViewColor"
-                        android:outlineSpotShadowColor="@color/textViewColor"
-                        app:icon="@drawable/google_icon"
-                        app:iconTint="@null" />
-
-                </LinearLayout>
             </LinearLayout>
         </ScrollView>
 
@@ -184,6 +179,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="30dp"
+                android:padding="10dp"
+                android:clipToPadding="false"
                 android:orientation="vertical">
 
                 <TextView
@@ -219,12 +217,10 @@
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/buttonOTPVerification"
-                    android:layout_width="275dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="30dp"
-                    android:outlineAmbientShadowColor="@color/textViewColor"
-                    android:outlineSpotShadowColor="@color/textViewColor"
                     android:text="Continue"
                     android:textColor="@color/white" />
 
@@ -242,7 +238,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Resend SMS"
+                    android:text="Resend OTP"
                     android:textColor="@color/md_theme_light_primary" />
 
             </LinearLayout>

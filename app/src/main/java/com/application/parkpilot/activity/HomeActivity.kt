@@ -9,6 +9,7 @@ import com.application.parkpilot.ParkPilotMapLegend
 import com.application.parkpilot.R
 import com.application.parkpilot.bottom_sheet.VehicleType
 import com.application.parkpilot.module.OSM
+import com.application.parkpilot.module.firebase.FireStore
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import com.google.firebase.Firebase
@@ -23,7 +24,8 @@ import org.osmdroid.util.GeoPoint
 class HomeActivity : AppCompatActivity() {
 
     // this object will access by two function
-    lateinit var OSMMap: OSM<HomeActivity>
+    private lateinit var mapViewOSM: OSM<HomeActivity>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
@@ -34,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
         val currentLocationButton: Button = findViewById(R.id.buttonCurrentLocation)
 
         // initializing OSM map object
-        OSMMap = OSM(findViewById(R.id.OSMMapView), this)
+        mapViewOSM = OSM(findViewById(R.id.mapViewOSM), this)
 
         // this method will add pins on map
         loadMapViewPins()
@@ -76,11 +78,11 @@ class HomeActivity : AppCompatActivity() {
             // creating co-routine scope to run search method
             CoroutineScope(Dispatchers.Main).launch {
                 // suspend function. it will block processes/UI thread ( you can run this function on another thread/coroutine)
-                val address = OSMMap.search(searchView.text.toString())
+                val address = mapViewOSM.search(searchView.text.toString())
 
                 // when search method got the search result without empty body
                 if (address != null) {
-                    OSMMap.setCenter(address.latitude, address.longitude)
+                    mapViewOSM.setCenter(address.latitude, address.longitude)
                 } else {
                     Toast.makeText(baseContext, "Invalid request", Toast.LENGTH_SHORT)
                         .show()
@@ -94,12 +96,12 @@ class HomeActivity : AppCompatActivity() {
             // creating co-routine scope to run getLastKnowLocation method
             CoroutineScope(Dispatchers.Default).launch {
                 // suspend function. It will block the processes/UI thread
-                val currentLocation = OSMMap.getLastKnowLocation()
+                val currentLocation = mapViewOSM.getLastKnowLocation()
 
                 // when we got user current location
                 if (currentLocation != null) {
                     // set the user's current location as center of map
-                    OSMMap.setCenter(currentLocation.latitude, currentLocation.longitude)
+                    mapViewOSM.setCenter(currentLocation.latitude, currentLocation.longitude)
                 }
             }
         }
@@ -139,7 +141,7 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 // this method will add pins on map with single tap behaviour
-                OSMMap.setPinsOnPosition(mapViewPins, singleTapTask)
+                mapViewOSM.setPinsOnPosition(mapViewPins, singleTapTask)
             }
             // failed to get collection
             .addOnFailureListener {
