@@ -1,4 +1,4 @@
-package com.application.parkpilot.module
+package com.application.parkpilot.module.firebase.authentication
 
 import android.app.Activity
 import android.content.Intent

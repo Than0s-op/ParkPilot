@@ -50,7 +50,6 @@
             <!--            </androidx.cardview.widget.CardView>-->
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/userEmailLayout"
                 style="?attr/textInputFilledStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,7 +66,6 @@
                     android:singleLine="true" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
 
         </LinearLayout>
 
@@ -143,7 +141,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="15dp"
-                        app:errorEnabled="true">
+                        app:errorEnabled="true"
+                        app:startIconDrawable="@drawable/date_range_icon">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextBirthDate"
@@ -175,6 +174,7 @@
                 </LinearLayout>
 
                 <RadioGroup
+                    android:id="@+id/radioGroupGender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -189,6 +189,7 @@
                         android:text="Female" />
 
                     <RadioButton
+                        android:id="@+id/radioButtonMale"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Male" />
@@ -224,33 +225,34 @@
                 android:padding="15dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:errorEnabled="true">
+                        android:layout_marginEnd="15dp"
+                        app:errorEnabled="true"
+                        app:startIconDrawable="@drawable/mobile_icon">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextPhoneNumber"
                             android:layout_width="250dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="15dp"
                             android:hint="Phone Number"
                             android:singleLine="true" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    <Button
                         android:id="@+id/buttonVerifyPhoneNumber"
+                        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Verify"
                         android:textColor="@color/textViewColor"
-                        android:textSize="15sp"
-                        app:iconPadding="0dp" />
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -262,32 +264,42 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:errorEnabled="true">
+                        android:layout_marginEnd="15dp"
+                        app:errorEnabled="true"
+                        app:startIconDrawable="@drawable/mail_icon">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextEmail"
                             android:layout_width="250dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="15dp"
                             android:hint="Email"
                             android:singleLine="true" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    <Button
                         android:id="@+id/buttonVerifyEmail"
+                        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Verify"
                         android:textColor="@color/textViewColor"
-                        android:textSize="15sp"
-                        app:iconPadding="0dp" />
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/buttonSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:text="Save"
+            android:textColor="@color/textViewColor" />
 
     </LinearLayout>
 
