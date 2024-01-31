@@ -1,5 +1,6 @@
 package com.application.parkpilot.activity
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
@@ -19,7 +20,6 @@ import com.application.parkpilot.module.DatePicker
 import com.application.parkpilot.module.PhotoPicker
 import com.application.parkpilot.module.firebase.FireStore
 import com.application.parkpilot.module.firebase.Storage
-import com.google.android.material.button.MaterialButton
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
@@ -31,7 +31,7 @@ import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 
 class UserRegisterActivity : AppCompatActivity(R.layout.user_register) {
-    lateinit var user:FirebaseUser
+    lateinit var user: FirebaseUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -44,10 +44,10 @@ class UserRegisterActivity : AppCompatActivity(R.layout.user_register) {
         val editTextAge: EditText = findViewById(R.id.editTextAge)
         val radioGroupGender: RadioGroup = findViewById(R.id.radioGroupGender)
         val buttonSave: Button = findViewById(R.id.buttonSave)
-        val editTextPhoneNumber:EditText = findViewById(R.id.editTextPhoneNumber)
-        val editTextEmail:EditText = findViewById(R.id.editTextEmail)
-        val buttonVerifyPhoneNumber:Button = findViewById(R.id.buttonVerifyPhoneNumber)
-        val buttonVerifyEmail:Button = findViewById(R.id.buttonVerifyEmail)
+        val editTextPhoneNumber: EditText = findViewById(R.id.editTextPhoneNumber)
+        val editTextEmail: EditText = findViewById(R.id.editTextEmail)
+        val buttonVerifyPhoneNumber: Button = findViewById(R.id.buttonVerifyPhoneNumber)
+        val buttonVerifyEmail: Button = findViewById(R.id.buttonVerifyEmail)
 
         //
         user = Firebase.auth.currentUser!!
@@ -56,7 +56,11 @@ class UserRegisterActivity : AppCompatActivity(R.layout.user_register) {
         val photoPicker = PhotoPicker(this)
 
         //
-        var photoUrl = user.photoUrl
+        var photoUrl: Uri? = user.photoUrl
+
+        // it will store MainActivity intent or null
+        // why it's here? ans:- [ if user came from Main Activity then we have to throw user again to Main Activity, otherwise do nothing]
+        var nextIntent: Intent? = Intent(this, MainActivity::class.java)
 
         // does user have user name?,yes it means she has profile name and image
         if (user.displayName != null) {
@@ -70,12 +74,14 @@ class UserRegisterActivity : AppCompatActivity(R.layout.user_register) {
         }
 //
         CoroutineScope(Dispatchers.Main).launch {
-            fireStore.userGet(user.uid)?.let{
+            fireStore.userGet(user.uid)?.let {
                 editTextFirstName.setText(it.firstName)
                 editTextLastName.setText(it.lastName)
                 editTextBirthDate.setText(it.birthDate)
                 editTextAge.setText(getAge(it.birthDate))
-                radioGroupGender.check(if(it.gender == "female") R.id.radioButtonFemale else R.id.radioButtonMale)
+                radioGroupGender.check(if (it.gender == "female") R.id.radioButtonFemale else R.id.radioButtonMale)
+                // if user came from home/other activity
+                nextIntent = null
             }
         }
 
@@ -131,7 +137,11 @@ class UserRegisterActivity : AppCompatActivity(R.layout.user_register) {
                 ) and result
 
                 val storage = Storage()
-                val storageProfilePhotoUri = storage.userProfilePhotoPut(user.uid, photoUrl!!)
+
+
+                val storageProfilePhotoUri: Uri =
+                    if (photoUrl != user.photoUrl) storage.userProfilePhotoPut(user.uid, photoUrl!!)
+                    else user.photoUrl!!
 
 
                 result =
@@ -148,6 +158,10 @@ class UserRegisterActivity : AppCompatActivity(R.layout.user_register) {
                         "Information Save Successfully",
                         Toast.LENGTH_SHORT
                     ).show()
+
+                    nextIntent?.let{
+                        startActivity(nextIntent)
+                    }
                     finish()
                 } else {
                     Toast.makeText(
