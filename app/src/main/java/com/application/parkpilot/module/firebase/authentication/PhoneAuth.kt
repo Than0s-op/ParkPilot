@@ -14,6 +14,7 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.auth
+import kotlinx.coroutines.tasks.await
 import java.util.concurrent.TimeUnit
 
 
@@ -25,23 +26,14 @@ class PhoneAuth(private val activity: Activity) {
 
     // live data to observe verificationID (OTP)
     var storedVerificationId = MutableLiveData<String?>()
+        private set
 
-    // live data to observe result (user credential)
-    var storedTaskResult = MutableLiveData<AuthResult?>()
-
-    // It is use full to resend OTP
-    lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
+    // It is useful to resend OTP
+    private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
 
     // to store call backs (onComplete, onFailed , onSend)
-    private var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
-
-    init {
-
-        // Disable reCaptcha
-        // auth.firebaseAuthSettings.setAppVerificationDisabledForTesting(true)
-
-        // Initialize phone auth callbacks
-        callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+    private var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks =
+        object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                 // This callback will be invoked in two situations:
@@ -51,7 +43,7 @@ class PhoneAuth(private val activity: Activity) {
                 //     detect the incoming verification SMS and perform verification without
                 //     user action.
                 Log.d("PhoneAuthActivity", "onVerificationCompleted:$credential")
-                signInWithPhoneAuthCredential(credential)
+                // signInWithPhoneAuthCredential(credential)
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
@@ -86,6 +78,13 @@ class PhoneAuth(private val activity: Activity) {
                 resendToken = token
             }
         }
+
+    init {
+
+        // Disable reCaptcha
+        // auth.firebaseAuthSettings.setAppVerificationDisabledForTesting(true)
+
+        // Initialize phone auth callbacks
     }
 
     fun startPhoneNumberVerification(phoneNumber: String) {
@@ -98,40 +97,35 @@ class PhoneAuth(private val activity: Activity) {
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
-    fun verifyPhoneNumberWithCode(verificationId: String?, OTP: String) {
+    suspend fun verifyPhoneNumberWithCode(verificationId: String?, OTP: String): Boolean {
         // requesting for credential by using correct OTP and user entered OTP
         val credential = PhoneAuthProvider.getCredential(verificationId!!, OTP)
 
         // checking is got credential valid or not
         // if, it is Invalid user, it means user entered OTP is wrong
-        signInWithPhoneAuthCredential(credential)
+        return signInWithPhoneAuthCredential(credential)
     }
 
-    fun resendVerificationCode(
-        phoneNumber: String, token: PhoneAuthProvider.ForceResendingToken?
-    ) {
+    fun resendVerificationCode(phoneNumber: String) {
         val optionsBuilder =
             PhoneAuthOptions.newBuilder(auth).setPhoneNumber(phoneNumber) // Phone number to verify
                 .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
                 .setActivity(activity) // (optional) Activity for callback binding
                 // If no activity is passed, reCAPTCHA verification can not be used.
                 .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
-        if (token != null) {
-            optionsBuilder.setForceResendingToken(token) // callback's ForceResendingToken
-        }
+                .setForceResendingToken(resendToken)
+
         PhoneAuthProvider.verifyPhoneNumber(optionsBuilder.build())
     }
 
-
-    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
+    private suspend fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential): Boolean {
+        var result = false
         auth.signInWithCredential(credential).addOnCompleteListener(activity) { task ->
             // entered OTP is correct
             if (task.isSuccessful) {
                 // Sign in success, update UI with the signed-in user's information
                 Log.d("PhoneAuthActivity", "signInWithCredential:success")
 
-                // assigning result value to do some task (because it is a observer)
-                storedTaskResult.value = task.result
             } else {
                 // Sign in failed, display a message and update the UI
                 Log.w("PhoneAuthActivity", "signInWithCredential:failure", task.exception)
@@ -139,10 +133,9 @@ class PhoneAuth(private val activity: Activity) {
                 if (task.exception is FirebaseAuthInvalidCredentialsException) {
                     // The verification code entered was invalid
                 }
-
-                // assigning null to do some task (because it is a observer)
-                storedTaskResult.value = null
             }
-        }
+            result = task.isSuccessful
+        }.await()
+        return result
     }
 }
