@@ -1,6 +1,5 @@
 package com.application.parkpilot.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -9,19 +8,18 @@ import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.application.parkpilot.R
-import com.application.parkpilot.module.firebase.authentication.GoogleSignIn
-import com.application.parkpilot.module.firebase.authentication.PhoneAuth
+import com.application.parkpilot.view_model.AuthenticationViewModel
 import com.chaos.view.PinView
 import com.hbb20.CountryCodePicker
 
 
-class AuthenticationActivity : AppCompatActivity() {
+class AuthenticationActivity : AppCompatActivity(R.layout.authentication) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.authentication)
 
         // init views
         val editTextPhoneNumber: EditText = findViewById(R.id.editTextPhoneNumber)
@@ -34,47 +32,63 @@ class AuthenticationActivity : AppCompatActivity() {
         val countryCodePicker: CountryCodePicker = findViewById(R.id.countryCodePicker)
         val textViewNumber: TextView = findViewById(R.id.textViewNumber)
         val buttonResendOTP: Button = findViewById(R.id.buttonResendOTP)
-        var phoneNumberWithCountryCode = ""
 
-//      ..........  phone auth  ................
+        // getting authentication view model reference
+        val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return AuthenticationViewModel(this@AuthenticationActivity) as T
+            }
+        })[AuthenticationViewModel::class.java]
 
-        // creating the phoneAuth object
-        val phoneAuth = PhoneAuth(this)
+        // setting phone number to (We have sent a verification code to) text view
+        // [we are setting here because of reconfiguration, if activity will regenerate we will set phone number to that view again]
+        textViewNumber.text = viewModel.dashSeparate(viewModel.phoneNumberWithCountryCode)
 
-        // show login view to user and hide OTP view
-        scrollViewLogin.visibility = View.VISIBLE
-        scrollViewOTP.visibility = View.GONE
+//      .......... [ phone auth ] ................
 
 
-        buttonVerifyPhoneNumber.setOnClickListener {
+        // setting visibility as according to view model
+        scrollViewLogin.visibility = viewModel.scrollViewLoginVisibility
+        scrollViewOTP.visibility = viewModel.scrollViewOTPVisibility
+
+
+        buttonVerifyPhoneNumber.setOnClickListener { _ ->
             // show progress bar
             progressBar.visibility = View.VISIBLE
 
             // storing user number with country code
-            phoneNumberWithCountryCode =
+            viewModel.phoneNumberWithCountryCode =
                 countryCodePicker.selectedCountryCodeWithPlus + editTextPhoneNumber.text.toString()
 
             // set phone number with country code to OTP view's message (We have sent a verification code to)
-            textViewNumber.text = "${countryCodePicker.selectedCountryCodeWithPlus} - ${editTextPhoneNumber.text}"
+            textViewNumber.text = viewModel.dashSeparate(viewModel.phoneNumberWithCountryCode)
 
-            // pass the phone number to phone auth manager
-            phoneAuth.startPhoneNumberVerification(phoneNumberWithCountryCode)
+            // start verification
+            viewModel.sendVerificationCode()
         }
 
-        // phone auth verification Id observer, It will be react when verification Id changed
-        phoneAuth.storedVerificationId.observe(this) {
+        // view model verification Id observer, It will be react when verification Id will change
+        viewModel.verificationCode.observe(this) { verificationCode ->
 
             // If OTP send successfully or unsuccessfully, then hide progress bar
             progressBar.visibility = View.GONE
 
-            // when "storedVerification == null" OTP send to failed,
+            // when "verificationId == null" OTP send to failed,
             // otherwise OTP send successfully
 
             // if OTP send successfully
-            if (phoneAuth.storedVerificationId.value != null) {
-                // hide logIn view and show OTP view
-                scrollViewLogin.visibility = View.GONE
-                scrollViewOTP.visibility = View.VISIBLE
+            if (verificationCode != null) {
+                // hide login view and
+                View.GONE.let {
+                    scrollViewLogin.visibility = it
+                    viewModel.scrollViewLoginVisibility = it
+                }
+
+                // show OTP view
+                View.VISIBLE.let {
+                    scrollViewOTP.visibility = it
+                    viewModel.scrollViewOTPVisibility = it
+                }
 
                 // clear OTP box
                 pinViewOTP.setText("")
@@ -82,35 +96,42 @@ class AuthenticationActivity : AppCompatActivity() {
                 // show successful toast
                 Toast.makeText(this, "OTP Send Successfully", Toast.LENGTH_SHORT).show()
             }
-            // if OTP not send (error)
+            // if OTP not send successfully(error)
             else {
                 // show failed toast
                 Toast.makeText(this, "Failed to send OTP", Toast.LENGTH_SHORT).show()
             }
         }
 
-        buttonOTPVerification.setOnClickListener {
-            // pass user entered OTP and verification_ID to check entered OTP correct or not
-            phoneAuth.verifyPhoneNumberWithCode(
-                phoneAuth.storedVerificationId.value,
+        buttonOTPVerification.setOnClickListener { _ ->
+            // pass user entered OTP to check entered OTP correct or not
+            viewModel.verifyPhoneNumberWithCode(
                 pinViewOTP.text.toString()
             )
         }
 
-        // phone auth Task observer. It will be react when user credential change
-        phoneAuth.storedTaskResult.observe(this) {
+        // It will be react when we get result of the "verifyPhoneNumberWithCode" function call
+        viewModel.verifyPhoneNumberWithCodeResult.observe(this) { isCorrect ->
 
-            // Credential match (OTP is correct)
-            if (phoneAuth.storedTaskResult.value != null) {
+            // when Credential match (OTP is correct)
+            if (isCorrect) {
                 // show successful toast
                 Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show()
 
-                // just start the next activity
-                startNextActivity()
+                // start the next activity
+                viewModel.startNextActivity(this)
             } else {
-                // disable OTP view and show login view again
-                scrollViewOTP.visibility = View.GONE
-                scrollViewLogin.visibility = View.VISIBLE
+                // disable OTP view and
+                View.GONE.let {
+                    scrollViewOTP.visibility = it
+                    viewModel.scrollViewOTPVisibility = it
+                }
+
+                // show login view again
+                View.VISIBLE.let {
+                    scrollViewLogin.visibility = it
+                    viewModel.scrollViewLoginVisibility = it
+                }
 
                 // clear phone number text view
                 editTextPhoneNumber.setText("")
@@ -120,43 +141,30 @@ class AuthenticationActivity : AppCompatActivity() {
             }
         }
 
-        buttonResendOTP.setOnClickListener {
-            phoneAuth.resendVerificationCode(phoneNumberWithCountryCode, phoneAuth.resendToken)
+        buttonResendOTP.setOnClickListener { _ ->
+            // resend verification code request
+            viewModel.resendVerificationCode()
         }
 
-//      ..........  google singIn  ................
+//      .......... [ google singIn ] ................
 
         // initializing google sign in button
         val buttonGoogleSignIn: Button = findViewById(R.id.buttonGoogleLogin)
 
-        // this will capture the google sign in auth activity result
-        val resultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                // if activity return result as "OK"
-                if (result.resultCode == RESULT_OK) {
-                    // just start the next activity
-                    startNextActivity()
-                } else {
-                    // otherwise show toast "Failed to Login"
-                    Toast.makeText(this, "Failed to Login", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-
-        buttonGoogleSignIn.setOnClickListener {
-            // init intent to google sign in activity
-            val intent = Intent(this, GoogleSignIn::class.java)
-            // launch the activity using above launcher
-            resultLauncher.launch(intent)
+        buttonGoogleSignIn.setOnClickListener { _ ->
+            // start the google sign in intent
+            viewModel.startGoogleSignInIntent(this)
         }
-    }
 
-    private fun startNextActivity() {
-        // init intent to Main activity
-        val intent = Intent(this, MainActivity::class.java)
-        // clear task stack
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        // start activity
-        startActivity(intent)
+        viewModel.googleSignInResult.observe(this) { isOk ->
+            // successfully get google account of user
+            if (isOk) {
+                viewModel.startNextActivity(this)
+            }
+            // otherwise
+            else {
+                Toast.makeText(this, "Failed to Login", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
