@@ -1,4 +1,4 @@
-package com.application.parkpilot.view_model
+package com.application.parkpilot.viewModel
 
 import android.content.Context
 import android.content.Intent

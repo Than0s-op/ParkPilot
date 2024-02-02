@@ -13,7 +13,7 @@ class FireStore {
     private val fireStore = Firebase.firestore
 
     // To put date into user collection in specific document
-    suspend fun userPut(data: UserCollection, documentID: String): Boolean {
+    suspend fun userSet(data: UserCollection, documentID: String): Boolean {
         // for success result
         var result = false
 
