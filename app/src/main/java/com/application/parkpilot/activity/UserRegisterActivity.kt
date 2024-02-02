@@ -1,7 +1,6 @@
 package com.application.parkpilot.activity
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -9,33 +8,19 @@ import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import coil.imageLoader
-import coil.request.ImageRequest
-import coil.request.ImageResult
-import coil.size.Scale
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.application.parkpilot.R
 import com.application.parkpilot.UserCollection
 import com.application.parkpilot.UserProfile
-import com.application.parkpilot.module.DatePicker
-import com.application.parkpilot.module.PhotoPicker
-import com.application.parkpilot.module.firebase.FireStore
-import com.application.parkpilot.module.firebase.Storage
-import com.google.firebase.Firebase
+import com.application.parkpilot.viewModel.UserRegisterViewModel
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.auth
-import com.google.firebase.auth.userProfileChangeRequest
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import java.time.LocalDate
 
 class UserRegisterActivity : AppCompatActivity(R.layout.user_register) {
-    lateinit var user: FirebaseUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //
+        // init view
         val imageViewProfilePicture: ImageView = findViewById(R.id.imageViewProfilePicture)
         val editTextUserName: EditText = findViewById(R.id.editTextUserName)
         val editTextFirstName: EditText = findViewById(R.id.editTextFirstName)
@@ -49,195 +34,110 @@ class UserRegisterActivity : AppCompatActivity(R.layout.user_register) {
         val buttonVerifyPhoneNumber: Button = findViewById(R.id.buttonVerifyPhoneNumber)
         val buttonVerifyEmail: Button = findViewById(R.id.buttonVerifyEmail)
 
-        //
-        user = Firebase.auth.currentUser!!
-        val fireStore = FireStore()
-        val datePicker = DatePicker(this)
-        val photoPicker = PhotoPicker(this)
-
-        //
-        var photoUrl: Uri? = user.photoUrl
+        // getting userRegister view model reference
+        val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return UserRegisterViewModel(this@UserRegisterActivity) as T
+            }
+        })[UserRegisterViewModel::class.java]
 
         // it will store MainActivity intent or null
         // why it's here? ans:- [ if user came from Main Activity then we have to throw user again to Main Activity, otherwise do nothing]
         var nextIntent: Intent? = Intent(this, MainActivity::class.java)
 
         // does user have user name?,yes it means she has profile name and image
-        if (user.displayName != null) {
-            CoroutineScope(Dispatchers.Main).launch {
-                val profileImage = uriImageLoader(photoUrl!!)
-                imageViewProfilePicture.setImageDrawable(profileImage.drawable)
-            }
+        if (viewModel.user.displayName != null) {
+
+            // load profile image in memory
+            viewModel.getImage(this, viewModel.photoUrl!!)
 
             // setting user name to edit text
-            editTextUserName.setText(user.displayName)
+            editTextUserName.setText(viewModel.user.displayName)
+
+            // get user details from user collection
+            viewModel.getUserDetails()
         }
-//
-        CoroutineScope(Dispatchers.Main).launch {
-            fireStore.userGet(user.uid)?.let {
+
+        editTextBirthDate.setOnClickListener {
+            // start and end dates format should be yyyy-mm-dd (modify this function)
+            viewModel.datePicker.showDatePicker("Select Birth Date", null, null)
+        }
+
+        imageViewProfilePicture.setOnClickListener {
+            // start photo picker
+            viewModel.photoPicker.showPhotoPicker()
+        }
+
+        buttonSave.setOnClickListener {
+            // uploading the user data
+            viewModel.saveUserData(
+                UserCollection(
+                    editTextFirstName.text.toString(),
+                    editTextLastName.text.toString(),
+                    editTextBirthDate.text.toString(),
+                    if (radioGroupGender.checkedRadioButtonId == R.id.radioButtonFemale) "female" else "male"
+                ),
+                UserProfile(
+                    editTextUserName.text.toString(),
+                    viewModel.photoUrl!!
+                )
+            )
+        }
+
+        // it is a observer of getImage method's result
+        viewModel.imageLoaderResult.observe(this) { image ->
+            // loaded image applying to profile picture
+            imageViewProfilePicture.setImageDrawable(image.drawable)
+        }
+
+        // it will execute when fireStore result get successfully
+        viewModel.userInformation.observe(this) { userCollection ->
+            // set the data if user Collection is not null
+            userCollection?.let {
                 editTextFirstName.setText(it.firstName)
                 editTextLastName.setText(it.lastName)
                 editTextBirthDate.setText(it.birthDate)
-                editTextAge.setText(getAge(it.birthDate))
+                editTextAge.setText(viewModel.getAge(it.birthDate))
                 radioGroupGender.check(if (it.gender == "female") R.id.radioButtonFemale else R.id.radioButtonMale)
-                // if user came from home/other activity
+                // if user came from home/other activity except mainActivity
                 nextIntent = null
             }
         }
 
-//
-//        if (editTextPhoneNumber.text.isNotEmpty()) {
-//            editTextPhoneNumber.isEnabled = false
-//            buttonVerifyPhoneNumber.isEnabled = false
-//            buttonVerifyPhoneNumber.text = "Verified"
-//            buttonVerifyPhoneNumber.icon =
-//                AppCompatResources.getDrawable(this, R.drawable.check_icon)
-//        }
-//
-//        if (editTextEmail.text.isNotEmpty()) {
-//            editTextEmail.isEnabled = false
-//            buttonVerifyEmail.isEnabled = false
-//            buttonVerifyEmail.text = "Verified"
-//            buttonVerifyEmail.icon = AppCompatResources.getDrawable(this, R.drawable.check_icon)
-//        }
-//
-//
-//
-        editTextBirthDate.setOnClickListener {
-            // start and end dates format should be yyyy-mm-dd (modify this function)
-            datePicker.showDatePicker("Select Birth Date", null, null)
+        // it will execute when date picker get some date from user
+        viewModel.datePicker.pickedDate.observe(this) { date ->
+            // set date to birthdate editText if is not null
+            date?.let {
+                editTextBirthDate.setText(it)
+                editTextAge.setText(viewModel.getAge(it))
+            }
         }
-//
-        imageViewProfilePicture.setOnClickListener {
-            photoPicker.showPhotoPicker()
+
+        // it will execute when photo picker get image
+        viewModel.photoPicker.pickedImage.observe(this) { imageUri ->
+            // execute below code if imageUri is not null
+            imageUri?.let {
+                viewModel.photoUrl = it
+                imageViewProfilePicture.setImageURI(it)
+            }
         }
-//
-//        buttonVerifyEmail.setOnClickListener {
-//            CompanionObjects.currentUser!!.verifyBeforeUpdateEmail(editTextEmail.text.toString())
-//                .addOnSuccessListener {
-//                    println("success")
-//                }.addOnCompleteListener {
-//                    println("complete")
-//                }.addOnFailureListener {
-//                    println(it.localizedMessage)
-//                }
-//        }
-//
-        buttonSave.setOnClickListener {
-            CoroutineScope(Dispatchers.Main).launch {
-                var result = true
 
-                result = fireStore.userPut(
-                    UserCollection(
-                        editTextFirstName.text.toString(),
-                        editTextLastName.text.toString(),
-                        editTextBirthDate.text.toString(),
-                        if (radioGroupGender.checkedRadioButtonId == R.id.radioButtonFemale) "female" else "male"
-                    ), user.uid
-                ) and result
+        // it will execute when user data uploaded successfully or failed to upload
+        viewModel.isUploaded.observe(this) { isUploaded ->
+            if (isUploaded) {
+                Toast.makeText(
+                    this, "Information Save Successfully", Toast.LENGTH_SHORT
+                ).show()
 
-                val storage = Storage()
-
-
-                val storageProfilePhotoUri: Uri =
-                    if (photoUrl != user.photoUrl) storage.userProfilePhotoPut(user.uid, photoUrl!!)
-                    else user.photoUrl!!
-
-
-                result =
-                    updateProfile(
-                        UserProfile(
-                            editTextUserName.text.toString(),
-                            storageProfilePhotoUri
-                        )
-                    ) and result
-
-                if (result) {
-                    Toast.makeText(
-                        this@UserRegisterActivity,
-                        "Information Save Successfully",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    nextIntent?.let{
-                        startActivity(nextIntent)
-                    }
-                    finish()
-                } else {
-                    Toast.makeText(
-                        this@UserRegisterActivity,
-                        "Failed Save Information",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                viewModel.nextIntent?.let {
+                    startActivity(nextIntent)
                 }
+                finish()
+            } else {
+                Toast.makeText(
+                    this, "Failed Save Information", Toast.LENGTH_SHORT
+                ).show()
             }
         }
-//
-        datePicker.pickedDate.observe(this) {
-            if (datePicker.pickedDate.value != null) {
-                editTextBirthDate.setText(datePicker.pickedDate.value)
-                editTextAge.setText(getAge(datePicker.pickedDate.value!!))
-            }
-        }
-
-        photoPicker.pickedImage.observe(this) {
-            if (photoPicker.pickedImage.value != null) {
-                photoUrl = photoPicker.pickedImage.value
-                CoroutineScope(Dispatchers.Main).launch {
-                    val profileImage = uriImageLoader(photoUrl!!)
-                    imageViewProfilePicture.setImageDrawable(profileImage.drawable)
-                }
-            }
-        }
-    }
-
-    // format should be in day,month,year
-    private fun getAge(birthDate: String): String {
-        // getting today's date
-        val current = LocalDate.now()
-
-        // parsing the "birthDate" string to get birth (day, month, year)
-        val birthYear = birthDate.substring(6).toInt()
-        val birthMonth = birthDate.substring(3, 5).toInt()
-        val birthDay = birthDate.substring(0, 2).toInt()
-
-        // finding the age of the user ( "-1"  to handel current year)
-        var age = current.year - birthYear - 1
-
-        // to check user birthDay has gone or not in current year. if yes increment age by 1
-        if (birthMonth < current.monthValue || (birthMonth == current.monthValue && birthDay <= current.dayOfMonth)) age++
-
-        // return the age
-        return age.toString()
-    }
-
-    private suspend fun updateProfile(data: UserProfile): Boolean {
-        val profileUpdates = userProfileChangeRequest {
-            displayName = data.displayName.trim()
-            photoUri = data.photoUri
-        }
-        var result = false
-
-        // To update profile
-        user.updateProfile(profileUpdates).addOnSuccessListener {
-            result = true
-        }.await()
-
-        return result
-    }
-
-    private suspend fun uriImageLoader(
-        photoUrl: Uri,
-        width: Int = 192,
-        height: Int = 192
-    ): ImageResult {
-        // request for profile image of user
-        val profileImageRequest = ImageRequest.Builder(this)
-            .data(photoUrl)
-            .size(width, height)
-            .scale(Scale.FIT)
-            .build()
-
-        return imageLoader.execute(profileImageRequest)
     }
 }

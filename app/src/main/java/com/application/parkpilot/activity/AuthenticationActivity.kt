@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.application.parkpilot.R
-import com.application.parkpilot.view_model.AuthenticationViewModel
+import com.application.parkpilot.viewModel.AuthenticationViewModel
 import com.chaos.view.PinView
 import com.hbb20.CountryCodePicker
 

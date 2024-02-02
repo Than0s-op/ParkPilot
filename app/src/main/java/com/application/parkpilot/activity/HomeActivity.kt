@@ -7,9 +7,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.application.parkpilot.ParkPilotMapLegend
 import com.application.parkpilot.R
-import com.application.parkpilot.bottom_sheet.VehicleType
+import com.application.parkpilot.bottomSheet.VehicleType
 import com.application.parkpilot.module.OSM
-import com.application.parkpilot.module.firebase.FireStore
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import com.google.firebase.Firebase
