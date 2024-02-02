@@ -129,7 +129,7 @@ class UserRegisterActivity : AppCompatActivity(R.layout.user_register) {
                     this, "Information Save Successfully", Toast.LENGTH_SHORT
                 ).show()
 
-                viewModel.nextIntent?.let {
+                nextIntent?.let{
                     startActivity(nextIntent)
                 }
                 finish()
