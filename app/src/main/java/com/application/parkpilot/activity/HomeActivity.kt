@@ -5,10 +5,14 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.application.parkpilot.ParkPilotMapLegend
 import com.application.parkpilot.R
 import com.application.parkpilot.bottomSheet.VehicleType
 import com.application.parkpilot.module.OSM
+import com.application.parkpilot.viewModel.AuthenticationViewModel
+import com.application.parkpilot.viewModel.HomeViewModel
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import com.google.firebase.Firebase
@@ -20,46 +24,43 @@ import kotlinx.coroutines.launch
 import org.osmdroid.util.GeoPoint
 
 
-class HomeActivity : AppCompatActivity() {
-
-    // this object will access by two function
-    private lateinit var mapViewOSM: OSM<HomeActivity>
+class HomeActivity : AppCompatActivity(R.layout.home) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.home)
 
         // object creation and initialization of views
         val searchBar: SearchBar = findViewById(R.id.searchBar)
         val searchView: SearchView = findViewById(R.id.searchView)
         val currentLocationButton: Button = findViewById(R.id.buttonCurrentLocation)
 
+
+        // getting authentication view model reference
+        val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return HomeViewModel(this@HomeActivity) as T
+            }
+        })[HomeViewModel::class.java]
+
         // initializing OSM map object
-        mapViewOSM = OSM(findViewById(R.id.mapViewOSM), this)
+        viewModel.setMapView(findViewById(R.id.mapViewOSM),this)
 
         // this method will add pins on map
-        loadMapViewPins()
+        viewModel.loadMapViewPins(this,supportFragmentManager)
 
         // when search bar menu's items clicked
         searchBar.setOnMenuItemClickListener { clickedItem ->
 
             when (clickedItem.itemId) {
                 R.id.logoutButton -> {
-                    // sign out the user
-                    Firebase.auth.signOut()
-
-                    // creating the intent of Authentication activity
-                    val intent = Intent(this, AuthenticationActivity::class.java)
-
-                    // to clear activity stack
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-
+                    viewModel.logout(this)
                     Toast.makeText(this, "Logout Successfully", Toast.LENGTH_SHORT).show()
-                    startActivity(intent)
-
                     return@setOnMenuItemClickListener true
                 }
-
+                R.id.registerButton -> {
+                    viewModel.register(this)
+                    return@setOnMenuItemClickListener true
+                }
                 else -> {
                     return@setOnMenuItemClickListener false
                 }
@@ -75,76 +76,14 @@ class HomeActivity : AppCompatActivity() {
             searchView.hide()
 
             // creating co-routine scope to run search method
-            CoroutineScope(Dispatchers.Main).launch {
-                // suspend function. it will block processes/UI thread ( you can run this function on another thread/coroutine)
-                val address = mapViewOSM.search(searchView.text.toString())
-
-                // when search method got the search result without empty body
-                if (address != null) {
-                    mapViewOSM.setCenter(address.latitude, address.longitude)
-                } else {
-                    Toast.makeText(baseContext, "Invalid request", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
+            viewModel.search((searchView.text.toString()))
             false
         }
 
         // when current location button press
         currentLocationButton.setOnClickListener {
-            // creating co-routine scope to run getLastKnowLocation method
-            CoroutineScope(Dispatchers.Default).launch {
-                // suspend function. It will block the processes/UI thread
-                val currentLocation = mapViewOSM.getLastKnowLocation()
-
-                // when we got user current location
-                if (currentLocation != null) {
-                    // set the user's current location as center of map
-                    mapViewOSM.setCenter(currentLocation.latitude, currentLocation.longitude)
-                }
-            }
+            // it will set current location in mapView
+            viewModel.getCurrentLocation()
         }
-    }
-
-    private fun loadMapViewPins() {
-        // Initializing fire store
-        val fireStore = Firebase.firestore
-
-        // creating the lambda function to pass with "set pins on position" method
-        val singleTapTask = { UID: String ->
-            VehicleType().show(supportFragmentManager,null)
-        }
-
-        // fetching data from fire-store's "@string/station" collection
-        fireStore.collection(getString(R.string.station)).get()
-            // collection get successfully
-            .addOnSuccessListener { collection ->
-
-                // creating arraylist of ParkPilotMapPin (title,UID,GeoPoint) "data class"
-                val mapViewPins = ArrayList<ParkPilotMapLegend>()
-
-                // iterate the collection
-                for (document in collection) {
-
-                    // parsing document to get GeoPoint
-                    val geoPoint =
-                        document.data["location"] as com.google.firebase.firestore.GeoPoint
-
-                    // adding "ParkPilotMapPin" data-class object in arraylist
-                    mapViewPins.add(
-                        ParkPilotMapLegend(
-                            "Park Pilot pin",
-                            document.id, GeoPoint(geoPoint.latitude, geoPoint.longitude)
-                        )
-                    )
-                }
-
-                // this method will add pins on map with single tap behaviour
-                mapViewOSM.setPinsOnPosition(mapViewPins, singleTapTask)
-            }
-            // failed to get collection
-            .addOnFailureListener {
-                println("${it.message}")
-            }
     }
 }
