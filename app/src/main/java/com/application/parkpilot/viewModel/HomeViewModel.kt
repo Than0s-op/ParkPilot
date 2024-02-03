@@ -2,6 +2,8 @@ package com.application.parkpilot.viewModel
 
 import android.content.Context
 import android.content.Intent
+import android.view.MenuItem
+import android.widget.ImageView
 import androidx.core.content.ContextCompat.getString
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
@@ -13,6 +15,7 @@ import com.application.parkpilot.activity.HomeActivity
 import com.application.parkpilot.activity.UserRegisterActivity
 import com.application.parkpilot.bottomSheet.VehicleType
 import com.application.parkpilot.module.OSM
+import com.application.parkpilot.module.PhotoLoader
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
@@ -65,6 +68,14 @@ class HomeViewModel(activity: HomeActivity) : ViewModel() {
             currentLocation?.let {
                 // set the user's current location as center of map
                 mapViewOSM.setCenter(it.latitude, it.longitude)
+            }
+        }
+    }
+
+    fun loadProfileImage(context:Context,profileImage: MenuItem){
+        Firebase.auth.currentUser?.photoUrl?.let {
+            viewModelScope.launch {
+                profileImage.icon = PhotoLoader().getImage(context,it).drawable
             }
         }
     }

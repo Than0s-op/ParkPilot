@@ -35,6 +35,7 @@
 <!--        <item name="android:windowActionBar">false</item>-->
 <!--        <item name="android:windowFullscreen">true</item>-->
 <!--        <item name="android:windowContentOverlay">@null</item>-->
+<!--        <item name="android:windowTranslucentStatus">true</item>-->
     </style>
 
     <style name="Theme.ParkPilot" parent="Base.Theme.ParkPilot" />
