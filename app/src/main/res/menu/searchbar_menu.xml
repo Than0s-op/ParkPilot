@@ -2,23 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/searchbarProfile"
+        android:id="@+id/searchbarProfileImage"
         android:contentDescription="profile"
         android:icon="@drawable/user_alert_icon"
         android:title="Profile"
-        app:showAsAction="always">
-        <menu>
-            <item
-                android:id="@+id/logoutButton"
-                android:icon="@drawable/logout_icon"
-                android:orderInCategory="100"
-                android:title="Logout" />
-            <item
-                android:id="@+id/registerButton"
-                android:icon="@drawable/register_icon"
-                android:orderInCategory="100"
-                android:title="Register" />
-        </menu>
-    </item>
-
+        app:showAsAction="always"/>
 </menu>
