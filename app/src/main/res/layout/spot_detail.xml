@@ -80,6 +80,7 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/currency_rupee_icon" />
+
             </LinearLayout>
 
         </LinearLayout>
@@ -91,8 +92,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Book Now"
         android:layout_margin="20dp"
+        android:text="Book Now"
         android:textColor="@color/textViewColor"
         app:layout_constraintBottom_toBottomOf="parent" />
 
