@@ -8,11 +8,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.R
 import com.application.parkpilot.activity.SpotDetailActivity
-import com.application.parkpilot.adapter.Carousel
+import com.application.parkpilot.adapter.CarouselRecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.carousel.CarouselLayoutManager
 
-class VehicleType : BottomSheetDialogFragment(R.layout.vehicle_type) {
+class SpotPreview : BottomSheetDialogFragment(R.layout.spot_preview) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recycleView: RecyclerView = view.findViewById(R.id.recycleView)
@@ -30,7 +30,7 @@ class VehicleType : BottomSheetDialogFragment(R.layout.vehicle_type) {
         arr.add("https://images.pexels.com/photos/164634/pexels-photo-164634.jpeg?auto=compress&cs=tinysrgb&w=600")
 
         recycleView.layoutManager = CarouselLayoutManager()
-        recycleView.adapter = Carousel(requireContext(),R.layout.carousel,arr)
+        recycleView.adapter = CarouselRecyclerView(requireContext(),R.layout.round_carousel,arr)
 
         buttonDetail.setOnClickListener {
             val intent = Intent(context, SpotDetailActivity::class.java)

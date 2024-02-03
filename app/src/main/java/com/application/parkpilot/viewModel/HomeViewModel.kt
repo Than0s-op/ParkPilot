@@ -3,7 +3,6 @@ package com.application.parkpilot.viewModel
 import android.content.Context
 import android.content.Intent
 import android.view.MenuItem
-import android.widget.ImageView
 import androidx.core.content.ContextCompat.getString
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
@@ -13,7 +12,7 @@ import com.application.parkpilot.R
 import com.application.parkpilot.activity.AuthenticationActivity
 import com.application.parkpilot.activity.HomeActivity
 import com.application.parkpilot.activity.UserRegisterActivity
-import com.application.parkpilot.bottomSheet.VehicleType
+import com.application.parkpilot.bottomSheet.SpotPreview
 import com.application.parkpilot.module.OSM
 import com.application.parkpilot.module.PhotoLoader
 import com.google.firebase.Firebase
@@ -90,7 +89,7 @@ class HomeViewModel(activity: HomeActivity) : ViewModel() {
 
         // creating the lambda function to pass with "set pins on position" method
         val singleTapTask = { UID: String ->
-            VehicleType().show(supportFragmentManager, null)
+            SpotPreview().show(supportFragmentManager, null)
         }
 
         // fetching data from fire-store's "@string/station" collection

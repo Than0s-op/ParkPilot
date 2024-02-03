@@ -1,6 +1,5 @@
 package com.application.parkpilot.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -9,23 +8,11 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.application.parkpilot.ParkPilotMapLegend
 import com.application.parkpilot.R
-import com.application.parkpilot.bottomSheet.VehicleType
-import com.application.parkpilot.module.OSM
-import com.application.parkpilot.viewModel.AuthenticationViewModel
 import com.application.parkpilot.viewModel.HomeViewModel
-import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigationrail.NavigationRailView
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
-import com.google.firebase.firestore.firestore
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import org.osmdroid.util.GeoPoint
 
 
 class HomeActivity : AppCompatActivity(R.layout.home) {
