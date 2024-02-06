@@ -67,7 +67,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_gravity="center_vertical"
-
                         android:tooltipText="Text" />
 
                     <TextView
@@ -75,6 +74,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:width="130dp"
+                        android:fontFamily="@font/ubuntu_regular"
                         android:background="@color/materialCardViewColor"
                         android:gravity="center_horizontal"
                         android:text="Log in or sign up"
@@ -95,6 +95,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:gravity="center_vertical"
+                        app:ccpDialog_cornerRadius="20dp"
+                        app:ccp_autoDetectCountry="true"
                         app:ccpDialog_backgroundColor="@color/materialCardViewColor"
                         app:ccpDialog_textColor="@color/textViewColor"
                         app:ccp_arrowColor="@color/textViewColor"
@@ -110,6 +112,7 @@
                             android:id="@+id/editTextPhoneNumber"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/ubuntu_regular"
                             android:hint="Enter Phone Number"
                             android:inputType="number"
                             android:maxLength="10"
@@ -125,6 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="30dp"
+                    android:fontFamily="@font/ubuntu_regular"
                     android:text="Continue"
                     android:textColor="@color/textViewColor" />
 
@@ -147,6 +151,7 @@
                         android:width="35dp"
                         android:background="@color/materialCardViewColor"
                         android:gravity="center_horizontal"
+                        android:fontFamily="@font/ubuntu_regular"
                         android:text="or"
                         android:textColor="@color/textViewColor"
                         android:textSize="15sp" />

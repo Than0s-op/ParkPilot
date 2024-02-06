@@ -18,8 +18,7 @@
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true">
+            android:layout_height="match_parent">
 
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
@@ -34,6 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Search here"
+                    android:fontFamily="@font/ubuntu_regular"
                     app:menu="@menu/searchbar_menu"
                     app:navigationIcon="@drawable/menu_icon" />
 
@@ -42,6 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="Search here"
+                    android:fontFamily="@font/ubuntu_regular"
                     app:layout_anchor="@id/searchBar">
                     <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
                 </com.google.android.material.search.SearchView>
@@ -68,11 +69,11 @@
 
 
         <com.google.android.material.navigationrail.NavigationRailView
-            android:id="@+id/navigationView"
+            android:id="@+id/navigationRailView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:padding="10dp"
+            android:paddingVertical="20dp"
             app:menu="@menu/navigation_drawer_menu" />
 
     </androidx.drawerlayout.widget.DrawerLayout>

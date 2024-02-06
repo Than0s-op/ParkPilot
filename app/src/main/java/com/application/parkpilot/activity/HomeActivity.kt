@@ -25,7 +25,7 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
         val searchView: SearchView = findViewById(R.id.searchView)
         val currentLocationButton: Button = findViewById(R.id.buttonCurrentLocation)
         val drawerLayout:DrawerLayout = findViewById(R.id.drawerLayout)
-        val navigationRailView: NavigationRailView = findViewById(R.id.navigationView)
+        val navigationRailView: NavigationRailView = findViewById(R.id.navigationRailView)
 
 
         // getting authentication view model reference
