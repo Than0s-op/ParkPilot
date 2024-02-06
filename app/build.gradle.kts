@@ -87,4 +87,8 @@ dependencies {
 
     // razor pay
     implementation("com.razorpay:checkout:1.6.36")
+
+    // QR generator (https://github.com/alexzhirkevich/custom-qr-generator?tab=readme-ov-file)
+    implementation("com.github.alexzhirkevich:custom-qr-generator:1.6.2")
+
 }
