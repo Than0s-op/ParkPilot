@@ -84,4 +84,7 @@ dependencies {
 
     // live data dependency
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+
+    // razor pay
+    implementation("com.razorpay:checkout:1.6.36")
 }
