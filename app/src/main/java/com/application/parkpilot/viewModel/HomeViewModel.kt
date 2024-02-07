@@ -28,6 +28,9 @@ class HomeViewModel(activity: HomeActivity) : ViewModel() {
     // this object will access by two function
     private lateinit var mapViewOSM: OSM<HomeActivity>
 
+    // it will store user status
+    val isAnonymous = Firebase.auth.currentUser == null
+
     fun setMapView(mapView: MapView, activity: HomeActivity) {
         // initializing OSM map object
         mapViewOSM = OSM(mapView, activity)

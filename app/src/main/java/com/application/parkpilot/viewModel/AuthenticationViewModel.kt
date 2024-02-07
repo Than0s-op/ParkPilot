@@ -23,16 +23,13 @@ class AuthenticationViewModel(activity: AuthenticationActivity) : ViewModel() {
     private val phoneAuth = PhoneAuth(activity)
 
     // it is just a live data of phone auth and stored reference of it
-    var verificationCode = phoneAuth.storedVerificationId
-        private set
+    val verificationCode = phoneAuth.verificationId
 
     // it will store result of code check
-    var verifyPhoneNumberWithCodeResult = MutableLiveData<Boolean>()
-        private set
+    val verifyPhoneNumberWithCodeResult = MutableLiveData<Boolean>()
 
     // it will store result of google signIn
-    var googleSignInResult = MutableLiveData<Boolean>()
-        private set
+    val googleSignInResult = MutableLiveData<Boolean>()
 
     // it will store state of login scroll view visibility [ To handel reconfiguration]
     var scrollViewLoginVisibility = View.VISIBLE
@@ -52,7 +49,7 @@ class AuthenticationViewModel(activity: AuthenticationActivity) : ViewModel() {
         viewModelScope.launch {
             // store result of verification code. It will be true (if code match) or false
             verifyPhoneNumberWithCodeResult.value =
-                phoneAuth.verifyPhoneNumberWithCode(verificationCode.value, OTP)
+                phoneAuth.verifyPhoneNumberWithCode(OTP)
         }
     }
 
