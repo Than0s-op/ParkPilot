@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.application.parkpilot.EventHandler
 import com.application.parkpilot.activity.AuthenticationActivity
 import com.application.parkpilot.activity.MainActivity
 import com.application.parkpilot.module.firebase.authentication.GoogleSignIn
@@ -26,10 +27,10 @@ class AuthenticationViewModel(activity: AuthenticationActivity) : ViewModel() {
     val verificationCode = phoneAuth.verificationId
 
     // it will store result of code check
-    val verifyPhoneNumberWithCodeResult = MutableLiveData<Boolean>()
+    val verifyPhoneNumberWithCodeResult = MutableLiveData<EventHandler<Boolean>>()
 
     // it will store result of google signIn
-    val googleSignInResult = MutableLiveData<Boolean>()
+    val googleSignInResult = MutableLiveData<EventHandler<Boolean>>()
 
     // it will store state of login scroll view visibility [ To handel reconfiguration]
     var scrollViewLoginVisibility = View.VISIBLE
@@ -49,7 +50,7 @@ class AuthenticationViewModel(activity: AuthenticationActivity) : ViewModel() {
         viewModelScope.launch {
             // store result of verification code. It will be true (if code match) or false
             verifyPhoneNumberWithCodeResult.value =
-                phoneAuth.verifyPhoneNumberWithCode(OTP)
+                EventHandler(phoneAuth.verifyPhoneNumberWithCode(OTP))
         }
     }
 
@@ -66,7 +67,7 @@ class AuthenticationViewModel(activity: AuthenticationActivity) : ViewModel() {
     private val resultLauncher =
         activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             // store true or false
-            googleSignInResult.value = (result.resultCode == AppCompatActivity.RESULT_OK)
+            googleSignInResult.value = EventHandler(result.resultCode == AppCompatActivity.RESULT_OK)
         }
 
 
