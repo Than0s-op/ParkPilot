@@ -24,7 +24,7 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
         val searchBar: SearchBar = findViewById(R.id.searchBar)
         val searchView: SearchView = findViewById(R.id.searchView)
         val currentLocationButton: Button = findViewById(R.id.buttonCurrentLocation)
-        val drawerLayout:DrawerLayout = findViewById(R.id.drawerLayout)
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
         val navigationRailView: NavigationRailView = findViewById(R.id.navigationRailView)
 
 
@@ -35,14 +35,17 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
             }
         })[HomeViewModel::class.java]
 
-        searchBar.menu.findItem(R.id.searchbarProfileImage).icon
-        viewModel.loadProfileImage(this,searchBar.menu.findItem(R.id.searchbarProfileImage))
+        // load the profile image in search bar if present
+        if (viewModel.isAnonymous) {
+            viewModel.loadProfileImage(this, searchBar.menu.findItem(R.id.searchbarProfileImage))
+        }
+
 
         // initializing OSM map object
-        viewModel.setMapView(findViewById(R.id.mapViewOSM),this)
+        viewModel.setMapView(findViewById(R.id.mapViewOSM), this)
 
         // this method will add pins on map
-        viewModel.loadMapViewPins(this,supportFragmentManager)
+        viewModel.loadMapViewPins(this, supportFragmentManager)
 
         // when search bar menu's items clicked
         navigationRailView.setOnItemSelectedListener { clickedItem ->
@@ -54,11 +57,13 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
                     Toast.makeText(this, "Logout Successfully", Toast.LENGTH_SHORT).show()
                     return@setOnItemSelectedListener true
                 }
+
                 R.id.registerButton -> {
                     viewModel.register(this)
                     drawerLayout.closeDrawer(GravityCompat.END)
                     return@setOnItemSelectedListener true
                 }
+
                 else -> {
                     return@setOnItemSelectedListener false
                 }

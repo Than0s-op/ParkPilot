@@ -25,8 +25,8 @@ class PhoneAuth(private val activity: Activity) {
     private var auth: FirebaseAuth = Firebase.auth
 
     // live data to observe verificationID (OTP)
-    var storedVerificationId = MutableLiveData<String?>()
-        private set
+    val verificationId = MutableLiveData<String?>()
+
 
     // It is useful to resend OTP
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
@@ -60,7 +60,7 @@ class PhoneAuth(private val activity: Activity) {
                 }
 
                 // setting null to do some task (because it is a observer)
-                storedVerificationId.value = null
+                this@PhoneAuth.verificationId.value = null
             }
 
             override fun onCodeSent(
@@ -72,7 +72,7 @@ class PhoneAuth(private val activity: Activity) {
                 Log.d("PhoneAuthActivity", "onCodeSent:$verificationId")
 
                 // assigning some value to do some task (because it is a observer)
-                storedVerificationId.value = verificationId
+                this@PhoneAuth.verificationId.value = verificationId
 
                 // storing resendToken. It will need to resend OTP
                 resendToken = token
@@ -97,9 +97,9 @@ class PhoneAuth(private val activity: Activity) {
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
-    suspend fun verifyPhoneNumberWithCode(verificationId: String?, OTP: String): Boolean {
+    suspend fun verifyPhoneNumberWithCode(OTP: String): Boolean {
         // requesting for credential by using correct OTP and user entered OTP
-        val credential = PhoneAuthProvider.getCredential(verificationId!!, OTP)
+        val credential = PhoneAuthProvider.getCredential(verificationId.value!!, OTP)
 
         // checking is got credential valid or not
         // if, it is Invalid user, it means user entered OTP is wrong
@@ -132,6 +132,7 @@ class PhoneAuth(private val activity: Activity) {
 
                 if (task.exception is FirebaseAuthInvalidCredentialsException) {
                     // The verification code entered was invalid
+
                 }
             }
             result = task.isSuccessful

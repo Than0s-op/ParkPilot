@@ -92,9 +92,6 @@ class AuthenticationActivity : AppCompatActivity(R.layout.authentication) {
                     viewModel.scrollViewOTPVisibility = it
                 }
 
-                // clear OTP box
-                pinViewOTP.setText("")
-
                 // show successful toast
                 Toast.makeText(this, "OTP Send Successfully", Toast.LENGTH_SHORT).show()
             }
@@ -114,7 +111,6 @@ class AuthenticationActivity : AppCompatActivity(R.layout.authentication) {
 
         // It will be react when we get result of the "verifyPhoneNumberWithCode" function call
         viewModel.verifyPhoneNumberWithCodeResult.observe(this) { isCorrect ->
-
             // when Credential match (OTP is correct)
             if (isCorrect) {
                 // show successful toast
@@ -123,6 +119,9 @@ class AuthenticationActivity : AppCompatActivity(R.layout.authentication) {
                 // start the next activity
                 viewModel.startNextActivity(this)
             } else {
+                // clear OTP box
+                pinViewOTP.setText("")
+
                 // disable OTP view and
                 View.GONE.let {
                     scrollViewOTP.visibility = it
