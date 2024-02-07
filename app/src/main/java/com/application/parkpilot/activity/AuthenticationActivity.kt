@@ -33,13 +33,14 @@ class AuthenticationActivity : AppCompatActivity(R.layout.authentication) {
         val textViewNumber: TextView = findViewById(R.id.textViewNumber)
         val buttonResendOTP: Button = findViewById(R.id.buttonResendOTP)
 
-        // getting authentication view model reference
+        // getting authentication view model reference [init]
         val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return AuthenticationViewModel(this@AuthenticationActivity) as T
             }
         })[AuthenticationViewModel::class.java]
 
+        // [init]
         // setting phone number to (We have sent a verification code to) text view
         // [we are setting here because of reconfiguration, if activity will regenerate we will set phone number to that view again]
         textViewNumber.text = viewModel.dashSeparate(viewModel.phoneNumberWithCountryCode)
@@ -47,7 +48,7 @@ class AuthenticationActivity : AppCompatActivity(R.layout.authentication) {
 //      .......... [ phone auth ] ................
 
 
-        // setting visibility as according to view model
+        // setting visibility as according to view model [init]
         scrollViewLogin.visibility = viewModel.scrollViewLoginVisibility
         scrollViewOTP.visibility = viewModel.scrollViewOTPVisibility
 
@@ -69,6 +70,7 @@ class AuthenticationActivity : AppCompatActivity(R.layout.authentication) {
 
         // view model verification Id observer, It will be react when verification Id will change
         viewModel.verificationCode.observe(this) { verificationCode ->
+
 
             // If OTP send successfully or unsuccessfully, then hide progress bar
             progressBar.visibility = View.GONE
@@ -96,7 +98,7 @@ class AuthenticationActivity : AppCompatActivity(R.layout.authentication) {
                 // show successful toast
                 Toast.makeText(this, "OTP Send Successfully", Toast.LENGTH_SHORT).show()
             }
-            // if OTP not send successfully(error)
+            // if OTP not send successfully (error)
             else {
                 // show failed toast
                 Toast.makeText(this, "Failed to send OTP", Toast.LENGTH_SHORT).show()

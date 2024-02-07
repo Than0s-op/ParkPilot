@@ -19,6 +19,7 @@ import com.application.parkpilot.module.DatePicker
 import com.application.parkpilot.module.PhotoPicker
 import com.application.parkpilot.module.firebase.FireStore
 import com.application.parkpilot.module.firebase.Storage
+import com.application.parkpilot.module.firebase.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
@@ -42,7 +43,7 @@ class UserRegisterViewModel(activity: UserRegisterActivity) : ViewModel() {
     val isUploaded = MutableLiveData<Boolean>()
 
     // lazy object creation
-    private val fireStore by lazy {FireStore()}
+    private val fireStore by lazy {User()}
     private val storage by lazy {Storage()}
     val datePicker by lazy{DatePicker(activity)}
     val photoPicker by lazy{PhotoPicker(activity)}
