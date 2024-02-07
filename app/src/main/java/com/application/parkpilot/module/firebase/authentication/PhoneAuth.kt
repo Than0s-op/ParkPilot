@@ -3,6 +3,7 @@ package com.application.parkpilot.module.firebase.authentication
 import android.app.Activity
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.application.parkpilot.EventHandler
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
@@ -25,7 +26,7 @@ class PhoneAuth(private val activity: Activity) {
     private var auth: FirebaseAuth = Firebase.auth
 
     // live data to observe verificationID (OTP)
-    val verificationId = MutableLiveData<String?>()
+    val verificationId = MutableLiveData<EventHandler<String>>()
 
 
     // It is useful to resend OTP
@@ -59,8 +60,8 @@ class PhoneAuth(private val activity: Activity) {
                     // reCAPTCHA verification attempted with null Activity
                 }
 
-                // setting null to do some task (because it is a observer)
-                this@PhoneAuth.verificationId.value = null
+                // setting empty to do some task (because it is a observer)
+                this@PhoneAuth.verificationId.value = EventHandler("")
             }
 
             override fun onCodeSent(
@@ -72,7 +73,7 @@ class PhoneAuth(private val activity: Activity) {
                 Log.d("PhoneAuthActivity", "onCodeSent:$verificationId")
 
                 // assigning some value to do some task (because it is a observer)
-                this@PhoneAuth.verificationId.value = verificationId
+                this@PhoneAuth.verificationId.value = EventHandler(verificationId)
 
                 // storing resendToken. It will need to resend OTP
                 resendToken = token
@@ -99,7 +100,7 @@ class PhoneAuth(private val activity: Activity) {
 
     suspend fun verifyPhoneNumberWithCode(OTP: String): Boolean {
         // requesting for credential by using correct OTP and user entered OTP
-        val credential = PhoneAuthProvider.getCredential(verificationId.value!!, OTP)
+        val credential = PhoneAuthProvider.getCredential(verificationId.value?.peekContent()!!, OTP)
 
         // checking is got credential valid or not
         // if, it is Invalid user, it means user entered OTP is wrong
