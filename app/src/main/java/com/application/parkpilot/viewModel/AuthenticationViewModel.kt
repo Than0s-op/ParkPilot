@@ -68,10 +68,8 @@ class AuthenticationViewModel(activity: AuthenticationActivity) : ViewModel() {
     // this will capture the google sign in auth activity result
     private val resultLauncher =
         activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            // if activity return result as "OK"// otherwise show a toast "Failed to Login"
-
-            // just start the next activity
-            googleSignInResult.value = result.resultCode == AppCompatActivity.RESULT_OK
+            // store true or false
+            googleSignInResult.value = (result.resultCode == AppCompatActivity.RESULT_OK)
         }
 
 
@@ -98,7 +96,7 @@ class AuthenticationViewModel(activity: AuthenticationActivity) : ViewModel() {
     fun dashSeparate(number: String): String {
         if (number.length != 13) return number
 
-        // just add '-'. like this +91-1234567890
+        // it will just add '-'. like this +91-1234567890
         return number.substring(0, 3) + "-" + number.substring(3)
     }
 }

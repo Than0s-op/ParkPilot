@@ -27,8 +27,8 @@ class SpotDetailActivity: AppCompatActivity(R.layout.spot_detail) {
         recycleView.adapter = CarouselRecyclerView(this,R.layout.square_carousel,arr)
 
         buttonBookNow.setOnClickListener {
-            val razorpay = RazorPay(this)
-            razorpay.makePayment("INR",10,"123")
+//            val razorpay = RazorPay(this)
+//            razorpay.makePayment("INR",10,"123")
         }
     }
 }

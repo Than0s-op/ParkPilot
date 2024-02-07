@@ -3,8 +3,7 @@ package com.application.parkpilot.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.application.parkpilot.module.firebase.FireStore
+import com.application.parkpilot.module.firebase.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.CoroutineScope
@@ -34,7 +33,7 @@ class MainActivity : Activity() {
                 // getting data of user from fireStore
 
                 // if user's data has present below block will execute
-                if (FireStore().userGet(user.uid) != null) {
+                if (User().userGet(user.uid) != null) {
                     // start the home activity
                     startActivity(Intent(
                         this@MainActivity,

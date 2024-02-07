@@ -7,11 +7,13 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
 
-class FireStore {
+open class FireStore {
 
     // fireStore initialization
-    private val fireStore = Firebase.firestore
+    protected val fireStore = Firebase.firestore
+}
 
+class User: FireStore() {
     // To put date into user collection in specific document
     suspend fun userSet(data: UserCollection, documentID: String): Boolean {
         // for success result
