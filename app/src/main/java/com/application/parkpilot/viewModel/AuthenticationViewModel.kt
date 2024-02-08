@@ -13,9 +13,14 @@ import com.application.parkpilot.activity.AuthenticationActivity
 import com.application.parkpilot.activity.MainActivity
 import com.application.parkpilot.module.firebase.authentication.GoogleSignIn
 import com.application.parkpilot.module.firebase.authentication.PhoneAuth
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 class AuthenticationViewModel(activity: AuthenticationActivity) : ViewModel() {
+
+    val handler = CoroutineExceptionHandler { _, exception ->
+        println("CoroutineExceptionHandler got $exception")
+    }
 
 //      .......... [ phone auth ] ................
 
@@ -47,7 +52,7 @@ class AuthenticationViewModel(activity: AuthenticationActivity) : ViewModel() {
     }
 
     fun verifyPhoneNumberWithCode(OTP: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(handler) {
             // store result of verification code. It will be true (if code match) or false
             verifyPhoneNumberWithCodeResult.value =
                 EventHandler(phoneAuth.verifyPhoneNumberWithCode(OTP))
