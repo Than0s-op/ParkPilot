@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
             android:paddingVertical="20dp"
-            app:menu="@menu/navigation_drawer_menu" />
+            app:menu="@menu/login_user_navigation_rail_menu" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
 
