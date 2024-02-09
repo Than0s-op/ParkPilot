@@ -36,9 +36,7 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
         })[HomeViewModel::class.java]
 
         // load the profile image in search bar if present
-        if (viewModel.isAnonymous) {
-            viewModel.loadProfileImage(this, searchBar.menu.findItem(R.id.searchbarProfileImage))
-        }
+        viewModel.loadProfileImage(this, searchBar.menu.findItem(R.id.searchbarProfileImage))
 
 
         // initializing OSM map object
