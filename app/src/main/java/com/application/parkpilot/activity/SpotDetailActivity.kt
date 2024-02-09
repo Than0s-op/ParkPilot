@@ -8,8 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.R
 import com.application.parkpilot.adapter.CarouselRecyclerView
+import com.application.parkpilot.module.QRGenerator
 import com.application.parkpilot.module.RazorPay
+import com.application.parkpilot.view.DialogQRCode
 import com.google.android.material.carousel.CarouselLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.razorpay.PaymentResultListener
 
 class SpotDetailActivity: AppCompatActivity(R.layout.spot_detail), PaymentResultListener {
@@ -38,6 +43,17 @@ class SpotDetailActivity: AppCompatActivity(R.layout.spot_detail), PaymentResult
 
     override fun onPaymentSuccess(razorpayPaymentID: String) {
         Toast.makeText(this,"Payment successfully completed $razorpayPaymentID", Toast.LENGTH_SHORT).show()
+
+        try {
+            val QRCode = QRGenerator(this).generate(Firebase.auth.currentUser!!.uid)
+            MaterialAlertDialogBuilder(this)
+                .setView(DialogQRCode(this, QRCode, "This is a QR Code"))
+                .show()
+        }
+        catch(e:Exception){
+            println("Exception: ")
+            e.printStackTrace()
+        }
     }
 
     override fun onPaymentError(code: Int, response: String) {
