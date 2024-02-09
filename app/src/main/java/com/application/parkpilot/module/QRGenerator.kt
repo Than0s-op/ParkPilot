@@ -23,12 +23,12 @@ class QRGenerator(context: Context) {
 
         padding = .125f
 
-        background {
-//                drawable = AppCompatResources.getDrawable(context,R.drawable.gmail_icon)
-        }
+//        background {
+//            drawable = AppCompatResources.getDrawable(context, R.drawable.car_parking)
+//        }
 
         logo {
-            drawable = AppCompatResources.getDrawable(context,R.drawable.park_pilot_map_marker)
+            drawable = AppCompatResources.getDrawable(context, R.drawable.google_icon)
             size = .25f
             padding = QrVectorLogoPadding.Natural(.2f)
             shape = QrVectorLogoShape.Circle
@@ -58,7 +58,7 @@ class QRGenerator(context: Context) {
         }
     }
 
-    fun generate(data:String):Drawable{
-        return QrCodeDrawable(QrData.Text(data),options)
+    fun generate(data: String): Drawable {
+        return QrCodeDrawable(QrData.Text(data), options)
     }
 }
