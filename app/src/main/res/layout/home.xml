@@ -32,8 +32,8 @@
                     android:id="@+id/searchBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Search here"
                     android:fontFamily="@font/ubuntu_regular"
+                    android:hint="Search here"
                     app:menu="@menu/searchbar_menu"
                     app:navigationIcon="@drawable/menu_icon" />
 
@@ -41,8 +41,8 @@
                     android:id="@+id/searchView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Search here"
                     android:fontFamily="@font/ubuntu_regular"
+                    android:hint="Search here"
                     app:layout_anchor="@id/searchBar">
                     <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
                 </com.google.android.material.search.SearchView>
@@ -52,7 +52,8 @@
             <org.osmdroid.views.MapView
                 android:id="@+id/mapViewOSM"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true" />
 
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

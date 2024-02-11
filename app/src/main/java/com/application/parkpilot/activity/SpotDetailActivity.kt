@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.application.parkpilot.QRCodeCollection
 import com.application.parkpilot.R
 import com.application.parkpilot.adapter.CarouselRecyclerView
 import com.application.parkpilot.module.QRGenerator
@@ -16,8 +17,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.razorpay.PaymentResultListener
+import com.application.parkpilot.module.firebase.QRCode
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
-class SpotDetailActivity: AppCompatActivity(R.layout.spot_detail), PaymentResultListener {
+class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail), PaymentResultListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val recycleView: RecyclerView = findViewById(R.id.recycleView)
@@ -32,25 +37,37 @@ class SpotDetailActivity: AppCompatActivity(R.layout.spot_detail), PaymentResult
 
         recycleView.layoutManager = CarouselLayoutManager()
 
-        recycleView.adapter = CarouselRecyclerView(this,R.layout.square_carousel,arr)
+        recycleView.adapter = CarouselRecyclerView(this, R.layout.square_carousel, arr)
 
         buttonBookNow.setOnClickListener {
             // this is temporary
             val razorpay = RazorPay(this)
-            razorpay.makePayment("INR",1000,"123")
+            razorpay.makePayment("INR", 1000, "123")
         }
     }
 
     override fun onPaymentSuccess(razorpayPaymentID: String) {
-        Toast.makeText(this,"Payment successfully completed $razorpayPaymentID", Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            this,
+            "Payment successfully completed $razorpayPaymentID",
+            Toast.LENGTH_SHORT
+        ).show()
 
-        val QRCode = QRGenerator(this).generate(Firebase.auth.currentUser!!.uid)
+        val key = Firebase.auth.currentUser!!.uid
+        val drawableQRCode = QRGenerator(this).generate(key)
+        val fireStoreQRCode = QRCode()
+
+        GlobalScope.launch {
+            fireStoreQRCode.QRCodeSet(QRCodeCollection(key, 10), Firebase.auth.currentUser!!.uid)
+            fireStoreQRCode.QRCodeGet(Firebase.auth.currentUser!!.uid)
+        }
+
         MaterialAlertDialogBuilder(this)
-            .setView(DialogQRCode(this, QRCode, "This is a QR Code"))
+            .setView(DialogQRCode(this, drawableQRCode, "This is a QR Code"))
             .show()
     }
 
     override fun onPaymentError(code: Int, response: String) {
-        Toast.makeText(this,"Payment failed $response",Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Payment failed $response", Toast.LENGTH_SHORT).show()
     }
 }
