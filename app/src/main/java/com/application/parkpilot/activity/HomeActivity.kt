@@ -1,6 +1,8 @@
 package com.application.parkpilot.activity
 
 import android.os.Bundle
+import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +21,18 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // to make transparent status bar
+        //        val w = window
+        //        w.setFlags(
+        //            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+        //            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        //        )
+        //
+        //        val decor = window.decorView;
+        //        decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
+
+
 
         // object creation and initialization of views
         val searchBar: SearchBar = findViewById(R.id.searchBar)
