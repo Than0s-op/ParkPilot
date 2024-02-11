@@ -37,23 +37,17 @@ class SpotDetailActivity: AppCompatActivity(R.layout.spot_detail), PaymentResult
         buttonBookNow.setOnClickListener {
             // this is temporary
             val razorpay = RazorPay(this)
-            razorpay.makePayment("INR",10,"123")
+            razorpay.makePayment("INR",1000,"123")
         }
     }
 
     override fun onPaymentSuccess(razorpayPaymentID: String) {
         Toast.makeText(this,"Payment successfully completed $razorpayPaymentID", Toast.LENGTH_SHORT).show()
 
-        try {
-            val QRCode = QRGenerator(this).generate(Firebase.auth.currentUser!!.uid)
-            MaterialAlertDialogBuilder(this)
-                .setView(DialogQRCode(this, QRCode, "This is a QR Code"))
-                .show()
-        }
-        catch(e:Exception){
-            println("Exception: ")
-            e.printStackTrace()
-        }
+        val QRCode = QRGenerator(this).generate(Firebase.auth.currentUser!!.uid)
+        MaterialAlertDialogBuilder(this)
+            .setView(DialogQRCode(this, QRCode, "This is a QR Code"))
+            .show()
     }
 
     override fun onPaymentError(code: Int, response: String) {

@@ -8,6 +8,10 @@ android {
     namespace = "com.application.parkpilot"
     compileSdk = 34
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId = "com.application.parkpilot"
         minSdk = 28

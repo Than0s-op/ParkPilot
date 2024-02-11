@@ -52,7 +52,7 @@ class AuthenticationViewModel(activity: AuthenticationActivity) : ViewModel() {
     }
 
     fun verifyPhoneNumberWithCode(OTP: String) {
-        viewModelScope.launch(handler) {
+        viewModelScope.launch {
             // store result of verification code. It will be true (if code match) or false
             verifyPhoneNumberWithCodeResult.value =
                 EventHandler(phoneAuth.verifyPhoneNumberWithCode(OTP))
