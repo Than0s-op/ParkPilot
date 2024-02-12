@@ -9,6 +9,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.QRCodeCollection
 import com.application.parkpilot.R
+import com.application.parkpilot.module.QRGenerator
+import com.application.parkpilot.view.DialogQRCode
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class HistoryRecyclerView(
     private val context: Context,
@@ -30,6 +33,12 @@ class HistoryRecyclerView(
         holder.textViewDate.text = QRDetail[position].generate.toDate().toString()
         holder.textViewTime.text = QRDetail[position].generate.toString()
         holder.textViewHours.text = QRDetail[position].upTo.toString()
+        holder.itemView.setOnClickListener {
+            val drawableQRCode = QRGenerator(context).generate(QRDetail[position].key)
+            MaterialAlertDialogBuilder(context)
+                .setView(DialogQRCode(context, drawableQRCode, "This is a QR Code"))
+                .show()
+        }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
