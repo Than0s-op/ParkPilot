@@ -3,7 +3,7 @@ package com.application.parkpilot.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import com.application.parkpilot.module.firebase.User
+import com.application.parkpilot.module.firebase.database.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.CoroutineScope

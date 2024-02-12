@@ -10,22 +10,18 @@ import coil.imageLoader
 import coil.request.ImageRequest
 import coil.request.ImageResult
 import coil.size.Scale
-import com.application.parkpilot.R
 import com.application.parkpilot.UserCollection
 import com.application.parkpilot.UserProfile
 import com.application.parkpilot.activity.MainActivity
 import com.application.parkpilot.activity.UserRegisterActivity
 import com.application.parkpilot.module.DatePicker
 import com.application.parkpilot.module.PhotoPicker
-import com.application.parkpilot.module.firebase.FireStore
 import com.application.parkpilot.module.firebase.Storage
-import com.application.parkpilot.module.firebase.User
+import com.application.parkpilot.module.firebase.database.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.userProfileChangeRequest
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
@@ -43,7 +39,7 @@ class UserRegisterViewModel(activity: UserRegisterActivity) : ViewModel() {
     val isUploaded = MutableLiveData<Boolean>()
 
     // lazy object creation
-    private val fireStore by lazy {User()}
+    private val fireStore by lazy { User() }
     private val storage by lazy {Storage()}
     val datePicker by lazy{DatePicker(activity)}
     val photoPicker by lazy{PhotoPicker(activity)}
