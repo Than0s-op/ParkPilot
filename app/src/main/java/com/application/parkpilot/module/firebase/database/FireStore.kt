@@ -1,10 +1,9 @@
-package com.application.parkpilot.module.firebase
+package com.application.parkpilot.module.firebase.database
 
 import com.application.parkpilot.QRCodeCollection
 import com.application.parkpilot.UserCollection
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
@@ -66,11 +65,9 @@ class QRCode : FireStore() {
 
         // data mapping
         val map = mapOf(
-            "QR" to mapOf(
-                "key" to data.key,
+            data.key to mapOf(
                 "generate" to data.generate,
                 "up_to" to data.upTo,
-                "valid" to data.valid
             )
         )
 
@@ -86,18 +83,21 @@ class QRCode : FireStore() {
     }
 
     // To get data from user collection with specific document
-    suspend fun QRCodeGet(documentID: String): QRCodeCollection? {
-        var result: QRCodeCollection? = null
+    suspend fun QRCodeGet(documentID: String): ArrayList<QRCodeCollection> {
+        val result: ArrayList<QRCodeCollection> = ArrayList()
         // await function this will block thread
         fireStore.collection("QR_code").document(documentID).get().await().let { document ->
-            document.get("QR")?.let{
-//                result = QRCodeCollection(
-//                    it.get("key") as String,
-//                    it.get("up_to") as Int,
-//                    it.get("generate") as Timestamp,
-//                    it.get("valid") as Boolean
-//                )
-                println("QR: $it")
+            document.data?.let {
+                val fields = it as Map<String, Map<String, Any>>
+                for (field in fields) {
+                    result.add(
+                        QRCodeCollection(
+                            field.key,
+                            (field.value["up_to"] as Long).toInt(),
+                            field.value["generate"] as Timestamp
+                        )
+                    )
+                }
             }
         }
         return result

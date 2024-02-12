@@ -1,6 +1,5 @@
 package com.application.parkpilot.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -17,9 +16,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.razorpay.PaymentResultListener
-import com.application.parkpilot.module.firebase.QRCode
+import com.application.parkpilot.module.firebase.database.QRCode
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail), PaymentResultListener {
@@ -27,6 +27,11 @@ class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail), PaymentResul
         super.onCreate(savedInstanceState)
         val recycleView: RecyclerView = findViewById(R.id.recycleView)
         val buttonBookNow: Button = findViewById(R.id.buttonBookNow)
+
+        val qr = QRCode()
+        CoroutineScope(Dispatchers.IO).launch {
+            qr.QRCodeGet(Firebase.auth.currentUser!!.uid)
+        }
 
         val arr: ArrayList<Any> = ArrayList()
 
@@ -59,7 +64,6 @@ class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail), PaymentResul
 
         GlobalScope.launch {
             fireStoreQRCode.QRCodeSet(QRCodeCollection(key, 10), Firebase.auth.currentUser!!.uid)
-            fireStoreQRCode.QRCodeGet(Firebase.auth.currentUser!!.uid)
         }
 
         MaterialAlertDialogBuilder(this)
