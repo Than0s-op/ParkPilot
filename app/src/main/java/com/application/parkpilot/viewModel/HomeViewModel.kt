@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.application.parkpilot.ParkPilotMapLegend
 import com.application.parkpilot.R
 import com.application.parkpilot.activity.AuthenticationActivity
+import com.application.parkpilot.activity.BookingHistoryActivity
 import com.application.parkpilot.activity.HomeActivity
 import com.application.parkpilot.activity.UserRegisterActivity
 import com.application.parkpilot.bottomSheet.SpotPreview
@@ -84,6 +85,10 @@ class HomeViewModel(activity: HomeActivity) : ViewModel() {
 
     fun register(context:Context){
         context.startActivity(Intent(context, UserRegisterActivity::class.java))
+    }
+
+    fun history(context:Context){
+        context.startActivity(Intent(context,BookingHistoryActivity::class.java))
     }
 
     fun loadMapViewPins(context: Context, supportFragmentManager: FragmentManager) {

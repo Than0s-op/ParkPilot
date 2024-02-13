@@ -11,3 +11,7 @@ class App : Application() {
         FirebaseApp.initializeApp(this)
     }
 }
+object User{
+    // if UID is null it means user not login yet
+    var UID:String? = null
+}
