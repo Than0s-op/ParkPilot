@@ -3,7 +3,8 @@ package com.application.parkpilot.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import com.application.parkpilot.module.firebase.database.User
+import com.application.parkpilot.module.firebase.database.User as fireStoreUser
+import com.application.parkpilot.User as appUser
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.CoroutineScope
@@ -15,10 +16,10 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
 
         // getting current user status
-        val user = Firebase.auth.currentUser
+        appUser.UID = Firebase.auth.currentUser?.uid
 
         // if User is signed in below block will execute (if current user is not null)
-        if (user != null) {
+        if (appUser.UID != null) {
 
             /*
                 if user is signIn but not filled the registration information
@@ -33,7 +34,7 @@ class MainActivity : Activity() {
                 // getting data of user from fireStore
 
                 // if user's data has present below block will execute
-                if (User().userGet(user.uid) != null) {
+                if (fireStoreUser().userGet(appUser.UID!!) != null) {
                     // start the home activity
                     startActivity(Intent(
                         this@MainActivity,

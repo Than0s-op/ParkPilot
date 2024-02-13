@@ -8,6 +8,9 @@ import com.razorpay.PayloadHelper
 class RazorPay(private val activity: Activity) {
     private var checkout: Checkout
 
+    // currency constants
+    val INDIA = "INR"
+
     init {
         Checkout.preload(activity)
         Checkout.sdkCheckIntegration(activity)

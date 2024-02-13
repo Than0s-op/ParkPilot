@@ -63,15 +63,21 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
         navigationRailView.setOnItemSelectedListener { clickedItem ->
 
             when (clickedItem.itemId) {
-                R.id.logoutButton -> {
+                R.id.buttonLogout -> {
                     viewModel.logout(this)
                     drawerLayout.closeDrawer(GravityCompat.END)
                     Toast.makeText(this, "Logout Successfully", Toast.LENGTH_SHORT).show()
                     return@setOnItemSelectedListener true
                 }
 
-                R.id.registerButton -> {
+                R.id.buttonRegister -> {
                     viewModel.register(this)
+                    drawerLayout.closeDrawer(GravityCompat.END)
+                    return@setOnItemSelectedListener true
+                }
+
+                R.id.buttonHistory -> {
+                    viewModel.history(this)
                     drawerLayout.closeDrawer(GravityCompat.END)
                     return@setOnItemSelectedListener true
                 }
