@@ -67,14 +67,26 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/buttonBookNow"
-        android:layout_width="match_parent"
+        android:id="@+id/buttonSelectTime"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="20dp"
+        android:text="Select Time"
+        android:textColor="@color/textViewColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonBookNow" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/buttonBookNow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="10dp"
         android:text="Book Now"
         android:textColor="@color/textViewColor"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonSelectTime" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

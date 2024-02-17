@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.QRCodeCollection
@@ -33,17 +32,29 @@ class HistoryRecyclerView(
         holder.textViewDate.text = QRDetail[position].generate.toDate().toString()
         holder.textViewTime.text = QRDetail[position].generate.toString()
         holder.textViewHours.text = QRDetail[position].upTo.toString()
-        holder.itemView.setOnClickListener {
-            val drawableQRCode = QRGenerator(context).generate(QRDetail[position].key)
-            MaterialAlertDialogBuilder(context)
-                .setView(DialogQRCode(context, drawableQRCode, "This is a QR Code"))
-                .show()
+
+        // if QR code is not expired
+        if (!QRDetail[position].valid) {
+
+            // set invisible property to "Expired" text View
+            holder.textViewExpired.visibility = View.INVISIBLE
+
+            // set on click listener to card
+            holder.itemView.setOnClickListener {
+                // QR code generation using FireStore 'key'
+                val drawableQRCode = QRGenerator(context).generate(QRDetail[position].key)
+
+                MaterialAlertDialogBuilder(context)
+                    .setView(DialogQRCode(context, drawableQRCode, "This is a QR Code"))
+                    .show()
+            }
         }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textViewDate: TextView = itemView.findViewById(R.id.textViewDate)
-        val textViewTime:TextView = itemView.findViewById(R.id.textViewTime)
-        val textViewHours:TextView = itemView.findViewById(R.id.textViewHours)
+        val textViewTime: TextView = itemView.findViewById(R.id.textViewTime)
+        val textViewHours: TextView = itemView.findViewById(R.id.textViewHours)
+        val textViewExpired: TextView = itemView.findViewById(R.id.textViewExpired)
     }
 }
