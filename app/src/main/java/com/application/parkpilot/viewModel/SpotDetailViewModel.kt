@@ -42,6 +42,10 @@ class SpotDetailViewModel : ViewModel() {
         // [temp END]
     }
 
+    fun selectTime(){
+
+    }
+
     fun onPaymentSuccess(context: Context, paymentID: String) {
         // key generation using UID of user and paymentID
         val key = User.UID!! + paymentID

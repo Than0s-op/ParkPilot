@@ -68,6 +68,7 @@ class QRCode : FireStore() {
             data.key to mapOf(
                 "generate" to data.generate,
                 "up_to" to data.upTo,
+                "valid" to data.valid,
             )
         )
 
@@ -94,7 +95,8 @@ class QRCode : FireStore() {
                         QRCodeCollection(
                             field.key,
                             (field.value["up_to"] as Long).toInt(),
-                            field.value["generate"] as Timestamp
+                            field.value["generate"] as Timestamp,
+                            field.value["valid"] as Boolean,
                         )
                     )
                 }
