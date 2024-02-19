@@ -1,9 +1,13 @@
 package com.application.parkpilot.module.firebase.database
 
 import com.application.parkpilot.QRCodeCollection
+import com.application.parkpilot.StationAdvance
+import com.application.parkpilot.StationBasic
+import com.application.parkpilot.StationLocation
 import com.application.parkpilot.UserCollection
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
@@ -101,6 +105,43 @@ class QRCode : FireStore() {
                     )
                 }
             }
+        }
+        return result
+    }
+}
+
+class Station : FireStore() {
+    suspend fun locationGet(): ArrayList<StationLocation> {
+        // creating arraylist of station data class
+        val result = ArrayList<StationLocation>()
+
+        fireStore.collection("station").get().await().let { collection ->
+            for (document in collection) {
+                result.add(StationLocation(document.id, document.data["coordinates"] as GeoPoint))
+            }
+        }
+        return result
+    }
+
+    suspend fun basicGet(documentID: String): StationBasic? {
+        var result: StationBasic?
+        fireStore.collection("station_basic").document(documentID).get().await().apply {
+            result =
+                StationBasic(get("name") as String, get("price") as String, get("rating") as Float)
+        }
+        return result
+    }
+
+    suspend fun advanceGet(documentID: String): StationAdvance? {
+        val result: StationAdvance?
+        fireStore.collection("station_advance").document(documentID).get().await().apply {
+            // TSYK = think should you know
+            result = StationAdvance(
+                get("TSYK") as Array<String>,
+                get("amenities") as Map<String, Boolean>,
+                get("accessHours") as String,
+                get("gettingThere") as String
+            )
         }
         return result
     }

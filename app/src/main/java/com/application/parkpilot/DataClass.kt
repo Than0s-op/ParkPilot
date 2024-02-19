@@ -2,10 +2,11 @@ package com.application.parkpilot
 
 import android.net.Uri
 import com.google.firebase.Timestamp
-import org.osmdroid.util.GeoPoint
+import com.google.firebase.firestore.GeoPoint as FirebaseGeoPoint
+import org.osmdroid.util.GeoPoint as OSMGeoPoint
 
 
-data class ParkPilotMapLegend(val title: String, val UID: String, val coordinates: GeoPoint)
+data class ParkPilotMapLegend(val title: String, val UID: String, val coordinates: OSMGeoPoint)
 data class UserCollection(
     val firstName: String,
     val lastName: String,
@@ -18,5 +19,16 @@ data class QRCodeCollection(
     val key: String,
     val upTo: Int,
     val generate: Timestamp = Timestamp.now(),
-    val valid:Boolean = true
+    val valid: Boolean = true
+)
+
+data class StationLocation(val stationUid: String, val coordinates: FirebaseGeoPoint)
+data class StationBasic(val name: String, val price: String, val rating: Float)
+
+// think should you know = tSYK
+data class StationAdvance(
+    val tSYK: Array<String>,
+    val amenities: Map<String, Boolean>,
+    val accessHours: String,
+    val gettingThere:String,
 )
