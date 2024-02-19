@@ -52,7 +52,7 @@ class DatePicker(private val activity: AppCompatActivity) {
         builtDatePicker.show(activity.supportFragmentManager, null)
 
         // when date picker will gone
-        builtDatePicker.addOnDismissListener {
+        builtDatePicker.addOnPositiveButtonClickListener {
             // date has been selected
             if (builtDatePicker.selection != null) {
                 // creating a date format
