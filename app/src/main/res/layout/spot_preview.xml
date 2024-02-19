@@ -94,5 +94,4 @@
         android:textColor="@color/textViewColor"
         android:textSize="15sp" />
 
-
 </com.google.android.material.card.MaterialCardView>

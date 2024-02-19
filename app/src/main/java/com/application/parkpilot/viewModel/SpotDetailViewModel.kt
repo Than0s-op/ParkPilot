@@ -31,8 +31,6 @@ class SpotDetailViewModel : ViewModel() {
             add("https://images.pexels.com/photos/164634/pexels-photo-164634.jpeg?auto=compress&cs=tinysrgb&w=600")
         }
         // [temp END]
-
-        recyclerView.adapter = CarouselRecyclerView(context, R.layout.square_carousel, images)
     }
 
     fun bookNow(activity: Activity) {

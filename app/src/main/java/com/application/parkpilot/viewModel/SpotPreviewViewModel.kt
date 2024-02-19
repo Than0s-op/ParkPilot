@@ -1,11 +1,13 @@
 package com.application.parkpilot.viewModel
 
+import android.os.Parcelable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.parkpilot.StationBasic
 import com.application.parkpilot.module.firebase.database.Station
 import kotlinx.coroutines.launch
+import java.io.Serializable
 
 class SpotPreviewViewModel : ViewModel() {
 
@@ -28,4 +30,6 @@ class SpotPreviewViewModel : ViewModel() {
             stationBasicInfo.value = Station().basicGet(stationUID)
         }
     }
+
+
 }
