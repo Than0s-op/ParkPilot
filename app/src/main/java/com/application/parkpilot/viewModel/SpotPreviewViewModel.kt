@@ -1,20 +1,18 @@
 package com.application.parkpilot.viewModel
 
-import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.RecyclerView
-import com.application.parkpilot.R
-import com.application.parkpilot.adapter.CarouselRecyclerView
-import com.google.android.material.carousel.CarouselLayoutManager
+import androidx.lifecycle.viewModelScope
+import com.application.parkpilot.StationBasic
+import com.application.parkpilot.module.firebase.database.Station
+import kotlinx.coroutines.launch
 
-class SpotPreviewViewModel: ViewModel() {
+class SpotPreviewViewModel : ViewModel() {
 
-    var carouselImages = MutableLiveData<ArrayList<Any>>()
-        private set
+    val carouselImages = MutableLiveData<ArrayList<Any>>()
+    val stationBasicInfo = MutableLiveData<StationBasic>()
 
-    fun loadCarousel(){
+    fun loadCarousel() {
         val images: ArrayList<Any> = ArrayList()
         images.apply {
             add("https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=600")
@@ -23,5 +21,11 @@ class SpotPreviewViewModel: ViewModel() {
             add("https://images.pexels.com/photos/164634/pexels-photo-164634.jpeg?auto=compress&cs=tinysrgb&w=600")
         }
         carouselImages.value = images
+    }
+
+    fun loadInfo(stationUID:String) {
+        viewModelScope.launch {
+            stationBasicInfo.value = Station().basicGet(stationUID)
+        }
     }
 }

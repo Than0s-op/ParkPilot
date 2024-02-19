@@ -127,7 +127,11 @@ class Station : FireStore() {
         var result: StationBasic?
         fireStore.collection("station_basic").document(documentID).get().await().apply {
             result =
-                StationBasic(get("name") as String, get("price") as String, get("rating") as Float)
+                StationBasic(
+                    get("name") as String,
+                    (get("price") as Long).toInt(),
+                    (get("rating") as Double).toFloat()
+                )
         }
         return result
     }
