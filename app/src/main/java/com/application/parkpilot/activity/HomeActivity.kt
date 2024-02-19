@@ -57,7 +57,7 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
         viewModel.setMapView(findViewById(R.id.mapViewOSM), this)
 
         // this method will add pins on map
-        viewModel.loadMapViewPins(this, supportFragmentManager)
+        viewModel.loadMapViewPins(supportFragmentManager)
 
         // when search bar menu's items clicked
         navigationRailView.setOnItemSelectedListener { clickedItem ->
