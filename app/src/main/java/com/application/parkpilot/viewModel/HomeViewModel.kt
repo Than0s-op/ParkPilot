@@ -3,12 +3,10 @@ package com.application.parkpilot.viewModel
 import android.content.Context
 import android.content.Intent
 import android.view.MenuItem
-import androidx.core.content.ContextCompat.getString
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.parkpilot.ParkPilotMapLegend
-import com.application.parkpilot.R
 import com.application.parkpilot.activity.AuthenticationActivity
 import com.application.parkpilot.activity.BookingHistoryActivity
 import com.application.parkpilot.activity.HomeActivity
@@ -18,10 +16,10 @@ import com.application.parkpilot.module.OSM
 import com.application.parkpilot.module.PhotoLoader
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import com.application.parkpilot.module.firebase.database.Station as FireStoreStation
 
 class HomeViewModel(activity: HomeActivity) : ViewModel() {
 
@@ -75,61 +73,51 @@ class HomeViewModel(activity: HomeActivity) : ViewModel() {
         }
     }
 
-    fun loadProfileImage(context:Context,profileImage: MenuItem){
+    fun loadProfileImage(context: Context, profileImage: MenuItem) {
         Firebase.auth.currentUser?.photoUrl?.let {
             viewModelScope.launch {
-                profileImage.icon = PhotoLoader().getImage(context,it).drawable
+                profileImage.icon = PhotoLoader().getImage(context, it).drawable
             }
         }
     }
 
-    fun register(context:Context){
+    fun register(context: Context) {
         context.startActivity(Intent(context, UserRegisterActivity::class.java))
     }
 
-    fun history(context:Context){
-        context.startActivity(Intent(context,BookingHistoryActivity::class.java))
+    fun history(context: Context) {
+        context.startActivity(Intent(context, BookingHistoryActivity::class.java))
     }
 
     fun loadMapViewPins(context: Context, supportFragmentManager: FragmentManager) {
-        // Initializing fire store
-        val fireStore = Firebase.firestore
 
         // creating the lambda function to pass with "set pins on position" method
         val singleTapTask = { UID: String ->
             SpotPreview().show(supportFragmentManager, null)
         }
 
-        // fetching data from fire-store's "@string/station" collection
-        fireStore.collection(getString(context, R.string.station)).get()
-            // collection get successfully
-            .addOnSuccessListener { collection ->
+        viewModelScope.launch {
+            val stationsCoordinates = FireStoreStation().locationGet()
 
-                // creating arraylist of ParkPilotMapPin (title,UID,GeoPoint) "data class"
-                val mapViewPins = ArrayList<ParkPilotMapLegend>()
+            // creating arraylist of ParkPilotMapPin (title,UID,GeoPoint) "data class"
+            val mapViewPins = ArrayList<ParkPilotMapLegend>()
 
-                // iterate the collection
-                for (document in collection) {
+            // iterate the collection
+            for (info in stationsCoordinates) {
 
-                    // parsing document to get GeoPoint
-                    val geoPoint =
-                        document.data["location"] as com.google.firebase.firestore.GeoPoint
-
-                    // adding "ParkPilotMapPin" data-class object in arraylist
-                    mapViewPins.add(
-                        ParkPilotMapLegend(
-                            "Park Pilot pin",
-                            document.id, GeoPoint(geoPoint.latitude, geoPoint.longitude)
-                        )
+                // adding "ParkPilotMapPin" data-class object in arraylist
+                mapViewPins.add(
+                    ParkPilotMapLegend(
+                        "Park Pilot pin",
+                        info.stationUid,
+                        // converting firebase geoPoint to OSM geoPoint
+                        GeoPoint(info.coordinates.latitude, info.coordinates.longitude)
                     )
-                }
+                )
+            }
 
-                // this method will add pins on map with single tap behaviour
-                mapViewOSM.setPinsOnPosition(mapViewPins, singleTapTask)
-            }
-            // failed to get collection
-            .addOnFailureListener {
-                println("${it.message}")
-            }
+            // this method will add pins on map with single tap behaviour
+            mapViewOSM.setPinsOnPosition(mapViewPins, singleTapTask)
+        }
     }
 }
