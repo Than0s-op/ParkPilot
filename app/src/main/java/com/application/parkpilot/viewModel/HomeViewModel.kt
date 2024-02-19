@@ -89,26 +89,25 @@ class HomeViewModel(activity: HomeActivity) : ViewModel() {
         context.startActivity(Intent(context, BookingHistoryActivity::class.java))
     }
 
-    fun loadMapViewPins(context: Context, supportFragmentManager: FragmentManager) {
+    fun loadMapViewPins(supportFragmentManager: FragmentManager) {
 
         // creating the lambda function to pass with "set pins on position" method
-        val singleTapTask = { UID: String ->
-            SpotPreview().show(supportFragmentManager, null)
+        val singleTapTask = { uID: String ->
+            SpotPreview().show(supportFragmentManager, uID)
         }
 
         viewModelScope.launch {
             val stationsCoordinates = FireStoreStation().locationGet()
 
             // creating arraylist of ParkPilotMapPin (title,UID,GeoPoint) "data class"
-            val mapViewPins = ArrayList<ParkPilotMapLegend>()
+            val stations = ArrayList<ParkPilotMapLegend>()
 
             // iterate the collection
             for (info in stationsCoordinates) {
-
-                // adding "ParkPilotMapPin" data-class object in arraylist
-                mapViewPins.add(
+                // adding "ParkPilotMapLegend" data-class object in arraylist
+                stations.add(
                     ParkPilotMapLegend(
-                        "Park Pilot pin",
+                        "Station",
                         info.stationUid,
                         // converting firebase geoPoint to OSM geoPoint
                         GeoPoint(info.coordinates.latitude, info.coordinates.longitude)
@@ -117,7 +116,7 @@ class HomeViewModel(activity: HomeActivity) : ViewModel() {
             }
 
             // this method will add pins on map with single tap behaviour
-            mapViewOSM.setPinsOnPosition(mapViewPins, singleTapTask)
+            mapViewOSM.setPinsOnPosition(stations, singleTapTask)
         }
     }
 }

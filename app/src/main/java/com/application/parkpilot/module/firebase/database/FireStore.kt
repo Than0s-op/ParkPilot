@@ -115,7 +115,7 @@ class Station : FireStore() {
         // creating arraylist of station data class
         val result = ArrayList<StationLocation>()
 
-        fireStore.collection("station").get().await().let { collection ->
+        fireStore.collection("stations").get().await().let { collection ->
             for (document in collection) {
                 result.add(StationLocation(document.id, document.data["coordinates"] as GeoPoint))
             }
