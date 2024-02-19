@@ -11,7 +11,7 @@ import com.application.parkpilot.viewModel.SpotDetailViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.razorpay.PaymentResultListener
 
-class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail), PaymentResultListener {
+class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail) {
 
     // late init view model property
     private lateinit var viewModel: SpotDetailViewModel
@@ -21,8 +21,6 @@ class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail), PaymentResul
 
         // view init
         val recyclerView: RecyclerView = findViewById(R.id.recycleView)
-        val buttonBookNow: Button = findViewById(R.id.buttonBookNow)
-        val buttonSelectTime:Button = findViewById(R.id.buttonSelectTime)
 
         // view model init
         viewModel = ViewModelProvider(this)[SpotDetailViewModel::class.java]
@@ -33,22 +31,5 @@ class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail), PaymentResul
             viewModel.loadCarousel(this@SpotDetailActivity, this)
         }
 
-        //
-        buttonBookNow.setOnClickListener {
-            viewModel.bookNow(this)
-        }
-
-        //
-        buttonSelectTime.setOnClickListener {
-//            viewModel.setTime()
-        }
-    }
-
-    override fun onPaymentSuccess(razorpayPaymentID: String) {
-        viewModel.onPaymentSuccess(this, razorpayPaymentID)
-    }
-
-    override fun onPaymentError(code: Int, response: String) {
-        Toast.makeText(this, "Payment failed", Toast.LENGTH_SHORT).show()
     }
 }
