@@ -25,10 +25,13 @@ class SpotPreview : BottomSheetDialogFragment(R.layout.spot_preview) {
         val textViewPrice: TextView = view.findViewById(R.id.textViewPrice)
         val buttonDetail: Button = view.findViewById(R.id.buttonDetail)
 
+        val stationUID = tag!!
+
         val viewModel = ViewModelProvider(this)[SpotPreviewViewModel::class.java]
 
         recyclerView.layoutManager = CarouselLayoutManager()
         viewModel.loadCarousel()
+        viewModel.loadInfo(stationUID)
 
 
         buttonDetail.setOnClickListener {
@@ -39,6 +42,13 @@ class SpotPreview : BottomSheetDialogFragment(R.layout.spot_preview) {
         viewModel.carouselImages.observe(this) { images ->
             recyclerView.adapter =
                 CarouselRecyclerView(requireContext(), R.layout.round_carousel, images)
+        }
+
+        viewModel.stationBasicInfo.observe(this){
+            textViewName.text = it.name
+            textViewRating.text = it.rating.toString()
+            textViewPrice.text = it.price.toString()
+            textViewDistance.text = "N/A"
         }
     }
 }
