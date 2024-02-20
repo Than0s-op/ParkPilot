@@ -25,6 +25,10 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay
 import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener
 import org.osmdroid.views.overlay.ItemizedOverlay
 import org.osmdroid.views.overlay.OverlayItem
+import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
+
+
+
 
 
 class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val activity: Act) {
@@ -49,12 +53,9 @@ class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val act
         // temp
         setCenter(18.50099198033669, 73.85907568230525)
 
-//        mapView.setOnTouchListener { _, event ->
-//            if (event.action == MotionEvent.ACTION_UP) {
-//                onTouch(event)
-//            }
-//            false
-//        }
+        val mRotationGestureOverlay = RotationGestureOverlay(mapView)
+        mRotationGestureOverlay.isEnabled = true
+        mapView.overlays.add(mRotationGestureOverlay)
 
     }
 
