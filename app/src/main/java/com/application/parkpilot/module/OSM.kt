@@ -1,10 +1,17 @@
 package com.application.parkpilot.module
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.drawable.BitmapDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.application.parkpilot.ParkPilotMapLegend
 import com.application.parkpilot.R
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -78,8 +85,7 @@ class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val act
             if (result != null && result.size != 0) {
                 return result.first()
             }
-        }
-        catch(e:Exception){
+        } catch (e: Exception) {
             println("Exception:OSM:search ${e.message}")
         }
         //
@@ -112,17 +118,25 @@ class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val act
         return currentLocation
     }
 
-    fun setPinsOnPosition(geoPoints:ArrayList<ParkPilotMapLegend>, singleTapTask:(String)-> Unit) {
+    fun setPinsOnPosition(
+        geoPoints: ArrayList<ParkPilotMapLegend>,
+        singleTapTask: (String) -> Unit
+    ) {
 
         // contain all pins with "single tap" and "long press" binding
         val overlayItemArrayList = ArrayList<OverlayItem>()
 
         // create pin image
-        val markerDrawable = ContextCompat.getDrawable(activity, R.drawable.park_pilot_map_marker)
+        val markerDrawable = ContextCompat.getDrawable(activity, R.drawable.map_marker)
 
-        for(geoPoint in geoPoints){
+        for (geoPoint in geoPoints) {
             val overlayItem = OverlayItem(geoPoint.title, geoPoint.UID, geoPoint.coordinates)
-            overlayItem.setMarker(markerDrawable)
+            overlayItem.setMarker(
+                writeOnDrawable(
+                    R.drawable.map_marker,
+                    geoPoint.title
+                )
+            )
             overlayItemArrayList.add(overlayItem)
         }
 
@@ -144,5 +158,19 @@ class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val act
 
         // update overlays(pins) on mapView
         mapView.overlays.add(locationOverlay)
+    }
+
+    private fun writeOnDrawable(drawableId: Int, text: String): BitmapDrawable {
+        val bm =
+            Bitmap.createBitmap(AppCompatResources.getDrawable(activity, drawableId)!!.toBitmap())
+        val paint = Paint().apply {
+            style = Paint.Style.FILL_AND_STROKE
+            color = Color.BLACK
+            textSize = 30f
+            textAlign = Paint.Align.CENTER
+        }
+        val canvas = Canvas()
+        canvas.drawText(text, (bm.height / 2).toFloat(), (bm.height / 2).toFloat(), paint)
+        return BitmapDrawable(activity.resources, bm)
     }
 }
