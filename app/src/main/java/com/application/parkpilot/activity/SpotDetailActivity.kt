@@ -26,9 +26,17 @@ class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail) {
         val textViewPrice: TextView = findViewById(R.id.textViewPrice)
 
 
+        val viewModel = ViewModelProvider(this)[SpotPreviewViewModel::class.java]
+
         // loading recycler view default (init) properties
         recyclerView.apply {
             layoutManager = CarouselLayoutManager()
+            viewModel.loadCarousel()
+        }
+
+        viewModel.carouselImages.observe(this) { images ->
+            recyclerView.adapter =
+                CarouselRecyclerView(this, R.layout.square_carousel, images)
         }
     }
 }
