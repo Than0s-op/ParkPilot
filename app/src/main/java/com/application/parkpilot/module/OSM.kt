@@ -28,9 +28,6 @@ import org.osmdroid.views.overlay.OverlayItem
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
 
 
-
-
-
 class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val activity: Act) {
 
     // object creation of geocoder
