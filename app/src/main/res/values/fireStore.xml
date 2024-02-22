@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  user collection  -->
+    <string name="userFirstName">first_name</string>
+    <string name="userLastName">last_name</string>
+    <string name="userBirthDate">birth_date</string>
+    <string name="userGender">gender</string>
+
+    <!--    -->
+</resources>
