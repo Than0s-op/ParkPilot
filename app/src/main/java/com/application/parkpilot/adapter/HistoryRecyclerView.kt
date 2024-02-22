@@ -29,9 +29,9 @@ class HistoryRecyclerView(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.textViewDate.text = QRDetail[position].generate.toDate().toString()
-        holder.textViewTime.text = QRDetail[position].generate.toString()
-        holder.textViewHours.text = QRDetail[position].upTo.toString()
+        holder.textViewDate.text = QRDetail[position].from.toDate().toString()
+        holder.textViewTime.text = QRDetail[position].from.toString()
+        holder.textViewHours.text = QRDetail[position].to.toString()
 
         // if QR code is not expired
         if (!QRDetail[position].valid) {

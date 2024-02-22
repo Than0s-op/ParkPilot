@@ -19,7 +19,7 @@ import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
-import com.application.parkpilot.module.firebase.database.Station as FireStoreStation
+import com.application.parkpilot.module.firebase.database.StationLocation as FireStoreStationLocation
 
 class HomeViewModel(activity: HomeActivity) : ViewModel() {
 
@@ -97,7 +97,7 @@ class HomeViewModel(activity: HomeActivity) : ViewModel() {
         }
 
         viewModelScope.launch {
-            val stationsCoordinates = FireStoreStation().locationGet()
+            val stationsCoordinates = FireStoreStationLocation().locationGet()
 
             // creating arraylist of ParkPilotMapPin (title,UID,GeoPoint) "data class"
             val stations = ArrayList<ParkPilotMapLegend>()
