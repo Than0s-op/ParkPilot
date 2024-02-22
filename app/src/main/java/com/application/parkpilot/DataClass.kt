@@ -25,9 +25,8 @@ data class QRCodeCollection(
 data class StationLocation(val stationUid: String, val coordinates: FirebaseGeoPoint)
 data class StationBasic(val name: String, val price: Int, val rating: Float)
 
-// think should you know = tSYK
 data class StationAdvance(
-    val TSYK: ArrayList<String>,
+    val thinkShouldYouKnow: ArrayList<String>,
     val amenities: ArrayList<String>,
     val accessHours: String,
     val gettingThere:String,

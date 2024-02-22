@@ -13,7 +13,6 @@ import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
 
 open class FireStore {
-
     // fireStore initialization
     protected val fireStore = Firebase.firestore
 }

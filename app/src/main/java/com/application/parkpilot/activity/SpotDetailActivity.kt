@@ -49,7 +49,7 @@ class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail) {
 
         viewModel.stationAdvanceInfo.observe(this){
             // loading "Think should you know" section
-            loadTSYK(textViewTSYK,it.TSYK)
+            loadTSYK(textViewTSYK,it.thinkShouldYouKnow)
 
             // loading amenities section
             loadAmenities(it.amenities)
