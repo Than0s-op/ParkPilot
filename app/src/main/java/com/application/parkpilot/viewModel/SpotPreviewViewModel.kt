@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.application.parkpilot.StationAdvance
 import com.application.parkpilot.StationBasic
 import com.application.parkpilot.module.firebase.database.Station
 import kotlinx.coroutines.launch
@@ -13,6 +14,7 @@ class SpotPreviewViewModel : ViewModel() {
 
     val carouselImages = MutableLiveData<ArrayList<Any>>()
     val stationBasicInfo = MutableLiveData<StationBasic>()
+    val stationAdvanceInfo = MutableLiveData<StationAdvance>()
 
     fun loadCarousel() {
         val images: ArrayList<Any> = ArrayList()
@@ -25,11 +27,16 @@ class SpotPreviewViewModel : ViewModel() {
         carouselImages.value = images
     }
 
-    fun loadInfo(stationUID:String) {
+    fun loadBasicInfo(stationUID:String) {
         viewModelScope.launch {
             stationBasicInfo.value = Station().basicGet(stationUID)
         }
     }
 
+    fun loadAdvanceInfo(stationUID:String){
+        viewModelScope.launch{
+            stationAdvanceInfo.value = Station().advanceGet(stationUID)
+        }
+    }
 
 }

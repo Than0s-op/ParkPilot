@@ -95,4 +95,6 @@ dependencies {
     // QR generator (https://github.com/alexzhirkevich/custom-qr-generator?tab=readme-ov-file)
     implementation("com.github.alexzhirkevich:custom-qr-generator:1.6.2")
 
+    // flex-box
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
 }
