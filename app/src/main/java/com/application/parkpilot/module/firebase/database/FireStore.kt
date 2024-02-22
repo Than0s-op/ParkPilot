@@ -141,10 +141,10 @@ class Station : FireStore() {
         fireStore.collection("station_advance").document(documentID).get().await().apply {
             // TSYK = think should you know
             result = StationAdvance(
-                get("TSYK") as Array<String>,
-                get("amenities") as Map<String, Boolean>,
-                get("accessHours") as String,
-                get("gettingThere") as String
+                get("think should you know") as ArrayList<String>,
+                get("amenities") as ArrayList<String>,
+                get("access hours") as String,
+                get("getting there") as String
             )
         }
         return result

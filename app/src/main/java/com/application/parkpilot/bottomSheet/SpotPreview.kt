@@ -32,11 +32,13 @@ class SpotPreview : BottomSheetDialogFragment(R.layout.spot_preview) {
 
         recyclerView.layoutManager = CarouselLayoutManager()
         viewModel.loadCarousel()
-        viewModel.loadInfo(stationUID)
+        viewModel.loadBasicInfo(stationUID)
 
 
         buttonDetail.setOnClickListener {
-            val intent = Intent(context, SpotDetailActivity::class.java)
+            val intent = Intent(context, SpotDetailActivity::class.java).apply{
+                putExtra("stationUID",stationUID)
+            }
             startActivity(intent)
         }
 

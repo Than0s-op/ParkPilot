@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:dividerDrawable="@drawable/flag_transparent"
+    app:flexWrap="wrap"
+    app:showDivider="beginning|middle|end">
+
+    <TextView
+        android:id="@+id/textViewValet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Valet"
+        android:visibility="gone"
+        app:drawableStartCompat="@drawable/register_icon" />
+
+    <TextView
+        android:id="@+id/textViewGarage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Garage - Covered"
+        android:visibility="gone"
+        app:drawableStartCompat="@drawable/register_icon" />
+
+    <TextView
+        android:id="@+id/textViewStaff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="On-Site Staff"
+        android:visibility="gone"
+        app:drawableStartCompat="@drawable/register_icon" />
+
+    <TextView
+        android:id="@+id/textViewWheelchair"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wheelchair Accessible"
+        android:visibility="gone"
+        app:drawableStartCompat="@drawable/register_icon" />
+
+    <TextView
+        android:id="@+id/textViewEV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EV Charging"
+        android:visibility="gone"
+        app:drawableStartCompat="@drawable/register_icon" />
+
+</com.google.android.flexbox.FlexboxLayout>
