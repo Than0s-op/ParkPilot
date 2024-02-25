@@ -49,13 +49,13 @@ class HomeViewModel(activity: HomeActivity) : ViewModel() {
         context.startActivity(intent)
     }
 
-    fun search(address: String) {
+    fun search(searchQuery: String) {
         viewModelScope.launch {
             // suspend function. it will block processes/UI thread ( you can run this function on another thread/coroutine)
-            val address = mapViewOSM.search(address)
+            val address = mapViewOSM.search(searchQuery)
             // when search method got the search result without empty body
             address?.let {
-                mapViewOSM.setCenter(it.latitude, it.longitude)
+                mapViewOSM.setCenter(GeoPoint(it.latitude, it.longitude))
             }
         }
     }
@@ -68,7 +68,7 @@ class HomeViewModel(activity: HomeActivity) : ViewModel() {
             // when we got user current location
             currentLocation?.let {
                 // set the user's current location as center of map
-                mapViewOSM.setCenter(it.latitude, it.longitude)
+                mapViewOSM.setCenter(it)
             }
         }
     }
@@ -108,7 +108,7 @@ class HomeViewModel(activity: HomeActivity) : ViewModel() {
                 stations.add(
                     ParkPilotMapLegend(
                         "Station",
-                        info.stationUid,
+                        info.stationUid!!,
                         // converting firebase geoPoint to OSM geoPoint
                         GeoPoint(info.coordinates.latitude, info.coordinates.longitude)
                     )

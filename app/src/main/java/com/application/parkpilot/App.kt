@@ -13,5 +13,5 @@ class App : Application() {
 }
 object User{
     // if UID is null it means user not login yet
-    var UID:String? = null
+    lateinit var UID:String
 }

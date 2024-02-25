@@ -49,7 +49,7 @@ class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail) {
 
         viewModel.stationAdvanceInfo.observe(this){
             // loading "Think should you know" section
-            loadTSYK(textViewTSYK,it.thinkShouldYouKnow)
+            loadThinkShouldYouKnow(textViewTSYK,it.thinkShouldYouKnow)
 
             // loading amenities section
             loadAmenities(it.amenities)
@@ -69,16 +69,16 @@ class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail) {
         }
     }
 
-    private fun loadTSYK(textViewTSYK:TextView, TSYKList:ArrayList<String>){
-        var TSYK = ""
-        for(line in TSYKList){
+    private fun loadThinkShouldYouKnow(textViewTSYK:TextView, thinkShouldYouKnowList:List<String>){
+        var thinkShouldYouKnow = ""
+        for(line in thinkShouldYouKnowList){
             // it is just a formatting
-            TSYK += "• $line\n\n"
+            thinkShouldYouKnow += "• $line\n\n"
         }
-        textViewTSYK.text = TSYK
+        textViewTSYK.text = thinkShouldYouKnow
     }
 
-    private fun loadAmenities(amenitiesList:ArrayList<String>){
+    private fun loadAmenities(amenitiesList:List<String>){
         for(amenities in amenitiesList){
             when(amenities){
                 "valet" -> findViewById<TextView>(R.id.textViewValet).visibility = View.VISIBLE

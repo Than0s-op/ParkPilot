@@ -22,12 +22,12 @@ data class QRCodeCollection(
     val valid: Boolean = true
 )
 
-data class StationLocation(val stationUid: String, val coordinates: FirebaseGeoPoint)
-data class StationBasic(val name: String, val price: Int, val rating: Float)
+data class StationLocation(val stationUid: String?, val coordinates: FirebaseGeoPoint)
+data class StationBasic(val name: String?, val price: Int?, val rating: Float?)
 
 data class StationAdvance(
-    val thinkShouldYouKnow: ArrayList<String>,
-    val amenities: ArrayList<String>,
+    val thinkShouldYouKnow: List<String>,
+    val amenities: List<String>,
     val accessHours: String,
     val gettingThere:String,
 )
