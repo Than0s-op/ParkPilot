@@ -16,10 +16,14 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
 
         // getting current user status
-        appUser.UID = Firebase.auth.currentUser?.uid
+
 
         // if User is signed in below block will execute (if current user is not null)
-        if (appUser.UID != null) {
+        if (Firebase.auth.currentUser?.uid != null) {
+
+            appUser.UID = Firebase.auth.currentUser?.uid!!
+
+
 
             /*
                 if user is signIn but not filled the registration information

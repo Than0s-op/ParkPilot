@@ -137,6 +137,25 @@ class StationLocation : FireStore() {
         }
         return result
     }
+    suspend fun locationSet(stationLocation:StationLocation,documentID:String):Boolean{
+        // for success result
+        var result = false
+
+        // data mapping
+        val map = mapOf(
+            coordinates to stationLocation.coordinates
+        )
+
+        // await function this will block thread
+        fireStore.collection(collectionName).document(documentID).set(map, SetOptions.merge())
+            .addOnSuccessListener {
+                // call successfully perform
+                result = true
+            }.await()
+
+        // return result
+        return result
+    }
 }
 
 class StationBasic : FireStore() {
@@ -154,6 +173,26 @@ class StationBasic : FireStore() {
                     (get(rating) as Double).toFloat()
                 )
         }
+        return result
+    }
+    suspend fun basicSet(stationBasic:StationBasic,documentID:String):Boolean{
+        // for success result
+        var result = false
+
+        // data mapping
+        val map = mapOf(
+            name to stationBasic.name,
+            price to stationBasic.price
+        )
+
+        // await function this will block thread
+        fireStore.collection(collectionName).document(documentID).set(map, SetOptions.merge())
+            .addOnSuccessListener {
+                // call successfully perform
+                result = true
+            }.await()
+
+        // return result
         return result
     }
 }
@@ -176,6 +215,28 @@ class StationAdvance : FireStore() {
                 get(gettingThere) as String
             )
         }
+        return result
+    }
+    suspend fun advanceSet(stationAdvance:StationAdvance,documentID:String):Boolean{
+        // for success result
+        var result = false
+
+        // data mapping
+        val map = mapOf(
+            thinkShouldYouKnow to stationAdvance.thinkShouldYouKnow,
+            amenities to stationAdvance.amenities,
+            accessHours to stationAdvance.accessHours,
+            gettingThere to stationAdvance.gettingThere
+        )
+
+        // await function this will block thread
+        fireStore.collection(collectionName).document(documentID).set(map, SetOptions.merge())
+            .addOnSuccessListener {
+                // call successfully perform
+                result = true
+            }.await()
+
+        // return result
         return result
     }
 }
