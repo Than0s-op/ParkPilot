@@ -23,7 +23,7 @@ class MainActivity : Activity() {
 
             appUser.UID = Firebase.auth.currentUser?.uid!!
 
-
+            startActivity(Intent(this,ParkRegisterActivity::class.java))
 
             /*
                 if user is signIn but not filled the registration information
@@ -33,34 +33,34 @@ class MainActivity : Activity() {
             */
 
             // FireStore's method are suspended that why we are using coroutine
-            CoroutineScope(Dispatchers.Default).launch {
-
-                // getting data of user from fireStore
-
-                // if user's data has present below block will execute
-                if (fireStoreUser().userGet(appUser.UID!!) != null) {
-                    // start the home activity
-                    startActivity(Intent(
-                        this@MainActivity,
-                        HomeActivity::class.java
-                    ).apply {
-                        // clear the activity stack
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    })
-                }
-
-                // otherwise, user has not registered yet
-                else {
-                    // start the registration activity
-                    startActivity(Intent(
-                        this@MainActivity,
-                        UserRegisterActivity::class.java
-                    ).apply {
-                        // clear the activity stack
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    })
-                }
-            }
+//            CoroutineScope(Dispatchers.Default).launch {
+//
+//                // getting data of user from fireStore
+//
+//                // if user's data has present below block will execute
+//                if (fireStoreUser().userGet(appUser.UID!!) != null) {
+//                    // start the home activity
+//                    startActivity(Intent(
+//                        this@MainActivity,
+//                        HomeActivity::class.java
+//                    ).apply {
+//                        // clear the activity stack
+//                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                    })
+//                }
+//
+//                // otherwise, user has not registered yet
+//                else {
+//                    // start the registration activity
+//                    startActivity(Intent(
+//                        this@MainActivity,
+//                        UserRegisterActivity::class.java
+//                    ).apply {
+//                        // clear the activity stack
+//                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                    })
+//                }
+//            }
         }
 
         // No user is signed in yet

@@ -13,9 +13,9 @@ import com.application.parkpilot.StationBasic
 import com.application.parkpilot.StationAdvance as StationAdvance_DS
 import com.application.parkpilot.viewModel.ParkRegisterViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
-import com.google.android.material.switchmaterial.SwitchMaterial
 import org.osmdroid.views.MapView
 
 class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
@@ -100,8 +100,8 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
     }
 
     fun getAmenities(): List<String> {
-        val switchValet: SwitchMaterial = findViewById(R.id.switchValet)
-        val switchEVCharging: SwitchMaterial = findViewById(R.id.switchEVCharging)
+        val switchValet: MaterialSwitch = findViewById(R.id.switchValet)
+        val switchEVCharging: MaterialSwitch = findViewById(R.id.switchEVCharging)
         val selectedAmenities: ArrayList<String> = ArrayList()
 
         if (switchValet.isChecked) selectedAmenities.add("valet")
