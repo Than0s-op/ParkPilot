@@ -34,8 +34,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/ubuntu_regular"
                     android:hint="Search here"
-                    app:menu="@menu/searchbar_menu"
-                    app:navigationIcon="@drawable/menu_icon" />
+                    app:menu="@menu/searchbar_menu" />
 
                 <com.google.android.material.search.SearchView
                     android:id="@+id/searchView"
@@ -68,14 +67,13 @@
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-
         <com.google.android.material.navigationrail.NavigationRailView
             android:id="@+id/navigationRailView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
             android:paddingVertical="20dp"
-            app:menu="@menu/login_user_navigation_rail_menu" />
+            app:menu="@menu/navigation_rail" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
 
