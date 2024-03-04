@@ -1,6 +1,7 @@
 package com.application.parkpilot.activity
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
@@ -11,11 +12,11 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.application.parkpilot.R
+import com.application.parkpilot.User
 import com.application.parkpilot.viewModel.HomeViewModel
 import com.google.android.material.navigationrail.NavigationRailView
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
-
 
 class HomeActivity : AppCompatActivity(R.layout.home) {
 
@@ -40,6 +41,8 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
         val currentLocationButton: Button = findViewById(R.id.buttonCurrentLocation)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
         val navigationRailView: NavigationRailView = findViewById(R.id.navigationRailView)
+
+        setMenuVisibility(navigationRailView.menu)
 
 
         // getting authentication view model reference
@@ -110,6 +113,24 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
         currentLocationButton.setOnClickListener {
             // it will set current location in mapView
             viewModel.getCurrentLocation()
+        }
+    }
+    private fun setMenuVisibility(menu: Menu){
+        User.apply{
+            when(type){
+                ANONYMOUS ->{
+                    menu.findItem(R.id.buttonSetting).isVisible = false
+                    menu.findItem(R.id.buttonLogout).isVisible = false
+                    menu.findItem(R.id.buttonHistory).isVisible = false
+                }
+                FINDER -> {
+                    menu.findItem(R.id.buttonLogin).isVisible = false
+                }
+                OWNER -> {
+                    menu.findItem(R.id.buttonLogin).isVisible = false
+                    menu.findItem(R.id.buttonHistory).isVisible = false
+                }
+            }
         }
     }
 }
