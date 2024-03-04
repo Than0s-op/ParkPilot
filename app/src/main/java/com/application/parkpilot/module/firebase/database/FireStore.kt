@@ -137,6 +137,19 @@ class StationLocation : FireStore() {
         }
         return result
     }
+
+    suspend fun locationGet(documentID:String):GeoPoint?{
+        var result: GeoPoint? = null
+        // await function this will block thread
+        fireStore.collection(collectionName).document(documentID).get().await().apply {
+            // is coordinates present? if yes, it means data is present otherwise not
+            get(coordinates)?.let{
+                result = it as GeoPoint
+            }
+        }
+        return result
+    }
+
     suspend fun locationSet(stationLocation:StationLocation,documentID:String):Boolean{
         // for success result
         var result = false
