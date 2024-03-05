@@ -12,6 +12,7 @@ import com.application.parkpilot.activity.AuthenticationActivity
 import com.application.parkpilot.activity.BookingHistoryActivity
 import com.application.parkpilot.activity.HomeActivity
 import com.application.parkpilot.activity.MainActivity
+import com.application.parkpilot.activity.ProfileActivity
 import com.application.parkpilot.activity.UserRegisterActivity
 import com.application.parkpilot.bottomSheet.SpotPreview
 import com.application.parkpilot.module.OSM
@@ -32,21 +33,6 @@ class HomeViewModel(activity: HomeActivity) : ViewModel() {
     fun setMapView(mapView: MapView, activity: HomeActivity) {
         // initializing OSM map object
         mapViewOSM = OSM(mapView, activity)
-    }
-
-    fun logout(context: Context) {
-        // sign out the user
-        Firebase.auth.signOut()
-        Toast.makeText(context, "Logout Successfully", Toast.LENGTH_SHORT).show()
-
-        // creating the intent of Authentication activity
-        val intent = Intent(context, MainActivity::class.java).apply {
-            // to clear activity stack
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-
-        // start the activity
-        context.startActivity(intent)
     }
 
     fun search(searchQuery: String) {
@@ -81,16 +67,12 @@ class HomeViewModel(activity: HomeActivity) : ViewModel() {
         }
     }
 
-    fun register(context: Context) {
-        context.startActivity(Intent(context, UserRegisterActivity::class.java))
+    fun profile(context: Context) {
+        context.startActivity(Intent(context, ProfileActivity::class.java))
     }
 
     fun history(context: Context) {
         context.startActivity(Intent(context, BookingHistoryActivity::class.java))
-    }
-
-    fun login(context:Context){
-        context.startActivity(Intent(context,AuthenticationActivity::class.java))
     }
 
     fun loadMapViewPins(supportFragmentManager: FragmentManager) {
