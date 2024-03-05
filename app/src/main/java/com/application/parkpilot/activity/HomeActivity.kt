@@ -64,24 +64,18 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
             if (navigationRailView.selectedItemId != clickedItem.itemId) {
 
                 when (clickedItem.itemId) {
-                    R.id.buttonLogout -> {
-                        viewModel.logout(this)
-                        return@setOnItemSelectedListener true
-                    }
+//                    R.id.buttonLogout -> {
+//                        viewModel.logout(this)
+//                        return@setOnItemSelectedListener true
+//                    }
 
-                    R.id.buttonSetting -> {
-                        viewModel.register(this)
+                    R.id.buttonProfile -> {
+                        viewModel.profile(this)
                         return@setOnItemSelectedListener true
                     }
 
                     R.id.buttonHistory -> {
                         viewModel.history(this)
-
-                        return@setOnItemSelectedListener true
-                    }
-
-                    R.id.buttonLogin -> {
-                        viewModel.login(this)
 
                         return@setOnItemSelectedListener true
                     }
@@ -125,17 +119,14 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
         User.apply {
             when (type) {
                 ANONYMOUS -> {
-                    menu.findItem(R.id.buttonSetting).isVisible = false
-                    menu.findItem(R.id.buttonLogout).isVisible = false
                     menu.findItem(R.id.buttonHistory).isVisible = false
                 }
 
                 FINDER -> {
-                    menu.findItem(R.id.buttonLogin).isVisible = false
+
                 }
 
                 OWNER -> {
-                    menu.findItem(R.id.buttonLogin).isVisible = false
                     menu.findItem(R.id.buttonHistory).isVisible = false
                 }
             }

@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.application.parkpilot.R
 import com.application.parkpilot.User
+import com.application.parkpilot.viewModel.ProfileViewModel
 
 class ProfileActivity : AppCompatActivity(R.layout.profile) {
 
@@ -26,6 +27,23 @@ class ProfileActivity : AppCompatActivity(R.layout.profile) {
         textViewLogout = findViewById(R.id.textViewLogout)
 
         loadViews()
+
+        val viewModel = ProfileViewModel()
+
+        viewModel.loadProfile(this,imageViewProfilePicture,textViewUserName)
+
+        textViewPersonalInformation.setOnClickListener{
+            viewModel.personalInformation(this)
+        }
+        textViewSpotDetail.setOnClickListener {
+            viewModel.spotDetail(this)
+        }
+        textViewLogout.setOnClickListener {
+            viewModel.logout(this)
+        }
+        textViewLogin.setOnClickListener {
+            viewModel.login(this)
+        }
     }
 
     private fun loadViews() {
