@@ -2,8 +2,6 @@ package com.application.parkpilot.activity
 
 import android.os.Bundle
 import android.view.Menu
-import android.view.View
-import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -32,7 +30,6 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
         //
         //        val decor = window.decorView;
         //        decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
-
 
 
         // object creation and initialization of views
@@ -64,31 +61,39 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
 
         // when search bar menu's items clicked
         navigationRailView.setOnItemSelectedListener { clickedItem ->
+            if (navigationRailView.selectedItemId != clickedItem.itemId) {
 
-            when (clickedItem.itemId) {
-                R.id.buttonLogout -> {
-                    viewModel.logout(this)
-                    drawerLayout.closeDrawer(GravityCompat.END)
-                    Toast.makeText(this, "Logout Successfully", Toast.LENGTH_SHORT).show()
-                    return@setOnItemSelectedListener true
-                }
+                when (clickedItem.itemId) {
+                    R.id.buttonLogout -> {
+                        viewModel.logout(this)
+                        return@setOnItemSelectedListener true
+                    }
 
-                R.id.buttonRegister -> {
-                    viewModel.register(this)
-                    drawerLayout.closeDrawer(GravityCompat.END)
-                    return@setOnItemSelectedListener true
-                }
+                    R.id.buttonSetting -> {
+                        viewModel.register(this)
+                        return@setOnItemSelectedListener true
+                    }
 
-                R.id.buttonHistory -> {
-                    viewModel.history(this)
-                    drawerLayout.closeDrawer(GravityCompat.END)
-                    return@setOnItemSelectedListener true
-                }
+                    R.id.buttonHistory -> {
+                        viewModel.history(this)
 
-                else -> {
-                    return@setOnItemSelectedListener false
+                        return@setOnItemSelectedListener true
+                    }
+
+                    R.id.buttonLogin -> {
+                        viewModel.login(this)
+
+                        return@setOnItemSelectedListener true
+                    }
+
+                    R.id.buttonHome -> {
+                        return@setOnItemSelectedListener true
+                    }
+
                 }
             }
+            drawerLayout.closeDrawer(GravityCompat.END)
+            return@setOnItemSelectedListener false
         }
 
         searchBar.setOnMenuItemClickListener {
@@ -115,17 +120,20 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
             viewModel.getCurrentLocation()
         }
     }
-    private fun setMenuVisibility(menu: Menu){
-        User.apply{
-            when(type){
-                ANONYMOUS ->{
+
+    private fun setMenuVisibility(menu: Menu) {
+        User.apply {
+            when (type) {
+                ANONYMOUS -> {
                     menu.findItem(R.id.buttonSetting).isVisible = false
                     menu.findItem(R.id.buttonLogout).isVisible = false
                     menu.findItem(R.id.buttonHistory).isVisible = false
                 }
+
                 FINDER -> {
                     menu.findItem(R.id.buttonLogin).isVisible = false
                 }
+
                 OWNER -> {
                     menu.findItem(R.id.buttonLogin).isVisible = false
                     menu.findItem(R.id.buttonHistory).isVisible = false
