@@ -77,10 +77,10 @@ class ParkRegisterViewModel(mapView: MapView, activity: AppCompatActivity) : Vie
         }
     }
 
-    fun uploadBasic(stationName:String){
+    fun uploadBasic(stationName:String,startingPrice:Int){
         val stationBasic = StationBasic_FS()
         viewModelScope.launch{
-            stationBasic.basicSet(StationBasic_DS(stationName,null,null),User.UID)
+            stationBasic.basicSet(StationBasic_DS(stationName,startingPrice,null),User.UID)
         }
     }
 

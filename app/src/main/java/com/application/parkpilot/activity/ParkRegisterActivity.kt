@@ -29,6 +29,7 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
 
         val editTextGettingThere: EditText = findViewById(R.id.editTextGettingThere)
         val editTextAccessHours: EditText = findViewById(R.id.editTextAccessHours)
+        val editTextStartingPrice:EditText = findViewById(R.id.editTextStartingPrice)
 
 
 //        val imageView1: ImageView = findViewById(R.id.imageView1)
@@ -87,7 +88,7 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
 
         buttonSubmit.setOnClickListener {
             viewModel.uploadLocation()
-            viewModel.uploadBasic(editTextStationName.text.toString())
+            viewModel.uploadBasic(editTextStationName.text.toString(),editTextStartingPrice.text.toString().toInt())
             viewModel.uploadAdvance(
                 StationAdvance_DS(
                     getThinkShouldYouKnow(),
