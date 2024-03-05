@@ -3,6 +3,7 @@ package com.application.parkpilot.viewModel
 import android.content.Context
 import android.content.Intent
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,6 +11,7 @@ import com.application.parkpilot.ParkPilotMapLegend
 import com.application.parkpilot.activity.AuthenticationActivity
 import com.application.parkpilot.activity.BookingHistoryActivity
 import com.application.parkpilot.activity.HomeActivity
+import com.application.parkpilot.activity.MainActivity
 import com.application.parkpilot.activity.UserRegisterActivity
 import com.application.parkpilot.bottomSheet.SpotPreview
 import com.application.parkpilot.module.OSM
@@ -27,9 +29,6 @@ class HomeViewModel(activity: HomeActivity) : ViewModel() {
     // this object will access by two function
     private lateinit var mapViewOSM: OSM<HomeActivity>
 
-    // it will store user status
-    val isAnonymous = Firebase.auth.currentUser == null
-
     fun setMapView(mapView: MapView, activity: HomeActivity) {
         // initializing OSM map object
         mapViewOSM = OSM(mapView, activity)
@@ -38,9 +37,10 @@ class HomeViewModel(activity: HomeActivity) : ViewModel() {
     fun logout(context: Context) {
         // sign out the user
         Firebase.auth.signOut()
+        Toast.makeText(context, "Logout Successfully", Toast.LENGTH_SHORT).show()
 
         // creating the intent of Authentication activity
-        val intent = Intent(context, AuthenticationActivity::class.java).apply {
+        val intent = Intent(context, MainActivity::class.java).apply {
             // to clear activity stack
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
@@ -87,6 +87,10 @@ class HomeViewModel(activity: HomeActivity) : ViewModel() {
 
     fun history(context: Context) {
         context.startActivity(Intent(context, BookingHistoryActivity::class.java))
+    }
+
+    fun login(context:Context){
+        context.startActivity(Intent(context,AuthenticationActivity::class.java))
     }
 
     fun loadMapViewPins(supportFragmentManager: FragmentManager) {
