@@ -31,3 +31,5 @@ data class StationAdvance(
     val accessHours: String,
     val gettingThere:String,
 )
+
+data class Feedback(val UID:String=User.UID,val rating:Float,val message:String)
