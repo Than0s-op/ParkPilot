@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.application.parkpilot.User
 import com.application.parkpilot.module.firebase.database.StationLocation as FireStoreStationLocation
-import com.application.parkpilot.module.firebase.database.User as FireStoreUser
+import com.application.parkpilot.module.firebase.database.UserBasic as FireStoreUser
 import com.application.parkpilot.User as appUser
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -36,7 +36,7 @@ class MainActivity : Activity() {
             CoroutineScope(Dispatchers.Default).launch {
 
                 // if user's data is present it means user already registered.
-                if (FireStoreUser().userGet(appUser.UID) != null) {
+                if (FireStoreUser().getProfile(appUser.UID) != null) {
                     // setting user type as "Finder"
                     User.type = User.FINDER
                     nextActivity()
