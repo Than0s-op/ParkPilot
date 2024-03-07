@@ -305,32 +305,23 @@ class StationAdvance : FireStore() {
 
 class Feedback : FireStore() {
     private val collectionName = "feedback"
-    private val uid = "uid"
     private val rating = "rating"
     private val message = "message"
-    suspend fun feedGet(documentID: String): FeedbackData? {
-        var result: FeedbackData?
-        fireStore.collection(collectionName).document(documentID).get().await().apply {
-            result =
-                FeedbackData(
-                    get(uid) as String,
-                    (get(rating) as Double).toFloat(),
-                    get(message) as String
-                )
-        }
-        return result
-    }
 
-    suspend fun feedGet(): ArrayList<FeedbackData> {
+    @Suppress("UNCHECKED_CAST")
+    suspend fun feedGet(documentID:String): ArrayList<FeedbackData> {
         val result = ArrayList<FeedbackData>()
-        fireStore.collection(collectionName).get().await().apply {
-            for (feedback in this) {
+        fireStore.collection(collectionName).document(documentID).get().await().let {
+            it as Map<String,Any>
+
+            for (feedback in it) {
                 feedback.apply {
+                    val values = value as Map<String,Any>
                     result.add(
                         FeedbackData(
-                            get(uid) as String,
-                            (get(rating) as Double).toFloat(),
-                            get(message) as String
+                            key,
+                            (values[rating] as Double).toFloat(),
+                            values[message] as String
                         )
                     )
                 }
@@ -345,9 +336,10 @@ class Feedback : FireStore() {
 
         // data mapping
         val map = mapOf(
-            uid to feedback.UID,
-            rating to feedback.rating,
-            message to feedback.message
+            feedback.UID to mapOf(
+                rating to feedback.rating,
+                message to feedback.message
+            )
         )
 
         // await function this will block thread
