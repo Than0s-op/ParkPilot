@@ -1,12 +1,16 @@
 package com.application.parkpilot.module.firebase.database
 
+import android.net.Uri
 import com.application.parkpilot.QRCodeCollection
 import com.application.parkpilot.StationAdvance
 import com.application.parkpilot.StationBasic
 import com.application.parkpilot.StationLocation
 import com.application.parkpilot.UserCollection
+import com.application.parkpilot.UserProfile
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.application.parkpilot.Feedback as FeedbackData
+import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
@@ -17,7 +21,50 @@ open class FireStore {
     protected val fireStore = Firebase.firestore
 }
 
-class User : FireStore() {
+class UserBasic : FireStore() {
+    private val collectionName = "usersBasic"
+    private val userName = "userName"
+    private val userPicture = "userPicture"
+
+    // it will update user name and profile image
+    suspend fun setProfile(data: UserProfile, documentID: String): Boolean {
+        // to store update result
+        var result = false
+
+        // data mapping
+        val map = mapOf(
+            userName to data.userName.trim(),
+            userPicture to data.userPicture
+        )
+
+        // await function this will block thread
+        fireStore.collection(collectionName).document(documentID).set(map, SetOptions.merge())
+            .addOnSuccessListener {
+                // call successfully perform
+                result = true
+            }.await()
+
+        // return update status
+        return result
+    }
+
+    suspend fun getProfile(documentID: String): UserProfile? {
+        var result: UserProfile? = null
+        // await function this will block thread
+        fireStore.collection(collectionName).document(documentID).get().await().apply {
+            // is firstName present? if yes, it means data are present otherwise not
+            if (get(userName) != null) {
+                result = UserProfile(
+                    get(userName) as String,
+                    get(userPicture) as Uri,
+                )
+            }
+        }
+        return result
+    }
+}
+
+class UserAdvance : FireStore() {
     private val collectionName = "users"
     private val firstName = "firstName"
     private val lastName = "lastName"
@@ -138,19 +185,19 @@ class StationLocation : FireStore() {
         return result
     }
 
-    suspend fun locationGet(documentID:String):GeoPoint?{
+    suspend fun locationGet(documentID: String): GeoPoint? {
         var result: GeoPoint? = null
         // await function this will block thread
         fireStore.collection(collectionName).document(documentID).get().await().apply {
             // is coordinates present? if yes, it means data is present otherwise not
-            get(coordinates)?.let{
+            get(coordinates)?.let {
                 result = it as GeoPoint
             }
         }
         return result
     }
 
-    suspend fun locationSet(stationLocation:StationLocation,documentID:String):Boolean{
+    suspend fun locationSet(stationLocation: StationLocation, documentID: String): Boolean {
         // for success result
         var result = false
 
@@ -188,7 +235,8 @@ class StationBasic : FireStore() {
         }
         return result
     }
-    suspend fun basicSet(stationBasic:StationBasic,documentID:String):Boolean{
+
+    suspend fun basicSet(stationBasic: StationBasic, documentID: String): Boolean {
         // for success result
         var result = false
 
@@ -230,7 +278,8 @@ class StationAdvance : FireStore() {
         }
         return result
     }
-    suspend fun advanceSet(stationAdvance:StationAdvance,documentID:String):Boolean{
+
+    suspend fun advanceSet(stationAdvance: StationAdvance, documentID: String): Boolean {
         // for success result
         var result = false
 
@@ -240,6 +289,65 @@ class StationAdvance : FireStore() {
             amenities to stationAdvance.amenities,
             accessHours to stationAdvance.accessHours,
             gettingThere to stationAdvance.gettingThere
+        )
+
+        // await function this will block thread
+        fireStore.collection(collectionName).document(documentID).set(map, SetOptions.merge())
+            .addOnSuccessListener {
+                // call successfully perform
+                result = true
+            }.await()
+
+        // return result
+        return result
+    }
+}
+
+class Feedback : FireStore() {
+    private val collectionName = "feedback"
+    private val uid = "uid"
+    private val rating = "rating"
+    private val message = "message"
+    suspend fun feedGet(documentID: String): FeedbackData? {
+        var result: FeedbackData?
+        fireStore.collection(collectionName).document(documentID).get().await().apply {
+            result =
+                FeedbackData(
+                    get(uid) as String,
+                    (get(rating) as Double).toFloat(),
+                    get(message) as String
+                )
+        }
+        return result
+    }
+
+    suspend fun feedGet(): ArrayList<FeedbackData> {
+        val result = ArrayList<FeedbackData>()
+        fireStore.collection(collectionName).get().await().apply {
+            for (feedback in this) {
+                feedback.apply {
+                    result.add(
+                        FeedbackData(
+                            get(uid) as String,
+                            (get(rating) as Double).toFloat(),
+                            get(message) as String
+                        )
+                    )
+                }
+            }
+        }
+        return result
+    }
+
+    suspend fun feedSet(feedback: FeedbackData, documentID: String): Boolean {
+        // for success result
+        var result = false
+
+        // data mapping
+        val map = mapOf(
+            uid to feedback.UID,
+            rating to feedback.rating,
+            message to feedback.message
         )
 
         // await function this will block thread

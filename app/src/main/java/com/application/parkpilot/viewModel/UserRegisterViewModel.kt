@@ -10,6 +10,7 @@ import coil.imageLoader
 import coil.request.ImageRequest
 import coil.request.ImageResult
 import coil.size.Scale
+import com.application.parkpilot.User
 import com.application.parkpilot.UserCollection
 import com.application.parkpilot.UserProfile
 import com.application.parkpilot.activity.MainActivity
@@ -17,7 +18,8 @@ import com.application.parkpilot.activity.UserRegisterActivity
 import com.application.parkpilot.module.DatePicker
 import com.application.parkpilot.module.PhotoPicker
 import com.application.parkpilot.module.firebase.Storage
-import com.application.parkpilot.module.firebase.database.User
+import com.application.parkpilot.module.firebase.database.UserAdvance
+import com.application.parkpilot.module.firebase.database.UserBasic
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
@@ -39,7 +41,8 @@ class UserRegisterViewModel(activity: UserRegisterActivity) : ViewModel() {
     val isUploaded = MutableLiveData<Boolean>()
 
     // lazy object creation
-    private val fireStore by lazy { User() }
+    private val userBasic by lazy { UserBasic() }
+    private val userAdvance by lazy { UserAdvance() }
     private val storage by lazy {Storage()}
     val datePicker by lazy{DatePicker(activity)}
     val photoPicker by lazy{PhotoPicker(activity)}
@@ -53,39 +56,21 @@ class UserRegisterViewModel(activity: UserRegisterActivity) : ViewModel() {
     fun getUserDetails() {
         viewModelScope.launch {
             // call to fireStore
-            userInformation.value = fireStore.userGet(user.uid)
+            userInformation.value = userAdvance.userGet(user.uid)
         }
     }
 
     // it will upload user detail in user's collection
     private suspend fun setUserDetails(details: UserCollection):Boolean {
-        return fireStore.userSet(details, user.uid)
+        return userAdvance.userSet(details, user.uid)
     }
 
-    // it will update user name and profile image
+//     it will update user name and profile image
     private suspend fun updateProfile(data: UserProfile):Boolean{
-        // to store update result
-        var isUpdateSuccessfully = false
-
-        // if (photoUrl == user.photoUrl) it means user didn't choice any image
-        // other wise
-        val storageProfilePhotoUri =
-            if (photoUrl != user.photoUrl) storage.userProfilePhotoPut(user.uid, photoUrl!!)
-            else user.photoUrl!!
-
-        // creating profile update request
-        val profileUpdates = userProfileChangeRequest {
-            displayName = data.displayName.trim()
-            photoUri = storageProfilePhotoUri
-        }
-
-        // To update profile
-        user.updateProfile(profileUpdates).addOnSuccessListener {
-            isUpdateSuccessfully = true
-        }.await()
-
-        // return update status
-        return isUpdateSuccessfully
+        val downloadUri = storage.userProfilePhotoPut(User.UID, data.userPicture)
+        if(downloadUri != null)
+            return userBasic.setProfile(UserProfile(data.userName,downloadUri),User.UID)
+        return false
     }
 
     //

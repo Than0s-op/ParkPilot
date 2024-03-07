@@ -14,7 +14,7 @@ data class UserCollection(
     val gender: String
 )
 
-data class UserProfile(val displayName: String, val photoUri: Uri)
+data class UserProfile(val userName: String, val userPicture: Uri)
 data class QRCodeCollection(
     val key: String,
     val to: Int,
