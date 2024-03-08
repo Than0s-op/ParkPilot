@@ -1,6 +1,7 @@
 package com.application.parkpilot.module.firebase.database
 
 import android.net.Uri
+import androidx.core.net.toUri
 import com.application.parkpilot.QRCodeCollection
 import com.application.parkpilot.StationAdvance
 import com.application.parkpilot.StationBasic
@@ -56,7 +57,7 @@ class UserBasic : FireStore() {
             if (get(userName) != null) {
                 result = UserProfile(
                     get(userName) as String,
-                    get(userPicture) as Uri,
+                    (get(userPicture) as String).toUri(),
                 )
             }
         }
@@ -65,7 +66,7 @@ class UserBasic : FireStore() {
 }
 
 class UserAdvance : FireStore() {
-    private val collectionName = "users"
+    private val collectionName = "usersAdvance"
     private val firstName = "firstName"
     private val lastName = "lastName"
     private val birthDate = "birthDate"

@@ -8,7 +8,7 @@ import com.application.parkpilot.R
 
 
 // NOTE: this activity will start, when user would login first time
-class HowAreYou : AppCompatActivity(R.layout.how_are_you) {
+class WhoAreYou : AppCompatActivity(R.layout.who_are_you) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

@@ -43,9 +43,9 @@ class UserRegisterViewModel(activity: UserRegisterActivity) : ViewModel() {
     // lazy object creation
     private val userBasic by lazy { UserBasic() }
     private val userAdvance by lazy { UserAdvance() }
-    private val storage by lazy {Storage()}
-    val datePicker by lazy{DatePicker(activity)}
-    val photoPicker by lazy{PhotoPicker(activity)}
+    private val storage by lazy { Storage() }
+    val datePicker by lazy { DatePicker(activity) }
+    val photoPicker by lazy { PhotoPicker(activity) }
 
 
     // it will store MainActivity intent or null
@@ -60,23 +60,20 @@ class UserRegisterViewModel(activity: UserRegisterActivity) : ViewModel() {
         }
     }
 
-    // it will upload user detail in user's collection
-    private suspend fun setUserDetails(details: UserCollection):Boolean {
-        return userAdvance.userSet(details, user.uid)
-    }
-
-//     it will update user name and profile image
-    private suspend fun updateProfile(data: UserProfile):Boolean{
-        val downloadUri = storage.userProfilePhotoPut(User.UID, data.userPicture)
-        if(downloadUri != null)
-            return userBasic.setProfile(UserProfile(data.userName,downloadUri),User.UID)
-        return false
-    }
-
     //
-    fun saveUserData(userCollection:UserCollection,userProfile:UserProfile){
-        viewModelScope.launch{
-            isUploaded.value = setUserDetails(userCollection) and updateProfile(userProfile)
+    fun saveUserData(userCollection: UserCollection, userProfile: UserProfile) {
+        var result = true
+        viewModelScope.launch {
+            result = result and userAdvance.userSet(userCollection, user.uid)
+
+            val downloadUri = storage.userProfilePhotoPut(User.UID, userProfile.userPicture)
+
+            result = if(downloadUri != null)
+                result and userBasic.setProfile(UserProfile(userProfile.userName, downloadUri), User.UID)
+            else
+                false
+
+            isUploaded.value = result
         }
     }
 
