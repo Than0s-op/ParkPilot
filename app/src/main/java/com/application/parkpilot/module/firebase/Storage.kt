@@ -7,19 +7,12 @@ import kotlinx.coroutines.tasks.await
 
 class Storage {
     private val storageRef = Firebase.storage.reference
-    suspend fun userProfilePhotoPut(userUID: String, photoUri: Uri): Uri? {
-        var result: Uri? = null
+    suspend fun userProfilePhotoPut(userUID: String, photoUri: Uri): Uri {
         val childRef = storageRef.child("user_profile_photo/${userUID}")
-        childRef.putFile(photoUri).continueWithTask { task ->
-            if (!task.isSuccessful) {
-                task.exception?.let {
-                    throw it
-                }
-            }
-            childRef.downloadUrl
-        }.addOnCompleteListener { task ->
-            result = task.result
-        }.await()
-        return result
+        childRef.putFile(photoUri).await()
+        return userProfilePhotoGet(userUID)
+    }
+    suspend fun userProfilePhotoGet(userUID:String):Uri{
+        return storageRef.child("user_profile_photo/${userUID}").downloadUrl.await()
     }
 }

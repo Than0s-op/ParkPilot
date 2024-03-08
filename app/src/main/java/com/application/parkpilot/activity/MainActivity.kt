@@ -54,7 +54,7 @@ class MainActivity : Activity() {
                     // start the registration activity
                     startActivity(Intent(
                         this@MainActivity,
-                        HowAreYou::class.java
+                        WhoAreYou::class.java
                     ).apply {
                         // clear the activity stack
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
