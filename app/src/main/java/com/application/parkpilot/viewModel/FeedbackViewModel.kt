@@ -24,7 +24,7 @@ class FeedbackViewModel: ViewModel() {
         viewModelScope.launch {
             val list = feedback.feedGet(stationUid)
             recyclerView.layoutManager = LinearLayoutManager(context)
-            recyclerView.adapter = FeedbackRecyclerView(context, R.layout.feedback, list)
+            recyclerView.adapter = FeedbackRecyclerView(context, R.layout.feedback_item, list)
         }
     }
 

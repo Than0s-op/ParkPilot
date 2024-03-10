@@ -10,6 +10,7 @@ import com.application.parkpilot.R
 import com.application.parkpilot.adapter.CarouselRecyclerView
 import com.application.parkpilot.viewModel.SpotPreviewViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
 class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail) {
 
@@ -28,6 +29,7 @@ class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail) {
         val textViewTSYK:TextView = findViewById(R.id.textViewTSYK)
         val textViewAccessHours:TextView = findViewById(R.id.textViewAccessHours)
         val textViewGettingThere:TextView = findViewById(R.id.textViewGettingThere)
+        val buttonFeedback:ExtendedFloatingActionButton = findViewById(R.id.buttonFeedback)
 
 
         val viewModel = ViewModelProvider(this)[SpotPreviewViewModel::class.java]
@@ -40,6 +42,10 @@ class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail) {
         recyclerView.apply {
             layoutManager = CarouselLayoutManager()
             viewModel.loadCarousel()
+        }
+
+        buttonFeedback.setOnClickListener{
+            viewModel.feedback(this,stationUID)
         }
 
         viewModel.carouselImages.observe(this) { images ->
@@ -55,7 +61,7 @@ class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail) {
             loadAmenities(it.amenities)
 
             // loading access hours section
-            textViewAccessHours.text = it.accessHours
+//            textViewAccessHours.text = it.accessHours
 
             // loading getting there section
             textViewGettingThere.text = it.gettingThere

@@ -2,10 +2,12 @@ package com.application.parkpilot.module.firebase.database
 
 import android.net.Uri
 import androidx.core.net.toUri
+import com.application.parkpilot.AccessHours
 import com.application.parkpilot.QRCodeCollection
 import com.application.parkpilot.StationAdvance
 import com.application.parkpilot.StationBasic
 import com.application.parkpilot.StationLocation
+import com.application.parkpilot.Time
 import com.application.parkpilot.UserCollection
 import com.application.parkpilot.UserProfile
 import com.google.firebase.Firebase
@@ -266,6 +268,9 @@ class StationAdvance : FireStore() {
     private val amenities = "amenities"
     private val accessHours = "accessHours"
     private val gettingThere = "gettingThere"
+    private val openTime = "openTime"
+    private val closeTime = "closeTime"
+    private val available = "available"
 
     suspend fun advanceGet(documentID: String): StationAdvance? {
         val result: StationAdvance?
@@ -273,8 +278,14 @@ class StationAdvance : FireStore() {
             result = StationAdvance(
                 get(thinkShouldYouKnow) as ArrayList<String>,
                 get(amenities) as ArrayList<String>,
-                get(accessHours) as String,
-                get(gettingThere) as String
+                get(gettingThere) as String,
+                (get(accessHours) as Map<String, Any>).let {
+                    AccessHours(
+                        it[openTime] as String,
+                        it[closeTime] as String,
+                        it[available] as List<String>
+                    )
+                }
             )
         }
         return result
@@ -288,8 +299,12 @@ class StationAdvance : FireStore() {
         val map = mapOf(
             thinkShouldYouKnow to stationAdvance.thinkShouldYouKnow,
             amenities to stationAdvance.amenities,
-            accessHours to stationAdvance.accessHours,
-            gettingThere to stationAdvance.gettingThere
+            gettingThere to stationAdvance.gettingThere,
+            accessHours to mapOf(
+                openTime to stationAdvance.accessHours.open,
+                closeTime to stationAdvance.accessHours.close,
+                available to stationAdvance.accessHours.selectedDays
+            )
         )
 
         // await function this will block thread
@@ -310,14 +325,15 @@ class Feedback : FireStore() {
     private val message = "message"
 
     @Suppress("UNCHECKED_CAST")
-    suspend fun feedGet(documentID:String): ArrayList<FeedbackData> {
+    suspend fun feedGet(documentID: String): ArrayList<FeedbackData> {
         val result = ArrayList<FeedbackData>()
         fireStore.collection(collectionName).document(documentID).get().await().let {
-            it as Map<String,Any>
+            println(it.data)
+            val feedbacks = it.data as Map<String, Any>
 
-            for (feedback in it) {
+            for (feedback in feedbacks) {
                 feedback.apply {
-                    val values = value as Map<String,Any>
+                    val values = value as Map<String, Any>
                     result.add(
                         FeedbackData(
                             key,
