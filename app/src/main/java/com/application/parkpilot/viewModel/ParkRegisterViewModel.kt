@@ -3,6 +3,7 @@ package com.application.parkpilot.viewModel
 import android.content.Context
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.parkpilot.StationBasic as StationBasic_DS
@@ -11,6 +12,7 @@ import com.application.parkpilot.StationAdvance as StationAdvance_DS
 import com.application.parkpilot.User
 import com.application.parkpilot.module.OSM
 import com.application.parkpilot.module.PhotoPicker
+import com.application.parkpilot.module.TimePicker
 import com.google.firebase.firestore.GeoPoint as GeoPoint_FB
 import com.application.parkpilot.module.firebase.database.StationAdvance as StationAdvance_FS
 import com.application.parkpilot.module.firebase.database.StationBasic as StationBasic_FS
@@ -22,11 +24,17 @@ import org.osmdroid.views.MapView
 class ParkRegisterViewModel(mapView: MapView, activity: AppCompatActivity) : ViewModel() {
     private var mapViewOSM: OSM<AppCompatActivity> = OSM(mapView, activity)
     private val marker = mapViewOSM.addMarker(mapViewOSM.center)
+    val timePicker = TimePicker("pick the time",TimePicker.CLOCK_12H)
+    val photoPicker = PhotoPicker(activity)
 
     init {
         mapViewOSM.touchLocationObserver.observe(activity) {
             marker.position = it
         }
+    }
+
+    fun timePicker(manager: FragmentManager, tag:String?){
+            timePicker.showTimePicker(manager,tag)
     }
 
     fun search(searchQuery: String) {
@@ -52,16 +60,15 @@ class ParkRegisterViewModel(mapView: MapView, activity: AppCompatActivity) : Vie
         }
     }
 
+    fun imagePicker(){
+        photoPicker.showPhotoPicker()
+    }
+
     fun fillAddress(editText: EditText) {
         val address = mapViewOSM.getAddress(marker.position)
         address?.let {
             editText.setText(it.getAddressLine(0))
         }
-    }
-
-    fun pickPhoto(activity: AppCompatActivity) {
-        val photoPicker = PhotoPicker(activity)
-        photoPicker.showPhotoPicker()
     }
 
     fun uploadLocation() {

@@ -28,8 +28,16 @@ data class StationBasic(val name: String?, val price: Int?, val rating: Float?)
 data class StationAdvance(
     val thinkShouldYouKnow: List<String>,
     val amenities: List<String>,
-    val accessHours: String,
-    val gettingThere:String,
+    val gettingThere: String,
+    val accessHours: AccessHours,
 )
 
-data class Feedback(val UID:String=User.UID,val rating:Float,val message:String)
+data class Time(val hours: Int, val minute: Int)
+
+data class AccessHours(
+    val open: String,
+    val close: String,
+    val selectedDays: List<String>
+)
+
+data class Feedback(val UID: String = User.UID, val rating: Float, val message: String)

@@ -1,8 +1,11 @@
 package com.application.parkpilot.viewModel
 
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.application.parkpilot.activity.Feedback
 import com.application.parkpilot.module.firebase.database.StationAdvance
 import com.application.parkpilot.module.firebase.database.StationBasic
 import kotlinx.coroutines.launch
@@ -39,4 +42,9 @@ class SpotPreviewViewModel : ViewModel() {
         }
     }
 
+    fun feedback(context: Context,stationUid:String){
+        context.startActivity(Intent(context, Feedback::class.java).apply{
+            putExtra("stationUID",stationUid)
+        })
+    }
 }
