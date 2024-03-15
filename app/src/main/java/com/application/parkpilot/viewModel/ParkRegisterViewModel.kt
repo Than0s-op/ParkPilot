@@ -1,9 +1,10 @@
 package com.application.parkpilot.viewModel
 
-import android.content.Context
+import android.net.Uri
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.parkpilot.StationBasic as StationBasic_DS
@@ -13,6 +14,8 @@ import com.application.parkpilot.User
 import com.application.parkpilot.module.OSM
 import com.application.parkpilot.module.PhotoPicker
 import com.application.parkpilot.module.TimePicker
+import com.application.parkpilot.module.firebase.Storage
+import com.application.parkpilot.module.firebase.database.StationBasic
 import com.google.firebase.firestore.GeoPoint as GeoPoint_FB
 import com.application.parkpilot.module.firebase.database.StationAdvance as StationAdvance_FS
 import com.application.parkpilot.module.firebase.database.StationBasic as StationBasic_FS
@@ -26,6 +29,12 @@ class ParkRegisterViewModel(mapView: MapView, activity: AppCompatActivity) : Vie
     private val marker = mapViewOSM.addMarker(mapViewOSM.center)
     val timePicker = TimePicker("pick the time",TimePicker.CLOCK_12H)
     val photoPicker = PhotoPicker(activity)
+    val imageViewsUri = arrayOf<Uri?>(null,null,null)
+    val liveDataStationBasic = MutableLiveData<StationBasic_DS?>()
+    val liveDataStationAdvance = MutableLiveData<StationAdvance_DS?>()
+    val result = MutableLiveData<Boolean>()
+    val liveDataImages = MutableLiveData<List<Uri>?>()
+
 
     init {
         mapViewOSM.touchLocationObserver.observe(activity) {
@@ -35,6 +44,14 @@ class ParkRegisterViewModel(mapView: MapView, activity: AppCompatActivity) : Vie
 
     fun timePicker(manager: FragmentManager, tag:String?){
             timePicker.showTimePicker(manager,tag)
+    }
+
+    fun loadActivity(){
+        viewModelScope.launch {
+            liveDataStationBasic.value = StationBasic_FS().basicGet(User.UID)
+            liveDataStationAdvance.value = StationAdvance_FS().advanceGet(User.UID)
+            liveDataImages.value = Storage().parkSpotPhotoGet(User.UID)
+        }
     }
 
     fun search(searchQuery: String) {
@@ -95,6 +112,12 @@ class ParkRegisterViewModel(mapView: MapView, activity: AppCompatActivity) : Vie
         val stationAdvance = StationAdvance_FS()
         viewModelScope.launch{
             stationAdvance.advanceSet(info,User.UID)
+        }
+    }
+
+    fun uploadImages(){
+        viewModelScope.launch {
+            Storage().parkSpotPhotoPut(User.UID, imageViewsUri)
         }
     }
 }

@@ -18,7 +18,7 @@ class BookingHistoryViewModel : ViewModel() {
         viewModelScope.launch {
             val list = fireStoreQRCode.QRCodeGet(Firebase.auth.currentUser!!.uid)
             recyclerView.layoutManager = LinearLayoutManager(context)
-            recyclerView.adapter = HistoryRecyclerView(context, R.layout.history_card, list)
+            recyclerView.adapter = HistoryRecyclerView(context, R.layout.history_card, list!!)
         }
     }
 }
