@@ -188,7 +188,9 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
             }
         }
         viewModel.liveDataImages.observe(this) {
-
+            for(i in 0..<3){
+                imageViews[i].load(it[i])
+            }
         }
     }
 

@@ -33,7 +33,7 @@ class ParkRegisterViewModel(mapView: MapView, activity: AppCompatActivity) : Vie
     val liveDataStationBasic = MutableLiveData<StationBasic_DS?>()
     val liveDataStationAdvance = MutableLiveData<StationAdvance_DS?>()
     val result = MutableLiveData<Boolean>()
-    val liveDataImages = MutableLiveData<List<Uri>?>()
+    val liveDataImages = MutableLiveData<List<Uri>>()
 
 
     init {
