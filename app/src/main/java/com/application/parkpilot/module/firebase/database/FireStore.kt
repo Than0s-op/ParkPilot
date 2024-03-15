@@ -227,14 +227,16 @@ class StationBasic : FireStore() {
     private val price = "price"
     private val rating = "rating"
     suspend fun basicGet(documentID: String): StationBasic? {
-        var result: StationBasic?
+        var result: StationBasic? = null
         fireStore.collection(collectionName).document(documentID).get().await().apply {
-            result =
-                StationBasic(
-                    get(name) as String,
-                    (get(price) as Long).toInt(),
-                    (get(rating) as Double).toFloat()
-                )
+            if (get(name) != null) {
+                result =
+                    StationBasic(
+                        get(name) as String,
+                        (get(price) as Long).toInt(),
+                        (get(rating) as Double).toFloat()
+                    )
+            }
         }
         return result
     }
@@ -273,20 +275,22 @@ class StationAdvance : FireStore() {
     private val available = "available"
 
     suspend fun advanceGet(documentID: String): StationAdvance? {
-        val result: StationAdvance?
+        var result: StationAdvance? = null
         fireStore.collection(collectionName).document(documentID).get().await().apply {
-            result = StationAdvance(
-                get(thinkShouldYouKnow) as ArrayList<String>,
-                get(amenities) as ArrayList<String>,
-                get(gettingThere) as String,
-                (get(accessHours) as Map<String, Any>).let {
-                    AccessHours(
-                        it[openTime] as String,
-                        it[closeTime] as String,
-                        it[available] as List<String>
-                    )
-                }
-            )
+            if(get(amenities) != null) {
+                result = StationAdvance(
+                    get(thinkShouldYouKnow) as ArrayList<String>,
+                    get(amenities) as ArrayList<String>,
+                    get(gettingThere) as String,
+                    (get(accessHours) as Map<String, Any>).let {
+                        AccessHours(
+                            it[openTime] as String,
+                            it[closeTime] as String,
+                            it[available] as List<String>
+                        )
+                    }
+                )
+            }
         }
         return result
     }
@@ -328,7 +332,6 @@ class Feedback : FireStore() {
     suspend fun feedGet(documentID: String): ArrayList<FeedbackData> {
         val result = ArrayList<FeedbackData>()
         fireStore.collection(collectionName).document(documentID).get().await().let {
-            println(it.data)
             val feedbacks = it.data as Map<String, Any>
 
             for (feedback in feedbacks) {

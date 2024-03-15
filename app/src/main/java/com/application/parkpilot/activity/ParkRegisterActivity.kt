@@ -33,14 +33,12 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         val editTextGettingThere: EditText = findViewById(R.id.editTextGettingThere)
         val editTextStartingPrice: EditText = findViewById(R.id.editTextStartingPrice)
 
+        val imageViews = arrayOf(
+            findViewById<ImageView>(R.id.imageView1),
+            findViewById(R.id.imageView2),
+            findViewById(R.id.imageView3)
+        )
 
-        val imageView1: ImageView = findViewById(R.id.imageView1)
-        val imageView2: ImageView = findViewById(R.id.imageView2)
-        val imageView3: ImageView = findViewById(R.id.imageView3)
-
-        var imageViewUri1: Uri? = null
-        var imageViewUri2: Uri? = null
-        var imageViewUri3: Uri? = null
 
         val layoutLocationPicker = layoutInflater.inflate(R.layout.location_picker, null, false)
 
@@ -62,6 +60,8 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         })[ParkRegisterViewModel::class.java]
 
 
+        viewModel.loadActivity()
+
         buttonLocationPick.setOnClickListener {
             dialogBox.show()
         }
@@ -80,10 +80,10 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         }
 
         var flagImageView1 = false
-        imageView1.setOnClickListener {
-            if (imageViewUri1 != null) {
-                imageView1.load(R.drawable.add_circle_icon)
-                imageViewUri1 = null
+        imageViews[0].setOnClickListener {
+            if (viewModel.imageViewsUri[0] != null) {
+                imageViews[0].load(R.drawable.add_circle_icon)
+                viewModel.imageViewsUri[0] = null
             } else {
                 flagImageView1 = true
                 viewModel.imagePicker()
@@ -91,20 +91,20 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         }
 
         var flagImageView2 = false
-        imageView2.setOnClickListener {
-            if (imageViewUri2 != null) {
-                imageView2.load(R.drawable.add_circle_icon)
-                imageViewUri2 = null
+        imageViews[1].setOnClickListener {
+            if (viewModel.imageViewsUri[1] != null) {
+                imageViews[1].load(R.drawable.add_circle_icon)
+                viewModel.imageViewsUri[1] = null
             } else {
                 flagImageView2 = true
                 viewModel.imagePicker()
             }
         }
 
-        imageView3.setOnClickListener {
-            if (imageViewUri3 != null) {
-                imageView3.load(R.drawable.add_circle_icon)
-                imageViewUri3 = null
+        imageViews[2].setOnClickListener {
+            if (viewModel.imageViewsUri[2] != null) {
+                imageViews[2].load(R.drawable.add_circle_icon)
+                viewModel.imageViewsUri[2] = null
             } else {
                 viewModel.imagePicker()
             }
@@ -143,6 +143,7 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
                     getAccessTime()
                 )
             )
+            viewModel.uploadImages()
         }
 
         viewModel.timePicker.liveDataTimePicker.observe(this) {
@@ -156,17 +157,38 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
 
         viewModel.photoPicker.pickedImage.observe(this) {
             if (flagImageView1) {
-                imageViewUri1 = it
-                imageView1.load(it)
+                viewModel.imageViewsUri[0] = it
+                imageViews[0].load(it)
                 flagImageView1 = false
             } else if (flagImageView2) {
-                imageViewUri2 = it
-                imageView2.load(it)
+                viewModel.imageViewsUri[1] = it
+                imageViews[1].load(it)
                 flagImageView2 = false
             } else {
-                imageViewUri3 = it
-                imageView3.load(it)
+                viewModel.imageViewsUri[2] = it
+                imageViews[2].load(it)
             }
+        }
+
+        viewModel.liveDataStationBasic.observe(this) {
+            it?.let {
+                editTextStationName.setText(it.name)
+                editTextStartingPrice.setText(it.price.toString())
+            }
+        }
+        viewModel.liveDataStationAdvance.observe(this) {
+            it?.let {
+                editTextGettingThere.setText(it.gettingThere)
+                val editTextThinkShouldYouKnow: EditText =
+                    findViewById(R.id.editTextThinkShouldYouKnow)
+                editTextThinkShouldYouKnow.setText(loadThinkShouldYouKnow(it.thinkShouldYouKnow))
+                editTextOpenTime.setText(it.accessHours.open)
+                editTextCloseTime.setText(it.accessHours.close)
+                loadDaysSwitch(it.accessHours.selectedDays)
+            }
+        }
+        viewModel.liveDataImages.observe(this) {
+
         }
     }
 
@@ -179,6 +201,17 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         if (switchEVCharging.isChecked) selectedAmenities.add("ev_charging")
 
         return selectedAmenities
+    }
+
+    private fun loadAmenities(list: List<String>) {
+        val switchValet: MaterialSwitch = findViewById(R.id.switchValet)
+        val switchEVCharging: MaterialSwitch = findViewById(R.id.switchEVCharging)
+        for (i in list) {
+            when (i) {
+                "valet" -> switchValet.isChecked = true
+                "ev_charging" -> switchEVCharging.isChecked = true
+            }
+        }
     }
 
     private fun getAccessTime(): DataAccessHours {
@@ -214,5 +247,34 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
     private fun getThinkShouldYouKnow(): List<String> {
         val editTextThinkShouldYouKnow: EditText = findViewById(R.id.editTextThinkShouldYouKnow)
         return editTextThinkShouldYouKnow.text.split("\n")
+    }
+
+    private fun loadThinkShouldYouKnow(list: List<String>): String {
+        var result = ""
+        for (i in list) {
+            result += "$i\n"
+        }
+        return result
+    }
+
+    private fun loadDaysSwitch(list: List<String>) {
+        val switchMonday: MaterialSwitch = findViewById(R.id.switchMonday)
+        val switchTuesday: MaterialSwitch = findViewById(R.id.switchTuesday)
+        val switchWednesday: MaterialSwitch = findViewById(R.id.switchWednesday)
+        val switchThursday: MaterialSwitch = findViewById(R.id.switchThursday)
+        val switchFriday: MaterialSwitch = findViewById(R.id.switchFriday)
+        val switchSaturday: MaterialSwitch = findViewById(R.id.switchSaturday)
+        val switchSunday: MaterialSwitch = findViewById(R.id.switchSunday)
+        for (i in list) {
+            when (i) {
+                "monday" -> switchMonday.isChecked = true
+                "tuesday" -> switchTuesday.isChecked = true
+                "wednesday" -> switchWednesday.isChecked = true
+                "thursday" -> switchThursday.isChecked = true
+                "friday" -> switchFriday.isChecked = true
+                "saturday" -> switchSaturday.isChecked = true
+                "sunday" -> switchSunday.isChecked = true
+            }
+        }
     }
 }
