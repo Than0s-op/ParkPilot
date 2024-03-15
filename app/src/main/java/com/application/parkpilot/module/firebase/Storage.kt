@@ -33,12 +33,12 @@ class Storage {
         }
         return result
     }
-    suspend fun parkSpotPhotoGet(uid:String):List<Uri>?{
+    suspend fun parkSpotPhotoGet(uid:String):List<Uri>{
         val list = storageRef.child("parkSpot/${uid}/").listAll().await()
         val imagesUri = ArrayList<Uri>()
         for(i in list.items){
             imagesUri.add(i.downloadUrl.await())
         }
-        return if(imagesUri.isEmpty()) null else imagesUri
+        return imagesUri
     }
 }
