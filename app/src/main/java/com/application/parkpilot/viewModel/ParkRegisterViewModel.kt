@@ -32,7 +32,7 @@ class ParkRegisterViewModel(mapView: MapView, activity: AppCompatActivity) : Vie
     val imageViewsUri = arrayOf<Uri?>(null,null,null)
     val liveDataStationBasic = MutableLiveData<StationBasic_DS?>()
     val liveDataStationAdvance = MutableLiveData<StationAdvance_DS?>()
-    val result = MutableLiveData<Boolean>()
+    val isUploaded = MutableLiveData<Boolean>()
     val liveDataImages = MutableLiveData<List<Uri>>()
 
 
@@ -88,36 +88,24 @@ class ParkRegisterViewModel(mapView: MapView, activity: AppCompatActivity) : Vie
         }
     }
 
-    fun uploadLocation() {
-        val stationLocation = StationLocation_FS()
-
-        viewModelScope.launch {
+    fun uploadDetails(basic:StationBasic_DS,advance:StationAdvance_DS){
+        var result = true
+        viewModelScope.launch{
             marker.position.apply {
-                stationLocation.locationSet(
+                result = StationLocation_FS().locationSet(
                     StationLocation_DS(null, GeoPoint_FB(latitude,longitude)),
                     User.UID
-                )
+                ) and result
             }
+
+            result = StationBasic_FS().basicSet(basic,User.UID) and result
+
+            result = StationAdvance_FS().advanceSet(advance,User.UID) and result
+
+            result = Storage().parkSpotPhotoPut(User.UID, imageViewsUri) and result
+
+            isUploaded.value = result
         }
     }
 
-    fun uploadBasic(stationName:String,startingPrice:Int){
-        val stationBasic = StationBasic_FS()
-        viewModelScope.launch{
-            stationBasic.basicSet(StationBasic_DS(stationName,startingPrice,null),User.UID)
-        }
-    }
-
-    fun uploadAdvance(info:StationAdvance_DS){
-        val stationAdvance = StationAdvance_FS()
-        viewModelScope.launch{
-            stationAdvance.advanceSet(info,User.UID)
-        }
-    }
-
-    fun uploadImages(){
-        viewModelScope.launch {
-            Storage().parkSpotPhotoPut(User.UID, imageViewsUri)
-        }
-    }
 }
