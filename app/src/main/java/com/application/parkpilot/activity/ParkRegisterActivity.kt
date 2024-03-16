@@ -1,15 +1,18 @@
 package com.application.parkpilot.activity
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.application.parkpilot.R
+import com.application.parkpilot.StationBasic
 import com.application.parkpilot.viewModel.ParkRegisterViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.materialswitch.MaterialSwitch
@@ -130,12 +133,12 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         }
 
         buttonSubmit.setOnClickListener {
-            viewModel.uploadLocation()
-            viewModel.uploadBasic(
-                editTextStationName.text.toString(),
-                editTextStartingPrice.text.toString().toInt()
-            )
-            viewModel.uploadAdvance(
+            viewModel.uploadDetails(
+                StationBasic(editTextStationName.text.toString(),
+                editTextStartingPrice.text.toString().toInt(),
+                    null
+                ),
+
                 StationAdvance_DS(
                     getThinkShouldYouKnow(),
                     getAmenities(),
@@ -143,7 +146,6 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
                     getAccessTime()
                 )
             )
-            viewModel.uploadImages()
         }
 
         viewModel.timePicker.liveDataTimePicker.observe(this) {
@@ -188,8 +190,22 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
             }
         }
         viewModel.liveDataImages.observe(this) {
-            for(i in 0..<3){
+            for(i in it.indices){
                 imageViews[i].load(it[i])
+            }
+        }
+        viewModel.isUploaded.observe(this){ isUploaded ->
+            if (isUploaded) {
+                Toast.makeText(
+                    this, "Information Save Successfully", Toast.LENGTH_SHORT
+                ).show()
+                startActivity(Intent(this,MainActivity::class.java).apply{
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                })
+            } else {
+                Toast.makeText(
+                    this, "Failed Save Information", Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

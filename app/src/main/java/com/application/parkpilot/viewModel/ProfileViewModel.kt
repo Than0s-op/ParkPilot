@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.application.parkpilot.R
 import com.application.parkpilot.activity.AuthenticationActivity
 import com.application.parkpilot.activity.MainActivity
 import com.application.parkpilot.activity.ParkRegisterActivity
@@ -48,8 +49,8 @@ class ProfileViewModel:ViewModel() {
     fun loadProfile(context: Context, profileImage: ImageView,profileName: TextView) {
         Firebase.auth.currentUser?.let {
             viewModelScope.launch {
-                profileImage.setImageDrawable(PhotoLoader().getImage(context, it.photoUrl!!).drawable)
-                profileName.text = it.displayName
+                profileImage.setImageDrawable(PhotoLoader().getImage(context, it.photoUrl ?: R.drawable.user_alert_icon).drawable)
+                profileName.text = it.displayName ?: "User"
             }
         }
     }

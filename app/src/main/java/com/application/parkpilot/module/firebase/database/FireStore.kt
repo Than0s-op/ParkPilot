@@ -156,16 +156,18 @@ class QRCode : FireStore() {
         // await function this will block thread
         fireStore.collection(collectionName).document(documentID).get().await().let { document ->
             document.data?.let {
-                val fields = it as Map<String, Map<String, Any>>
-                for (field in fields) {
-                    result.add(
-                        QRCodeCollection(
-                            key = field.key,
-                            from = field.value[from] as Timestamp,
-                            to = (field.value[to] as Long).toInt(),
-                            valid = field.value[validStatus] as Boolean,
+                val fields = it as? Map<String, Map<String, Any>>
+                if (fields != null) {
+                    for (field in fields) {
+                        result.add(
+                            QRCodeCollection(
+                                key = field.key,
+                                from = field.value[from] as Timestamp,
+                                to = (field.value[to] as Long).toInt(),
+                                valid = field.value[validStatus] as Boolean,
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
@@ -234,7 +236,7 @@ class StationBasic : FireStore() {
                     StationBasic(
                         get(name) as String,
                         (get(price) as Long).toInt(),
-                        (get(rating) as Double).toFloat()
+                        (get(rating) as? Double)?.toFloat()
                     )
             }
         }
@@ -332,18 +334,20 @@ class Feedback : FireStore() {
     suspend fun feedGet(documentID: String): ArrayList<FeedbackData> {
         val result = ArrayList<FeedbackData>()
         fireStore.collection(collectionName).document(documentID).get().await().let {
-            val feedbacks = it.data as Map<String, Any>
+            val feedbacks = it.data as? Map<String, Any>
 
-            for (feedback in feedbacks) {
-                feedback.apply {
-                    val values = value as Map<String, Any>
-                    result.add(
-                        FeedbackData(
-                            key,
-                            (values[rating] as Double).toFloat(),
-                            values[message] as String
+            if (feedbacks != null) {
+                for (feedback in feedbacks) {
+                    feedback.apply {
+                        val values = value as Map<String, Any>
+                        result.add(
+                            FeedbackData(
+                                key,
+                                (values[rating] as Double).toFloat(),
+                                values[message] as String
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
