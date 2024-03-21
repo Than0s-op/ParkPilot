@@ -1,5 +1,6 @@
 package com.application.parkpilot.viewModel
 
+import android.content.Context
 import android.net.Uri
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -88,7 +89,7 @@ class ParkRegisterViewModel(mapView: MapView, activity: AppCompatActivity) : Vie
         }
     }
 
-    fun uploadDetails(basic:StationBasic_DS,advance:StationAdvance_DS){
+    fun uploadDetails(context: Context, basic:StationBasic_DS, advance:StationAdvance_DS){
         var result = true
         viewModelScope.launch{
             marker.position.apply {
@@ -102,7 +103,7 @@ class ParkRegisterViewModel(mapView: MapView, activity: AppCompatActivity) : Vie
 
             result = StationAdvance_FS().advanceSet(advance,User.UID) and result
 
-            result = Storage().parkSpotPhotoPut(User.UID, imageViewsUri) and result
+            result = Storage().parkSpotPhotoPut(context,User.UID, imageViewsUri) and result
 
             isUploaded.value = result
         }
