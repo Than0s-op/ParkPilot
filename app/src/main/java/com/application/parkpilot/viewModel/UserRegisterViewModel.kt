@@ -61,17 +61,15 @@ class UserRegisterViewModel(activity: UserRegisterActivity) : ViewModel() {
     }
 
     //
-    fun saveUserData(userCollection: UserCollection, userProfile: UserProfile) {
+    fun saveUserData(context:Context,userCollection: UserCollection, userProfile: UserProfile) {
         var result = true
         viewModelScope.launch {
             result = result and userAdvance.userSet(userCollection, user.uid)
 
-            val downloadUri = storage.userProfilePhotoPut(User.UID, userProfile.userPicture)
+            val downloadUri = storage.userProfilePhotoPut(context,User.UID, userProfile.userPicture)
 
-            result = if(downloadUri != null)
+            result =
                 result and userBasic.setProfile(UserProfile(userProfile.userName, downloadUri), User.UID)
-            else
-                false
 
             isUploaded.value = result
         }

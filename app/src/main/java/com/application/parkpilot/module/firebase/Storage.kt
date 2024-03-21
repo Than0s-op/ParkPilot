@@ -1,15 +1,33 @@
 package com.application.parkpilot.module.firebase
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
+import coil.imageLoader
+import coil.request.ImageRequest
 import com.google.firebase.Firebase
 import com.google.firebase.storage.storage
 import kotlinx.coroutines.tasks.await
+import java.io.ByteArrayOutputStream
 
 class Storage {
     private val storageRef = Firebase.storage.reference
-    suspend fun userProfilePhotoPut(uid: String, photoUri: Uri): Uri {
+    suspend fun userProfilePhotoPut(context:Context,uid: String, photoUri: Uri): Uri {
         val childRef = storageRef.child("user_profile_photo/${uid}")
-        childRef.putFile(photoUri).await()
+        val request = ImageRequest.Builder(context)
+            .data(photoUri)
+            .size(300, 300)
+            .build()
+        val drawable = context.imageLoader.execute(request).drawable
+
+        // this next leve logic present on firebase doc
+        val bitmap = (drawable as BitmapDrawable).bitmap
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+
+        childRef.putBytes(data).await()
         return userProfilePhotoGet(uid)
     }
 
@@ -17,17 +35,30 @@ class Storage {
         return storageRef.child("user_profile_photo/${uid}").downloadUrl.await()
     }
 
-    suspend fun parkSpotPhotoPut(uid: String, photosUri: Array<Uri?>):Boolean {
+    suspend fun parkSpotPhotoPut(context: Context, uid: String, photosUri: Array<Uri?>):Boolean {
         val path = "parkSpot/${uid}/"
         var result = true
 
         for ((cnt, uri) in photosUri.withIndex()) {
             val childRef = storageRef.child("$path${cnt}")
-            if(uri == null){
+            if(uri == null) {
                 childRef.delete()
                 continue
             }
-            childRef.putFile(uri).addOnFailureListener{
+
+            val request = ImageRequest.Builder(context)
+                .data(uri)
+                .size(300, 300)
+                .build()
+            val drawable = context.imageLoader.execute(request).drawable
+
+            // this next leve logic present on firebase doc
+            val bitmap = (drawable as BitmapDrawable).bitmap
+            val baos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
+
+            childRef.putBytes(data).addOnFailureListener{
                 result = false
             }.await()
         }

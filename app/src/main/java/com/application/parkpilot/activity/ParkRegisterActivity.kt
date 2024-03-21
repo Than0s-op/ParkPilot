@@ -134,8 +134,10 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
 
         buttonSubmit.setOnClickListener {
             viewModel.uploadDetails(
-                StationBasic(editTextStationName.text.toString(),
-                editTextStartingPrice.text.toString().toInt(),
+                this,
+                StationBasic(
+                    editTextStationName.text.toString(),
+                    editTextStartingPrice.text.toString().toInt(),
                     null
                 ),
 
@@ -190,16 +192,17 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
             }
         }
         viewModel.liveDataImages.observe(this) {
-            for(i in it.indices){
+            for (i in it.indices) {
                 imageViews[i].load(it[i])
+                viewModel.imageViewsUri[i] = it[i]
             }
         }
-        viewModel.isUploaded.observe(this){ isUploaded ->
+        viewModel.isUploaded.observe(this) { isUploaded ->
             if (isUploaded) {
                 Toast.makeText(
                     this, "Information Save Successfully", Toast.LENGTH_SHORT
                 ).show()
-                startActivity(Intent(this,MainActivity::class.java).apply{
+                startActivity(Intent(this, MainActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 })
             } else {

@@ -71,6 +71,7 @@ class UserRegisterActivity : AppCompatActivity(R.layout.user_register) {
         buttonSave.setOnClickListener {
             // uploading the user data
             viewModel.saveUserData(
+                this,
                 UserCollection(
                     editTextFirstName.text.toString(),
                     editTextLastName.text.toString(),
