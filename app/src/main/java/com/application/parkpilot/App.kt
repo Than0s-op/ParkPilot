@@ -16,7 +16,6 @@ object User{
     // type of users
     const val ANONYMOUS = 0
     const val FINDER = 1
-    const val OWNER = 2
 
     // if UID is null it means user not login yet
     lateinit var UID:String

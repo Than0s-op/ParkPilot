@@ -97,7 +97,4 @@ dependencies {
 
     // flex-box
     implementation("com.google.android.flexbox:flexbox:3.0.0")
-
-    // file compressor
-    implementation("id.zelory:compressor:3.0.1")
 }
