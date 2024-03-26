@@ -33,7 +33,7 @@ class SpotPreview : BottomSheetDialogFragment(R.layout.spot_preview) {
         recyclerView.layoutManager = CarouselLayoutManager()
         viewModel.loadCarousel()
         viewModel.loadBasicInfo(stationUID)
-
+        viewModel.loadRating(stationUID)
 
         buttonDetail.setOnClickListener {
             val intent = Intent(context, SpotDetailActivity::class.java).apply{
@@ -51,7 +51,9 @@ class SpotPreview : BottomSheetDialogFragment(R.layout.spot_preview) {
             textViewName.text = it.name
             textViewRating.text = it.rating.toString()
             textViewPrice.text = it.price.toString()
-            textViewDistance.text = "N/A"
+        }
+        viewModel.stationRating.observe(this){
+            textViewRating.text = it
         }
     }
 }

@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import coil.load
 import com.application.parkpilot.R
 import com.application.parkpilot.UserCollection
 import com.application.parkpilot.UserProfile
@@ -45,18 +46,10 @@ class UserRegisterActivity : AppCompatActivity(R.layout.user_register) {
         // why it's here? ans:- [ if user came from Main Activity then we have to throw user again to Main Activity, otherwise do nothing]
         var nextIntent: Intent? = Intent(this, MainActivity::class.java)
 
-        // does user have user name?,yes it means she has profile name and image
-        if (viewModel.user.displayName != null) {
+        viewModel.getProfileDetails()
 
-            // load profile image in memory
-            viewModel.getImage(this, viewModel.photoUrl!!)
-
-            // setting user name to edit text
-            editTextUserName.setText(viewModel.user.displayName)
-
-            // get user details from user collection
-            viewModel.getUserDetails()
-        }
+        // get user details from user collection
+        viewModel.getUserDetails()
 
         editTextBirthDate.setOnClickListener {
             // start and end dates format should be yyyy-mm-dd (modify this function)
@@ -79,8 +72,7 @@ class UserRegisterActivity : AppCompatActivity(R.layout.user_register) {
                     if (radioGroupGender.checkedRadioButtonId == R.id.radioButtonFemale) "female" else "male"
                 ),
                 UserProfile(
-                    editTextUserName.text.toString(),
-                    viewModel.photoUrl!!
+                    editTextUserName.text.toString()
                 )
             )
         }
@@ -102,6 +94,18 @@ class UserRegisterActivity : AppCompatActivity(R.layout.user_register) {
                 radioGroupGender.check(if (it.gender == "female") R.id.radioButtonFemale else R.id.radioButtonMale)
                 // if user came from home/other activity except mainActivity
                 nextIntent = null
+            }
+        }
+
+        viewModel.userProfile.observe(this) { userProfile ->
+            userProfile?.let {
+                editTextUserName.setText(userProfile.userName)
+                if (userProfile.userPicture != null) {
+                    imageViewProfilePicture.load(userProfile.userPicture)
+                    viewModel.photoUrl = userProfile.userPicture
+                } else {
+                    imageViewProfilePicture.load(R.drawable.person_icon)
+                }
             }
         }
 
@@ -130,7 +134,7 @@ class UserRegisterActivity : AppCompatActivity(R.layout.user_register) {
                     this, "Information Save Successfully", Toast.LENGTH_SHORT
                 ).show()
 
-                nextIntent?.let{
+                nextIntent?.let {
                     startActivity(nextIntent)
                 }
                 finish()
