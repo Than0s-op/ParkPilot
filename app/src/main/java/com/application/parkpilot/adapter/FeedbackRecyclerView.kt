@@ -11,13 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.application.parkpilot.Feedback
 import com.application.parkpilot.R
+import com.application.parkpilot.module.firebase.Storage
 import com.application.parkpilot.module.firebase.database.UserBasic
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class FeedbackRecyclerView(
-    private val context: Context, private val layout: Int, private val feedback: ArrayList<Feedback>
+    private val context: Context, private val layout: Int, private val feedback: List<Pair<String,Feedback>>
 ) : RecyclerView.Adapter<FeedbackRecyclerView.ViewHolder>() {
     private val userBasic = UserBasic()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,15 +27,15 @@ class FeedbackRecyclerView(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val userProfile = userBasic.getProfile(feedback[position].UID)
+        CoroutineScope(Dispatchers.Main).launch {
+            val userProfile = userBasic.getProfile(feedback[position].second.UID)
             userProfile?.let {
-                holder.imageViewUserPicture.load(userProfile.userPicture)
+                holder.imageViewUserPicture.load(Storage().userProfilePhotoGet(feedback[position].second.UID))
                 holder.textViewUserName.text = userProfile.userName
             }
         }
-        holder.ratingBar.rating = feedback[position].rating
-        holder.textViewMessage.text = feedback[position].message
+        holder.ratingBar.rating = feedback[position].second.rating
+        holder.textViewMessage.text = feedback[position].second.message
     }
 
     override fun getItemCount(): Int {

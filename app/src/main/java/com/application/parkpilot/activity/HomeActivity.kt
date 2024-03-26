@@ -121,13 +121,8 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
                 ANONYMOUS -> {
                     menu.findItem(R.id.buttonHistory).isVisible = false
                 }
-
                 FINDER -> {
 
-                }
-
-                OWNER -> {
-                    menu.findItem(R.id.buttonHistory).isVisible = false
                 }
             }
         }

@@ -97,4 +97,7 @@ dependencies {
 
     // flex-box
     implementation("com.google.android.flexbox:flexbox:3.0.0")
+
+    // avatar image generator
+    implementation("com.github.amoskorir:avatarimagegenerator:1.5.0")
 }

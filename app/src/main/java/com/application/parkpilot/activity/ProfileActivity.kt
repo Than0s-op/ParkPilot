@@ -54,10 +54,6 @@ class ProfileActivity : AppCompatActivity(R.layout.profile) {
                 textViewLogout.visibility = View.GONE
             }
 
-            User.OWNER -> {
-                textViewLogin.visibility = View.GONE
-            }
-
             User.FINDER -> {
                 textViewSpotDetail.visibility = View.GONE
                 textViewLogin.visibility = View.GONE

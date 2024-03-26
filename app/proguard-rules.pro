@@ -22,6 +22,7 @@
 
 
 # below code for razor payment gateway
+
 #[razor START]
 -keepclassmembers class * {
     @android.webkit.JavascriptInterface <methods>;

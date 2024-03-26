@@ -37,7 +37,6 @@ class UserBasic : FireStore() {
         // data mapping
         val map = mapOf(
             userName to data.userName.trim(),
-            userPicture to data.userPicture
         )
 
         // await function this will block thread
@@ -59,7 +58,6 @@ class UserBasic : FireStore() {
             if (get(userName) != null) {
                 result = UserProfile(
                     get(userName) as String,
-                    (get(userPicture) as String).toUri(),
                 )
             }
         }
@@ -331,8 +329,9 @@ class Feedback : FireStore() {
     private val message = "message"
 
     @Suppress("UNCHECKED_CAST")
-    suspend fun feedGet(documentID: String): ArrayList<FeedbackData> {
-        val result = ArrayList<FeedbackData>()
+    suspend fun feedGet(documentID: String): Map<String,FeedbackData> {
+        val result = hashMapOf<String,FeedbackData>()
+
         fireStore.collection(collectionName).document(documentID).get().await().let {
             val feedbacks = it.data as? Map<String, Any>
 
@@ -340,12 +339,10 @@ class Feedback : FireStore() {
                 for (feedback in feedbacks) {
                     feedback.apply {
                         val values = value as Map<String, Any>
-                        result.add(
-                            FeedbackData(
-                                key,
-                                (values[rating] as Double).toFloat(),
-                                values[message] as String
-                            )
+                        result[key] = FeedbackData(
+                            key,
+                            (values[rating] as Double).toFloat(),
+                            values[message] as String
                         )
                     }
                 }

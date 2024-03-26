@@ -10,7 +10,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        // QR generator (zxing)
+        // QR generator (zxing), avatar
         maven ("https://jitpack.io" )
     }
 }

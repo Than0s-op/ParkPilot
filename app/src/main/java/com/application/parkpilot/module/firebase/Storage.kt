@@ -13,10 +13,10 @@ import java.io.ByteArrayOutputStream
 
 class Storage {
     private val storageRef = Firebase.storage.reference
-    suspend fun userProfilePhotoPut(context:Context,uid: String, photoUri: Uri): Uri {
+    suspend fun userProfilePhotoPut(context:Context,uid: String, photo:Any): Uri? {
         val childRef = storageRef.child("user_profile_photo/${uid}")
         val request = ImageRequest.Builder(context)
-            .data(photoUri)
+            .data(photo)
             .size(300, 300)
             .build()
         val drawable = context.imageLoader.execute(request).drawable
@@ -31,8 +31,12 @@ class Storage {
         return userProfilePhotoGet(uid)
     }
 
-    suspend fun userProfilePhotoGet(uid: String): Uri {
-        return storageRef.child("user_profile_photo/${uid}").downloadUrl.await()
+    suspend fun userProfilePhotoGet(uid: String): Uri? {
+        return try {
+            storageRef.child("user_profile_photo/${uid}").downloadUrl.await()
+        } catch (e: Exception) {
+            null
+        }
     }
 
     suspend fun parkSpotPhotoPut(context: Context, uid: String, photosUri: Array<Uri?>):Boolean {

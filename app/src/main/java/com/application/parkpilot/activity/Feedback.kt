@@ -25,26 +25,31 @@ class Feedback : AppCompatActivity(R.layout.feedback) {
         val viewModel = FeedbackViewModel()
         val layoutFeedbackForm = layoutInflater.inflate(R.layout.feedback_form, null, false).apply {
             val imageViewProfilePicture: ImageView = findViewById(R.id.imageViewProfilePicture)!!
-            val ratingBar:RatingBar = findViewById(R.id.ratingBar)
-            val editTextFeedback: EditText = findViewById(R.id.editTextFeedback)
-            val buttonCancel: Button = findViewById(R.id.buttonCancel)
-            val buttonOk:Button = findViewById(R.id.buttonOk)
 
             imageViewProfilePicture.load(viewModel.profilePicture())
-            buttonOk.setOnClickListener {
-                viewModel.setFeedback(stationUID,Feedback(User.UID,ratingBar.rating,editTextFeedback.text.toString()))
-            }
-            buttonCancel.setOnClickListener {
-
-            }
+            viewModel.loadProfileImage(imageViewProfilePicture)
         }
 
         val dialogInflater =
             MaterialAlertDialogBuilder(this).setView(layoutFeedbackForm).create()
 
+        val buttonOk:Button = layoutFeedbackForm.findViewById(R.id.buttonOk)
+        val buttonCancel: Button = layoutFeedbackForm.findViewById(R.id.buttonCancel)
+        val ratingBar:RatingBar = layoutFeedbackForm.findViewById(R.id.ratingBar)
+        val editTextFeedback: EditText = layoutFeedbackForm.findViewById(R.id.editTextFeedback)
+
+        buttonOk.setOnClickListener {
+            viewModel.setFeedback(stationUID,Feedback(User.UID,ratingBar.rating,editTextFeedback.text.toString()))
+            dialogInflater.dismiss()
+        }
+        buttonCancel.setOnClickListener {
+            dialogInflater.dismiss()
+        }
+
         viewModel.loadRecycler(this,stationUID, recyclerView)
 
         buttonFeedback.setOnClickListener {
+            viewModel.loadFeedback(stationUID,ratingBar,editTextFeedback)
             dialogInflater.show()
         }
     }

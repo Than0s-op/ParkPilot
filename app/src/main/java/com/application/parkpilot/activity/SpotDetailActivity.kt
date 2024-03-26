@@ -37,6 +37,7 @@ class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail) {
 
         viewModel.loadAdvanceInfo(stationUID)
         viewModel.loadBasicInfo(stationUID)
+        viewModel.loadRating(stationUID)
 
         // loading recycler view default (init) properties
         recyclerView.apply {
@@ -71,7 +72,10 @@ class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail) {
             textViewName.text = it.name
             textViewRating.text = it.rating.toString()
             textViewPrice.text = it.price.toString()
-            textViewDistance.text = "N/A"
+        }
+
+        viewModel.stationRating.observe(this){
+            textViewRating.text = it
         }
     }
 
