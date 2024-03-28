@@ -3,22 +3,18 @@ package com.application.parkpilot.viewModel
 import android.content.Context
 import android.content.Intent
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.parkpilot.ParkPilotMapLegend
-import com.application.parkpilot.activity.AuthenticationActivity
+import com.application.parkpilot.User
 import com.application.parkpilot.activity.BookingHistoryActivity
 import com.application.parkpilot.activity.HomeActivity
-import com.application.parkpilot.activity.MainActivity
 import com.application.parkpilot.activity.ProfileActivity
-import com.application.parkpilot.activity.UserRegisterActivity
 import com.application.parkpilot.bottomSheet.SpotPreview
 import com.application.parkpilot.module.OSM
 import com.application.parkpilot.module.PhotoLoader
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
+import com.application.parkpilot.module.firebase.Storage
 import kotlinx.coroutines.launch
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -60,9 +56,9 @@ class HomeViewModel(activity: HomeActivity) : ViewModel() {
     }
 
     fun loadProfileImage(context: Context, profileImage: MenuItem) {
-        Firebase.auth.currentUser?.photoUrl?.let {
-            viewModelScope.launch {
-                profileImage.icon = PhotoLoader().getImage(context, it).drawable
+        viewModelScope.launch {
+            Storage().userProfilePhotoGet(User.UID)?.let { uri ->
+                profileImage.icon = PhotoLoader().getImage(context, uri).drawable
             }
         }
     }

@@ -14,6 +14,7 @@ import com.application.parkpilot.adapter.CarouselRecyclerView
 import com.application.parkpilot.viewModel.SpotPreviewViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.carousel.CarouselLayoutManager
+import org.osmdroid.util.GeoPoint
 
 class SpotPreview : BottomSheetDialogFragment(R.layout.spot_preview) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,7 +32,7 @@ class SpotPreview : BottomSheetDialogFragment(R.layout.spot_preview) {
         val viewModel = ViewModelProvider(this)[SpotPreviewViewModel::class.java]
 
         recyclerView.layoutManager = CarouselLayoutManager()
-        viewModel.loadCarousel()
+        viewModel.loadCarousel(stationUID)
         viewModel.loadBasicInfo(stationUID)
         viewModel.loadRating(stationUID)
 
