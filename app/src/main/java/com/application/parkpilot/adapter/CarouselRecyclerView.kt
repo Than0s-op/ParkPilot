@@ -10,7 +10,7 @@ import coil.load
 import com.application.parkpilot.R
 
 class CarouselRecyclerView(
-    private val context: Context, private val layout: Int, private val images: ArrayList<Any>
+    private val context: Context, private val layout: Int, private val images: List<Any>
 ) : RecyclerView.Adapter<CarouselRecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -42,7 +42,7 @@ class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail) {
         // loading recycler view default (init) properties
         recyclerView.apply {
             layoutManager = CarouselLayoutManager()
-            viewModel.loadCarousel()
+            viewModel.loadCarousel(stationUID)
         }
 
         buttonFeedback.setOnClickListener{
@@ -76,6 +76,10 @@ class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail) {
 
         viewModel.stationRating.observe(this){
             textViewRating.text = it
+        }
+
+        viewModel.stationLocation.observe(this){
+//            textViewDistance.text =
         }
     }
 

@@ -6,8 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.parkpilot.activity.Feedback
+import com.application.parkpilot.module.firebase.Storage
 import com.application.parkpilot.module.firebase.database.StationAdvance
 import com.application.parkpilot.module.firebase.database.StationBasic
+import com.application.parkpilot.module.firebase.database.StationLocation
+import com.google.firebase.firestore.GeoPoint
 import com.application.parkpilot.module.firebase.database.Feedback as FS_Feedback
 import kotlinx.coroutines.launch
 import com.application.parkpilot.StationAdvance as StationAdvanceDataClass
@@ -15,20 +18,16 @@ import com.application.parkpilot.StationBasic as StationBasicDataClass
 
 class SpotPreviewViewModel : ViewModel() {
 
-    val carouselImages = MutableLiveData<ArrayList<Any>>()
+    val carouselImages = MutableLiveData<List<Any>>()
     val stationBasicInfo = MutableLiveData<StationBasicDataClass>()
     val stationAdvanceInfo = MutableLiveData<StationAdvanceDataClass>()
     val stationRating = MutableLiveData<String>()
+    val stationLocation = MutableLiveData<GeoPoint>()
 
-    fun loadCarousel() {
-        val images: ArrayList<Any> = ArrayList()
-        images.apply {
-            add("https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=600")
-            add("https://images.pexels.com/photos/116675/pexels-photo-116675.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")
-            add("https://images.pexels.com/photos/707046/pexels-photo-707046.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")
-            add("https://images.pexels.com/photos/164634/pexels-photo-164634.jpeg?auto=compress&cs=tinysrgb&w=600")
+    fun loadCarousel(stationUID:String) {
+        viewModelScope.launch {
+            carouselImages.value = Storage().parkSpotPhotoGet(stationUID)
         }
-        carouselImages.value = images
     }
 
     fun loadBasicInfo(stationUID: String) {
@@ -40,6 +39,12 @@ class SpotPreviewViewModel : ViewModel() {
     fun loadAdvanceInfo(stationUID: String) {
         viewModelScope.launch {
             stationAdvanceInfo.value = StationAdvance().advanceGet(stationUID)
+        }
+    }
+
+    fun getStationLocation(stationUID:String){
+        viewModelScope.launch{
+            stationLocation.value = StationLocation().locationGet(stationUID)
         }
     }
 
