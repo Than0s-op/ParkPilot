@@ -11,12 +11,10 @@ import com.application.parkpilot.User as appUser
 class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         // getting current user status
 
         // if User is signed in below block will execute (if current user is not null)
         if (Firebase.auth.currentUser?.uid != null) {
-
             /*
                 if user is signIn but not filled the registration information
                 here we are checking, is user's UID exist in shared preferences (local storage)
@@ -34,6 +32,7 @@ class MainActivity : Activity() {
 
         // No user is signed in yet (anonymous)
         else {
+            appUser.UID = "Non"
             User.type = User.ANONYMOUS
             // through user to the Home activity
             nextActivity()

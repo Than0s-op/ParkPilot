@@ -81,6 +81,11 @@
 
         </activity>
 
+        <activity android:name=".activity.SpotListActivity"
+            android:exported="true">
+
+        </activity>
+
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.application.parkpilot.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.widget.Button
@@ -38,6 +39,7 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
         val currentLocationButton: Button = findViewById(R.id.buttonCurrentLocation)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
         val navigationRailView: NavigationRailView = findViewById(R.id.navigationRailView)
+        val buttonList:Button = findViewById(R.id.buttonList)
 
         setMenuVisibility(navigationRailView.menu)
 
@@ -112,6 +114,11 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
         currentLocationButton.setOnClickListener {
             // it will set current location in mapView
             viewModel.getCurrentLocation()
+        }
+
+        buttonList.setOnClickListener{
+            val intent = Intent(this,SpotListActivity::class.java)
+            startActivity(intent)
         }
     }
 

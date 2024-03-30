@@ -9,7 +9,6 @@ import com.application.parkpilot.App
 import com.application.parkpilot.QRCodeCollection
 import com.application.parkpilot.R
 import com.application.parkpilot.User
-import com.application.parkpilot.adapter.CarouselRecyclerView
 import com.application.parkpilot.module.QRGenerator
 import com.application.parkpilot.module.RazorPay
 import com.application.parkpilot.module.firebase.database.QRCode
