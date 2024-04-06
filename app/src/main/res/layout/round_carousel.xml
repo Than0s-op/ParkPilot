@@ -12,7 +12,6 @@
         android:id="@+id/list_item_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:transitionName="image" />
+        android:scaleType="centerCrop"/>
 
 </com.google.android.material.carousel.MaskableFrameLayout>
