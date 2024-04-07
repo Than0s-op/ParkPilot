@@ -2,9 +2,11 @@ package com.application.parkpilot.activity
 
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -18,13 +20,14 @@ import com.hbb20.CountryCodePicker
 
 
 class AuthenticationActivity : AppCompatActivity(R.layout.authentication) {
+    private lateinit var progressBar: ProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // init views
         val editTextPhoneNumber: EditText = findViewById(R.id.editTextPhoneNumber)
         val buttonVerifyPhoneNumber: Button = findViewById(R.id.buttonVerifyPhoneNumber)
-        val progressBar: ProgressBar = findViewById(R.id.progressBar)
+        progressBar = findViewById(R.id.progressBar)
         val scrollViewLogin: ScrollView = findViewById(R.id.scrollViewLogin)
         val scrollViewOTP: ScrollView = findViewById(R.id.scrollViewOTP)
         val pinViewOTP: PinView = findViewById(R.id.pinViewOTP)
@@ -32,6 +35,12 @@ class AuthenticationActivity : AppCompatActivity(R.layout.authentication) {
         val countryCodePicker: CountryCodePicker = findViewById(R.id.countryCodePicker)
         val textViewNumber: TextView = findViewById(R.id.textViewNumber)
         val buttonResendOTP: Button = findViewById(R.id.buttonResendOTP)
+
+        findViewById<RelativeLayout>(R.id.divider1).findViewById<TextView>(R.id.dividerTextView).text =
+            "Log in or sign up"
+
+        findViewById<RelativeLayout>(R.id.divider2).findViewById<TextView>(R.id.dividerTextView).text =
+            "or"
 
         // getting authentication view model reference [init]
         val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
@@ -54,8 +63,17 @@ class AuthenticationActivity : AppCompatActivity(R.layout.authentication) {
 
 
         buttonVerifyPhoneNumber.setOnClickListener { _ ->
-            // show progress bar
-            progressBar.visibility = View.VISIBLE
+
+            // mobile number validation
+            if (editTextPhoneNumber.text.length != 10) {
+                editTextPhoneNumber.error = "Invalid number"
+                return@setOnClickListener
+            } else {
+                editTextPhoneNumber.error = null
+            }
+
+            // progress bar
+            showProgress()
 
             // storing user number with country code
             viewModel.phoneNumberWithCountryCode =
@@ -73,7 +91,7 @@ class AuthenticationActivity : AppCompatActivity(R.layout.authentication) {
             it.getContentIfNotHandled()?.let { verificationCode ->
 
                 // If OTP send successfully or unsuccessfully, then hide progress bar
-                progressBar.visibility = View.GONE
+                unShowProgress()
 
                 // when "verificationId == null" OTP send to failed,
                 // otherwise OTP send successfully
@@ -104,6 +122,8 @@ class AuthenticationActivity : AppCompatActivity(R.layout.authentication) {
         }
 
         buttonOTPVerification.setOnClickListener { _ ->
+            showProgress()
+
             // pass user entered OTP to check entered OTP correct or not
             viewModel.verifyPhoneNumberWithCode(
                 pinViewOTP.text.toString()
@@ -113,6 +133,7 @@ class AuthenticationActivity : AppCompatActivity(R.layout.authentication) {
         // It will be react when we get result of the "verifyPhoneNumberWithCode" function call
         viewModel.verifyPhoneNumberWithCodeResult.observe(this) {
             it.getContentIfNotHandled()?.let { isCorrect ->
+                unShowProgress()
                 // when Credential match (OTP is correct)
                 if (isCorrect) {
                     // show successful toast
@@ -172,5 +193,24 @@ class AuthenticationActivity : AppCompatActivity(R.layout.authentication) {
                 }
             }
         }
+    }
+
+    private fun showProgress() {
+        // show progress bar
+        progressBar.visibility = View.VISIBLE
+
+        // to disable user interaction with ui
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
+    }
+
+    private fun unShowProgress() {
+        // hide progress bar
+        progressBar.visibility = View.GONE
+
+        // to enable user interaction with ui
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 }
