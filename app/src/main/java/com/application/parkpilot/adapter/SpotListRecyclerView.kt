@@ -2,6 +2,8 @@ package com.application.parkpilot.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +39,6 @@ class SpotListRecyclerView(
             val stationBasic = StationBasic().basicGet(stationUID)
             stationBasic?.let {
                 holder.textViewName.text = stationBasic.name
-                holder.textViewRating.text = "0.0"
                 holder.textViewDistance.text = "N/A"
                 holder.textViewPrice.text = stationBasic.price?.toString()
                 holder.buttonDetail.setOnClickListener {
@@ -56,13 +57,24 @@ class SpotListRecyclerView(
             // ratting
             val feedbacks = Feedback().feedGet(stationUID)
             var totalRatting = 0.0f
-            for(i in feedbacks){
+            for (i in feedbacks) {
                 totalRatting += i.value.rating
             }
-            if(feedbacks.isNotEmpty())
-                holder.textViewRating.text = String.format("%.1f",totalRatting / feedbacks.size)
-            else holder.textViewRating.text = "N/A"
+            if (feedbacks.isNotEmpty()) {
+                val ratting = totalRatting / feedbacks.size
+                holder.textViewRating.text = String.format("%.1f", ratting)
+                holder.textViewRating.backgroundTintList = getTint(ratting)
+            } else holder.textViewRating.text = "N/A"
         }
+    }
+
+    private fun getTint(ratting: Float): ColorStateList {
+        return if (ratting <= 2.5)
+            ColorStateList.valueOf(Color.parseColor("#ff4545"))
+        else if (ratting < 4)
+            ColorStateList.valueOf(Color.parseColor("#ffe234"))
+        else
+            ColorStateList.valueOf(Color.parseColor("#57e32c"))
     }
 
     override fun getItemCount(): Int {
