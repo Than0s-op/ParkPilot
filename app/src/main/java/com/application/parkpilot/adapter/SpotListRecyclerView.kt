@@ -65,16 +65,20 @@ class SpotListRecyclerView(
                 holder.textViewRating.text = String.format("%.1f", ratting)
                 holder.textViewRating.backgroundTintList = getTint(ratting)
             } else holder.textViewRating.text = "N/A"
+
+            // setting number of user rated
+            holder.textViewNumberOfUser.text = feedbacks.size.toString()
         }
     }
 
     private fun getTint(ratting: Float): ColorStateList {
-        return if (ratting <= 2.5)
-            ColorStateList.valueOf(Color.parseColor("#ff4545"))
-        else if (ratting < 4)
-            ColorStateList.valueOf(Color.parseColor("#ffe234"))
-        else
-            ColorStateList.valueOf(Color.parseColor("#57e32c"))
+        return if (ratting <= 2.5) {
+            ColorStateList.valueOf(Color.parseColor("#e5391a"))
+        } else if (ratting < 4) {
+            ColorStateList.valueOf(Color.parseColor("#cb8300"))
+        } else {
+            ColorStateList.valueOf(Color.parseColor("#026a28"))
+        }
     }
 
     override fun getItemCount(): Int {
@@ -88,6 +92,7 @@ class SpotListRecyclerView(
             }
         val textViewName: TextView = itemView.findViewById(R.id.textViewName)
         val textViewRating: TextView = itemView.findViewById(R.id.textViewRating)
+        val textViewNumberOfUser: TextView = itemView.findViewById(R.id.textViewNumberOfUser)
         val textViewDistance: TextView = itemView.findViewById(R.id.textViewDistance)
         val textViewPrice: TextView = itemView.findViewById(R.id.textViewPrice)
         val buttonDetail: Button = itemView.findViewById(R.id.buttonDetail)

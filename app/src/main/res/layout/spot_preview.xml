@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="5dp"
@@ -30,9 +31,8 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="10dp"
                 android:hint="Name"
-                android:textSize="20sp"
+                android:textSize="35sp"
                 android:textStyle="bold"
-                app:drawableStartCompat="@drawable/location_city_icon"
                 app:layout_constraintBottom_toTopOf="@+id/textViewDistance"
                 app:layout_constraintStart_toStartOf="@+id/textViewDistance"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -41,34 +41,63 @@
                 android:id="@+id/textViewDistance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:drawablePadding="10dp"
                 android:hint="distance"
                 android:textSize="20sp"
-                app:drawableStartCompat="@drawable/walk_icon"
-                app:layout_constraintBottom_toTopOf="@+id/textViewPrice"
-                app:layout_constraintStart_toStartOf="@+id/textViewPrice"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewName" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="From"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewPrice"
+                app:layout_constraintEnd_toStartOf="@+id/textViewPrice"
+                app:layout_constraintTop_toTopOf="@+id/textViewPrice" />
             <TextView
                 android:id="@+id/textViewPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 app:drawableStartCompat="@drawable/currency_rupee_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewDistance" />
-
-            <TextView
-                android:id="@+id/textViewRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:gravity="center"
-                android:background="@drawable/round_corner_background"
-                app:drawableStartCompat="@drawable/star_icon"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_corner_background"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewPrice">
+
+                <TextView
+                    android:id="@+id/textViewRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="2dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/round_corner_background"
+                    android:gravity="center"
+                    android:paddingHorizontal="5dp"
+                    android:textColor="@color/white"
+                    app:drawableStartCompat="@drawable/star_icon"
+                    app:drawableTint="@color/white" />
+
+                <TextView
+                    android:id="@+id/textViewNumberOfUser"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
