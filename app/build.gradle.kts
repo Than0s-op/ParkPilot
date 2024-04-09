@@ -100,4 +100,7 @@ dependencies {
 
     // avatar image generator
     implementation("com.github.amoskorir:avatarimagegenerator:1.5.0")
+
+    // refresh layout
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
 }
