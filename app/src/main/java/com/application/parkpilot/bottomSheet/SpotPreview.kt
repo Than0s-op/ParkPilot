@@ -1,6 +1,8 @@
 package com.application.parkpilot.bottomSheet
 
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
@@ -13,6 +15,7 @@ import com.application.parkpilot.activity.SpotDetailActivity
 import com.application.parkpilot.adapter.CarouselRecyclerView
 import com.application.parkpilot.viewModel.SpotPreviewViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.carousel.CarouselLayoutManager
 import org.osmdroid.util.GeoPoint
 
@@ -20,12 +23,12 @@ class SpotPreview : BottomSheetDialogFragment(R.layout.spot_preview) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val materialCardView: MaterialCardView = view.findViewById(R.id.materialCardView)
         val recyclerView: RecyclerView = view.findViewById(R.id.recycleView)
         val textViewName: TextView = view.findViewById(R.id.textViewName)
         val textViewRating: TextView = view.findViewById(R.id.textViewRating)
         val textViewDistance: TextView = view.findViewById(R.id.textViewDistance)
         val textViewPrice: TextView = view.findViewById(R.id.textViewPrice)
-        val buttonDetail: Button = view.findViewById(R.id.buttonDetail)
 
         val stationUID = tag!!
 
@@ -36,7 +39,7 @@ class SpotPreview : BottomSheetDialogFragment(R.layout.spot_preview) {
         viewModel.loadBasicInfo(stationUID)
         viewModel.loadRating(stationUID)
 
-        buttonDetail.setOnClickListener {
+        materialCardView.setOnClickListener {
             val intent = Intent(context, SpotDetailActivity::class.java).apply{
                 putExtra("stationUID",stationUID)
             }
@@ -55,6 +58,16 @@ class SpotPreview : BottomSheetDialogFragment(R.layout.spot_preview) {
         }
         viewModel.stationRating.observe(this){
             textViewRating.text = it
+            textViewRating.backgroundTintList = getTint(it.toFloat())
+        }
+    }
+    private fun getTint(ratting: Float): ColorStateList {
+        return if (ratting <= 2.5) {
+            ColorStateList.valueOf(Color.parseColor("#e5391a"))
+        } else if (ratting < 4) {
+            ColorStateList.valueOf(Color.parseColor("#cb8300"))
+        } else {
+            ColorStateList.valueOf(Color.parseColor("#026a28"))
         }
     }
 }
