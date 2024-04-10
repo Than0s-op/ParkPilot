@@ -1,29 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleView"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:fitsSystemWindows="true"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content">
 
-    <ScrollView
-        android:id="@+id/scrollView"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleView"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                app:layout_collapseMode="parallax"
+                app:layout_constraintBottom_toTopOf="@+id/scrollView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recycleView">
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginTop="25dp"
             android:padding="10dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,47 +55,83 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="10dp"
                     android:hint="Name"
-                    android:textSize="20sp"
+                    android:textSize="35sp"
                     android:textStyle="bold"
-                    app:drawableStartCompat="@drawable/location_city_icon"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/textViewDistance"
+                    app:layout_constraintStart_toStartOf="@+id/textViewDistance"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textViewRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="10dp"
-                    android:hint="rating"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:drawableStartCompat="@drawable/star_icon"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textViewName" />
-
+                    android:layout_marginStart="5dp"
+                    android:text="away"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewDistance"
+                    app:layout_constraintStart_toEndOf="@+id/textViewDistance"
+                    app:layout_constraintTop_toTopOf="@+id/textViewDistance" />
 
                 <TextView
                     android:id="@+id/textViewDistance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="10dp"
-                    android:hint="distance"
+                    android:layout_marginTop="8dp"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:drawableStartCompat="@drawable/walk_icon"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textViewRating" />
+                    app:drawableStartCompat="@drawable/near_me"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewName" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="From"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewPrice"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewPrice"
+                    app:layout_constraintTop_toTopOf="@+id/textViewPrice" />
 
                 <TextView
                     android:id="@+id/textViewPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="starting price"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/currency_rupee_icon"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_corner_background"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewPrice">
+
+                    <TextView
+                        android:id="@+id/textViewRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="2dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/round_corner_background"
+                        android:gravity="center"
+                        android:paddingHorizontal="5dp"
+                        android:textColor="@color/white"
+                        app:drawableStartCompat="@drawable/star_icon"
+                        app:drawableTint="@color/white" />
+
+                    <TextView
+                        android:id="@+id/textViewNumberOfUser"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -130,8 +184,7 @@
                 android:layout_marginTop="30dp"
                 android:lineSpacingExtra="5dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView"
-                tools:layout_editor_absoluteX="10dp" />
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
@@ -168,17 +221,16 @@
                 android:layout_marginTop="30dp" />
 
         </LinearLayout>
-    </ScrollView>
+
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/buttonFeedback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:text="Feedback"
-        app:icon="@drawable/next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_margin="15dp"
+        app:icon="@drawable/comment_icon"
+        app:layout_anchor="@id/appBarLayout"
+        app:layout_anchorGravity="bottom|end" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
