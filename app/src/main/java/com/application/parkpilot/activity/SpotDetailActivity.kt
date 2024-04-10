@@ -1,11 +1,17 @@
 package com.application.parkpilot.activity
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Html
 import android.view.View
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.application.parkpilot.AccessHours
 import com.application.parkpilot.R
 import com.application.parkpilot.adapter.CarouselRecyclerView
 import com.application.parkpilot.viewModel.SpotPreviewViewModel
@@ -26,11 +32,8 @@ class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail) {
         val textViewRating: TextView = findViewById(R.id.textViewRating)
         val textViewDistance: TextView = findViewById(R.id.textViewDistance)
         val textViewPrice: TextView = findViewById(R.id.textViewPrice)
-        val textViewTSYK:TextView = findViewById(R.id.textViewTSYK)
-        val textViewAccessHours:TextView = findViewById(R.id.textViewAccessHours)
-        val textViewGettingThere:TextView = findViewById(R.id.textViewGettingThere)
-        val buttonFeedback:ExtendedFloatingActionButton = findViewById(R.id.buttonFeedback)
-
+        val textViewThinkShouldYouKnow: TextView = findViewById(R.id.textViewThinkShouldYouKnow)
+        val buttonFeedback: ExtendedFloatingActionButton = findViewById(R.id.buttonFeedback)
 
         val viewModel = ViewModelProvider(this)[SpotPreviewViewModel::class.java]
         val stationUID = intent.getStringExtra("stationUID")!!
@@ -45,56 +48,74 @@ class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail) {
             viewModel.loadCarousel(stationUID)
         }
 
-        buttonFeedback.setOnClickListener{
-            viewModel.feedback(this,stationUID)
+        buttonFeedback.setOnClickListener {
+            viewModel.feedback(this, stationUID)
         }
 
         viewModel.carouselImages.observe(this) { images ->
-            recyclerView.adapter =
-                CarouselRecyclerView(this, R.layout.square_carousel, images)
+            recyclerView.adapter = CarouselRecyclerView(this, R.layout.square_carousel, images)
         }
 
-        viewModel.stationAdvanceInfo.observe(this){
+        viewModel.stationAdvanceInfo.observe(this) {
             // loading "Think should you know" section
-            loadThinkShouldYouKnow(textViewTSYK,it.thinkShouldYouKnow)
+            loadThinkShouldYouKnow(textViewThinkShouldYouKnow, it.thinkShouldYouKnow)
 
             // loading amenities section
             loadAmenities(it.amenities)
 
             // loading access hours section
+            loadAccessHours(it.accessHours)
 //            textViewAccessHours.text = it.accessHours
-
-            // loading getting there section
-            textViewGettingThere.text = it.gettingThere
         }
 
-        viewModel.stationBasicInfo.observe(this){
+        viewModel.stationBasicInfo.observe(this) {
             textViewName.text = it.name
             textViewRating.text = it.rating.toString()
             textViewPrice.text = it.price.toString()
         }
 
-        viewModel.stationRating.observe(this){
+        viewModel.stationRating.observe(this) {
             textViewRating.text = it
         }
 
-        viewModel.stationLocation.observe(this){
+        viewModel.stationLocation.observe(this) {
 //            textViewDistance.text =
         }
     }
 
-    private fun loadThinkShouldYouKnow(textViewTSYK:TextView, thinkShouldYouKnowList:List<String>){
-        var thinkShouldYouKnow = ""
-        for(line in thinkShouldYouKnowList){
-            // it is just a formatting
-            thinkShouldYouKnow += "• $line\n\n"
+    private fun loadThinkShouldYouKnow(
+        textViewThinkShouldYouKnow: TextView, thinkShouldYouKnowList: List<String>
+    ) {
+        val bulletListBuilder = StringBuilder()
+        for (line in thinkShouldYouKnowList) {
+            bulletListBuilder.append("•   $line\n")
         }
-        textViewTSYK.text = thinkShouldYouKnow
+        val bulletList = bulletListBuilder.substring(0, bulletListBuilder.length - 1).toString()
+        textViewThinkShouldYouKnow.text = bulletList
     }
 
-    private fun loadAmenities(amenitiesList:List<String>){
-        for(amenities in amenitiesList){
-            when(amenities){
+    private fun loadAccessHours(accessHours:AccessHours){
+        val tint = ColorStateList.valueOf(Color.parseColor("#D0E4FF"))
+        for(day in accessHours.selectedDays){
+            when(day){
+                "monday" -> findViewById<TextView>(R.id.textViewMonday).backgroundTintList = tint
+                "tuesday" -> findViewById<TextView>(R.id.textViewTuesday).backgroundTintList = tint
+                "wednesday" -> findViewById<TextView>(R.id.textViewWednesday).backgroundTintList = tint
+                "thursday" -> findViewById<TextView>(R.id.textViewThursday).backgroundTintList = tint
+                "friday" -> findViewById<TextView>(R.id.textViewFriday).backgroundTintList = tint
+                "saturday" -> findViewById<TextView>(R.id.textViewSaturday).backgroundTintList = tint
+                "sunday" -> findViewById<TextView>(R.id.textViewSunday).backgroundTintList = tint
+            }
+        }
+        val editTextOpenTime: EditText = findViewById(R.id.editTextOpenTime)
+        val editTextCloseTime:EditText = findViewById(R.id.editTextCloseTime)
+        editTextOpenTime.setText(accessHours.open)
+        editTextCloseTime.setText(accessHours.close)
+    }
+
+    private fun loadAmenities(amenitiesList: List<String>) {
+        for (amenities in amenitiesList) {
+            when (amenities) {
                 "valet" -> findViewById<TextView>(R.id.textViewValet).visibility = View.VISIBLE
                 "ev_charging" -> findViewById<TextView>(R.id.textViewEV).visibility = View.VISIBLE
             }

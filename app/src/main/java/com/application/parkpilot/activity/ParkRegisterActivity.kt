@@ -144,7 +144,6 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
                 StationAdvance_DS(
                     getThinkShouldYouKnow(),
                     getAmenities(),
-                    editTextGettingThere.text.toString(),
                     getAccessTime()
                 )
             )
@@ -182,7 +181,6 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         }
         viewModel.liveDataStationAdvance.observe(this) {
             it?.let {
-                editTextGettingThere.setText(it.gettingThere)
                 val editTextThinkShouldYouKnow: EditText =
                     findViewById(R.id.editTextThinkShouldYouKnow)
                 editTextThinkShouldYouKnow.setText(loadThinkShouldYouKnow(it.thinkShouldYouKnow))
