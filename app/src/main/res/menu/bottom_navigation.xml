@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/buttonMap"
-        android:checked="true"
-        android:icon="@drawable/map_icon"
-        android:title="Map" />
 
     <item
         android:id="@+id/buttonList"
+        android:checked="true"
         android:icon="@drawable/dashboard_icon"
         android:title="List" />
+
+    <item
+        android:id="@+id/buttonMap"
+        android:icon="@drawable/map_icon"
+        android:title="Map" />
 
     <item
         android:id="@+id/buttonHistory"

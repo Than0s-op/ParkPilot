@@ -3,6 +3,7 @@ package com.application.parkpilot.activity
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.application.parkpilot.R
 import com.application.parkpilot.User
@@ -13,7 +14,7 @@ import com.application.parkpilot.fragment.SpotList
 import com.application.parkpilot.viewModel.HomeViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class FragmentController : AppCompatActivity(R.layout.home) {
+class FragmentController : AppCompatActivity(R.layout.fragment_controller) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,8 +25,8 @@ class FragmentController : AppCompatActivity(R.layout.home) {
 
         val viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
-        val mapFragment = Map()
         val spotList = SpotList()
+        val mapFragment = Map()
         val bookingHistory = BookingHistory()
         val setting = Setting()
 
@@ -34,6 +35,8 @@ class FragmentController : AppCompatActivity(R.layout.home) {
         // load the profile image in search bar if present
         viewModel.loadProfileImage(this, bottomNavigationView.menu.findItem(R.id.buttonProfile))
 
+        // default fragment
+        changeFragment(spotList)
 
         // when search bar menu's items clicked
         bottomNavigationView.setOnItemSelectedListener { clickedItem ->
@@ -41,34 +44,22 @@ class FragmentController : AppCompatActivity(R.layout.home) {
 
                 when (clickedItem.itemId) {
                     R.id.buttonList -> {
-                        supportFragmentManager.beginTransaction().apply{
-                            replace(R.id.frameLayout,spotList)
-                            commit()
-                        }
+                        changeFragment(spotList)
                         return@setOnItemSelectedListener true
                     }
 
                     R.id.buttonProfile -> {
-                        supportFragmentManager.beginTransaction().apply{
-                            replace(R.id.frameLayout,setting)
-                            commit()
-                        }
+                        changeFragment(setting)
                         return@setOnItemSelectedListener true
                     }
 
                     R.id.buttonHistory -> {
-                        supportFragmentManager.beginTransaction().apply{
-                            replace(R.id.frameLayout,bookingHistory)
-                            commit()
-                        }
+                        changeFragment(bookingHistory)
                         return@setOnItemSelectedListener true
                     }
 
                     R.id.buttonMap -> {
-                        supportFragmentManager.beginTransaction().apply{
-                            replace(R.id.frameLayout,mapFragment)
-                            commit()
-                        }
+                        changeFragment(mapFragment)
                         return@setOnItemSelectedListener true
                     }
 
@@ -76,12 +67,13 @@ class FragmentController : AppCompatActivity(R.layout.home) {
             }
             return@setOnItemSelectedListener false
         }
+    }
+    private fun changeFragment(fragment: Fragment){
         supportFragmentManager.beginTransaction().apply{
-            replace(R.id.frameLayout,mapFragment)
+            replace(R.id.frameLayout,fragment)
             commit()
         }
     }
-
     private fun setMenuVisibility(menu: Menu) {
         User.apply {
             when (type) {
