@@ -2,6 +2,8 @@ package com.application.parkpilot.viewModel
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,7 +23,7 @@ class SpotPreviewViewModel : ViewModel() {
     val carouselImages = MutableLiveData<List<Any>>()
     val stationBasicInfo = MutableLiveData<StationBasicDataClass>()
     val stationAdvanceInfo = MutableLiveData<StationAdvanceDataClass>()
-    val stationRating = MutableLiveData<String>()
+    val stationRating = MutableLiveData<Pair<Float,Int>>()
     val stationLocation = MutableLiveData<GeoPoint>()
 
     fun loadCarousel(stationUID:String) {
@@ -55,9 +57,7 @@ class SpotPreviewViewModel : ViewModel() {
             for(i in feedbacks){
                 totalRatting += i.value.rating
             }
-            if(feedbacks.isNotEmpty())
-                stationRating.value = String.format("%.1f",totalRatting / feedbacks.size)
-            else stationRating.value = "N/A"
+            stationRating.value = Pair(totalRatting,feedbacks.size)
         }
     }
 

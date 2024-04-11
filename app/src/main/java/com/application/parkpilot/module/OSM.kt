@@ -102,11 +102,11 @@ class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val act
         return null
     }
 
-    fun getAddress(coordinates:GeoPoint):Address?{
+    fun getAddress(coordinates: GeoPoint): Address? {
         // this is deprecated in API 33
         try {
             // It can throw exception
-            val result = geocoder.getFromLocation(coordinates.latitude, coordinates.longitude,1)
+            val result = geocoder.getFromLocation(coordinates.latitude, coordinates.longitude, 1)
 
             // If result has result then...
             if (result != null && result.size != 0) {
@@ -157,16 +157,11 @@ class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val act
         val overlayItemArrayList = ArrayList<OverlayItem>()
 
         // create pin image
-        val markerDrawable = ContextCompat.getDrawable(activity, R.drawable.map_marker)
+        val markerDrawable = ContextCompat.getDrawable(activity, R.drawable.location_on)
 
         for (geoPoint in geoPoints) {
             val overlayItem = OverlayItem(geoPoint.title, geoPoint.UID, geoPoint.coordinates)
-            overlayItem.setMarker(
-                writeOnDrawable(
-                    R.drawable.map_marker,
-                    geoPoint.title
-                )
-            )
+            overlayItem.setMarker(markerDrawable)
             overlayItemArrayList.add(overlayItem)
         }
 

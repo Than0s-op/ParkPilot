@@ -4,9 +4,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +15,6 @@ import com.application.parkpilot.viewModel.SpotPreviewViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.carousel.CarouselLayoutManager
-import org.osmdroid.util.GeoPoint
 
 class SpotPreview : BottomSheetDialogFragment(R.layout.spot_preview) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -27,6 +24,7 @@ class SpotPreview : BottomSheetDialogFragment(R.layout.spot_preview) {
         val recyclerView: RecyclerView = view.findViewById(R.id.recycleView)
         val textViewName: TextView = view.findViewById(R.id.textViewName)
         val textViewRating: TextView = view.findViewById(R.id.textViewRating)
+        val textViewNumberOfUser: TextView = view.findViewById(R.id.textViewNumberOfUser)
         val textViewDistance: TextView = view.findViewById(R.id.textViewDistance)
         val textViewPrice: TextView = view.findViewById(R.id.textViewPrice)
 
@@ -40,8 +38,8 @@ class SpotPreview : BottomSheetDialogFragment(R.layout.spot_preview) {
         viewModel.loadRating(stationUID)
 
         materialCardView.setOnClickListener {
-            val intent = Intent(context, SpotDetailActivity::class.java).apply{
-                putExtra("stationUID",stationUID)
+            val intent = Intent(context, SpotDetailActivity::class.java).apply {
+                putExtra("stationUID", stationUID)
             }
             startActivity(intent)
         }
@@ -51,16 +49,18 @@ class SpotPreview : BottomSheetDialogFragment(R.layout.spot_preview) {
                 CarouselRecyclerView(requireContext(), R.layout.round_carousel, images)
         }
 
-        viewModel.stationBasicInfo.observe(this){
+        viewModel.stationBasicInfo.observe(this) {
             textViewName.text = it.name
             textViewRating.text = it.rating.toString()
             textViewPrice.text = it.price.toString()
         }
-        viewModel.stationRating.observe(this){
-            textViewRating.text = it
-            textViewRating.backgroundTintList = getTint(it.toFloat())
+        viewModel.stationRating.observe(this) {
+            textViewRating.text = String.format("%.1f", it.first / it.second)
+            textViewRating.backgroundTintList = getTint(it.first / it.second)
+            textViewNumberOfUser.text = it.second.toString()
         }
     }
+
     private fun getTint(ratting: Float): ColorStateList {
         return if (ratting <= 2.5) {
             ColorStateList.valueOf(Color.parseColor("#e5391a"))

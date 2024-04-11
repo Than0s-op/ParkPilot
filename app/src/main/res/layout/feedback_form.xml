@@ -5,9 +5,11 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:clipToPadding="false"
+    android:divider="@drawable/empty_mid_divider"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="25dp">
+    android:padding="25dp"
+    android:showDividers="middle">
 
     <androidx.cardview.widget.CardView
         android:layout_width="100dp"
@@ -28,44 +30,43 @@
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:numStars="5" />
+        android:numStars="5"
+        android:rating="1" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:startIconDrawable="@drawable/mobile_icon">
+        app:startIconDrawable="@drawable/comment_icon">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextFeedback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Feedback" />
+            android:hint="Message" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:divider="@drawable/empty_mid_divider"
+        android:showDividers="middle">
 
         <Button
             android:id="@+id/buttonCancel"
             style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.4"
-            android:text="Cancel"
-            android:textColor="@color/textViewColor"
-            android:textSize="15sp" />
+            android:backgroundTint="@color/md_theme_dark_onSecondaryContainer"
+            android:text="Cancel" />
 
         <Button
             android:id="@+id/buttonOk"
             style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.4"
-            android:text="Ok"
-            android:textColor="@color/textViewColor"
-            android:textSize="15sp" />
+            android:backgroundTint="@color/md_theme_light_primaryContainer"
+            android:text="Ok" />
 
     </LinearLayout>
 
