@@ -4,16 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.application.parkpilot.R
 import com.application.parkpilot.User
 import com.application.parkpilot.viewModel.HomeViewModel
-import com.google.android.material.navigationrail.NavigationRailView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 
@@ -37,10 +34,9 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
         val searchBar: SearchBar = findViewById(R.id.searchBar)
         val searchView: SearchView = findViewById(R.id.searchView)
         val currentLocationButton: Button = findViewById(R.id.buttonCurrentLocation)
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
-        val navigationRailView: NavigationRailView = findViewById(R.id.navigationRailView)
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
 
-        setMenuVisibility(navigationRailView.menu)
+        setMenuVisibility(bottomNavigationView.menu)
 
 
         // getting authentication view model reference
@@ -51,8 +47,7 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
         })[HomeViewModel::class.java]
 
         // load the profile image in search bar if present
-        viewModel.loadProfileImage(this, searchBar.menu.findItem(R.id.searchbarProfileImage))
-
+        viewModel.loadProfileImage(this, bottomNavigationView.menu.findItem(R.id.buttonProfile))
 
         // initializing OSM map object
         viewModel.setMapView(findViewById(R.id.mapViewOSM), this)
@@ -61,12 +56,12 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
         viewModel.loadMapViewPins(supportFragmentManager)
 
         // when search bar menu's items clicked
-        navigationRailView.setOnItemSelectedListener { clickedItem ->
-            if (navigationRailView.selectedItemId != clickedItem.itemId) {
+        bottomNavigationView.setOnItemSelectedListener { clickedItem ->
+            if (bottomNavigationView.selectedItemId != clickedItem.itemId) {
 
                 when (clickedItem.itemId) {
                     R.id.buttonList -> {
-                        startActivity(Intent(this,SpotListActivity::class.java))
+                        startActivity(Intent(this, SpotListActivity::class.java))
                         return@setOnItemSelectedListener true
                     }
 
@@ -87,12 +82,10 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
 
                 }
             }
-            drawerLayout.closeDrawer(GravityCompat.END)
             return@setOnItemSelectedListener false
         }
 
         searchBar.setOnMenuItemClickListener {
-            drawerLayout.openDrawer(GravityCompat.END)
             return@setOnMenuItemClickListener false
         }
 
@@ -122,6 +115,7 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
                 ANONYMOUS -> {
                     menu.findItem(R.id.buttonHistory).isVisible = false
                 }
+
                 FINDER -> {
 
                 }

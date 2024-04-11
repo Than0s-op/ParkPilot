@@ -20,4 +20,5 @@
         android:id="@+id/buttonProfile"
         android:icon="@drawable/settings_icon"
         android:title="Profile" />
+
 </menu>
