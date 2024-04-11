@@ -2,7 +2,6 @@ package com.application.parkpilot.viewModel
 
 import android.content.Context
 import android.content.Intent
-import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -12,7 +11,6 @@ import com.application.parkpilot.R
 import com.application.parkpilot.User
 import com.application.parkpilot.activity.AuthenticationActivity
 import com.application.parkpilot.activity.MainActivity
-import com.application.parkpilot.activity.ParkRegisterActivity
 import com.application.parkpilot.activity.UserRegisterActivity
 import com.application.parkpilot.module.PhotoLoader
 import com.application.parkpilot.module.firebase.Storage
@@ -43,10 +41,6 @@ class ProfileViewModel:ViewModel() {
 
     fun personalInformation(context:Context){
         context.startActivity(Intent(context, UserRegisterActivity::class.java))
-    }
-
-    fun spotDetail(context:Context){
-        context.startActivity(Intent(context, ParkRegisterActivity::class.java))
     }
 
     fun loadProfile(context: Context, profileImage: ImageView,profileName: TextView) {

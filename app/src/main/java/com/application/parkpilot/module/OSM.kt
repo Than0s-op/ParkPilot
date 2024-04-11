@@ -1,5 +1,6 @@
 package com.application.parkpilot.module
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -31,17 +32,7 @@ import org.osmdroid.views.overlay.OverlayItem
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
 
 
-class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val activity: Act) {
-
-    // object creation of geocoder
-    private val geocoder: Geocoder = Geocoder(activity)
-
-    // object creation of fusedLocation
-    private val fusedLocationClient: FusedLocationProviderClient =
-        LocationServices.getFusedLocationProviderClient(activity)
-
-    // it will store latitude and longitude when tap on screen
-    val touchLocationObserver: MutableLiveData<GeoPoint> = MutableLiveData<GeoPoint>()
+class OSM(private val mapView: MapView) {
 
     val center = GeoPoint(18.50099198033669, 73.85907568230525)
 
@@ -62,34 +53,17 @@ class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val act
         mRotationGestureOverlay.isEnabled = true
         mapView.overlays.add(mRotationGestureOverlay)
 
-        mapView.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                onTouch(event)
-            }
-            false
-        }
-
-    }
-
-    private fun onTouch(event: MotionEvent) {
-        val projection = mapView.projection
-        val geoPoint = projection.fromPixels(event.x.toInt(), event.y.toInt())
-
-        mapView.invalidate() // Redraw the map
-
-        // Save the coordinates (latitude and longitude) for later use
-        touchLocationObserver.value = GeoPoint(geoPoint.latitude, geoPoint.longitude)
     }
 
     fun setCenter(coordinates: GeoPoint) {
         mapView.controller.setCenter(GeoPoint(coordinates.latitude, coordinates.longitude))
     }
 
-    fun search(searchQuery: String): Address? {
+    fun search(context: Context, searchQuery: String): Address? {
         // this is deprecated in API 33
         try {
             // It can throw exception
-            val result = geocoder.getFromLocationName(searchQuery, 1)
+            val result = Geocoder(context).getFromLocationName(searchQuery, 1)
 
             // If result has result then...
             if (result != null && result.size != 0) {
@@ -102,11 +76,12 @@ class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val act
         return null
     }
 
-    fun getAddress(coordinates: GeoPoint): Address? {
+    fun getAddress(context: Context, coordinates: GeoPoint): Address? {
         // this is deprecated in API 33
         try {
             // It can throw exception
-            val result = geocoder.getFromLocation(coordinates.latitude, coordinates.longitude, 1)
+            val result =
+                Geocoder(context).getFromLocation(coordinates.latitude, coordinates.longitude, 1)
 
             // If result has result then...
             if (result != null && result.size != 0) {
@@ -115,26 +90,26 @@ class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val act
         } catch (e: Exception) {
             println("Exception:OSM:search ${e.message}")
         }
-        //
+
         return null
     }
 
-    suspend fun getLastKnowLocation(): GeoPoint? {
+    suspend fun getLastKnowLocation(context: Context): GeoPoint? {
 
         // permission class object creation
-        val activity = PermissionRequest(activity)
+        val activity = PermissionRequest()
 
         // current location set to null (if permission is not granted, we can't enter in "if" block)
         var currentLocation: GeoPoint? = null
 
         // check is location permission granted or not. If Not request to user for location permission
-        if (activity.locationPermissionRequest()) {
+        if (activity.locationPermissionRequest(context)) {
 
             // request to turn on location(GPS)
-            activity.GPSPermissionRequest()
+            activity.gpsPermissionRequest(context)
 
             // below code will give last know location of user. But It will "null" if user's GPS is turned off
-            fusedLocationClient.lastLocation
+            LocationServices.getFusedLocationProviderClient(context).lastLocation
                 .addOnSuccessListener { location: Location? ->
                     // Got last known location. In some rare situations this can be null.
                     if (location != null) {
@@ -149,6 +124,7 @@ class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val act
     //    Fast Overlay (add this)
 //    The fast overlay is great if you have a huge number points to render and they all share the same icon. It is optimized to render over 100k points, however performance will vary based on hardware.
     fun setPinsOnPosition(
+        context:Context,
         geoPoints: ArrayList<ParkPilotMapLegend>,
         singleTapTask: (String) -> Unit
     ) {
@@ -157,7 +133,7 @@ class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val act
         val overlayItemArrayList = ArrayList<OverlayItem>()
 
         // create pin image
-        val markerDrawable = ContextCompat.getDrawable(activity, R.drawable.location_on)
+        val markerDrawable = ContextCompat.getDrawable(context, R.drawable.location_on)
 
         for (geoPoint in geoPoints) {
             val overlayItem = OverlayItem(geoPoint.title, geoPoint.UID, geoPoint.coordinates)
@@ -178,7 +154,7 @@ class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val act
                     return false
                 }
             },
-            activity
+            context
         )
 
         // update overlays(pins) on mapView
@@ -195,19 +171,5 @@ class OSM<Act : AppCompatActivity>(private val mapView: MapView, private val act
 
     fun removeMarker(marker: Marker) {
         mapView.overlays.remove(marker)
-    }
-
-    private fun writeOnDrawable(drawableId: Int, text: String): BitmapDrawable {
-        val bm =
-            Bitmap.createBitmap(AppCompatResources.getDrawable(activity, drawableId)!!.toBitmap())
-        val paint = Paint().apply {
-            style = Paint.Style.FILL_AND_STROKE
-            color = Color.BLACK
-            textSize = 30f
-            textAlign = Paint.Align.CENTER
-        }
-        val canvas = Canvas()
-        canvas.drawText(text, (bm.height / 2).toFloat(), (bm.height / 2).toFloat(), paint)
-        return BitmapDrawable(activity.resources, bm)
     }
 }
