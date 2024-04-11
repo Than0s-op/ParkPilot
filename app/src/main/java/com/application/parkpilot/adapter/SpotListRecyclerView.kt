@@ -4,16 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.location.Location
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.R
 import com.application.parkpilot.StationLocation
-import com.application.parkpilot.activity.SpotDetailActivity
+import com.application.parkpilot.activity.SpotDetail
 import com.application.parkpilot.module.firebase.Storage
 import com.application.parkpilot.module.firebase.database.Feedback
 import com.application.parkpilot.module.firebase.database.StationAdvance
@@ -93,7 +91,7 @@ class SpotListRecyclerView(
         }
     }
     private fun startActivity(stationUID:String){
-        val intent = Intent(context, SpotDetailActivity::class.java).apply {
+        val intent = Intent(context, SpotDetail::class.java).apply {
             putExtra("stationUID", stationUID)
         }
         context.startActivity(intent)

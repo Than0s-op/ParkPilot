@@ -14,8 +14,8 @@ import coil.size.Scale
 import com.application.parkpilot.User
 import com.application.parkpilot.UserCollection
 import com.application.parkpilot.UserProfile
-import com.application.parkpilot.activity.MainActivity
-import com.application.parkpilot.activity.UserRegisterActivity
+import com.application.parkpilot.activity.Main
+import com.application.parkpilot.activity.UserRegister
 import com.application.parkpilot.module.DatePicker
 import com.application.parkpilot.module.PhotoPicker
 import com.application.parkpilot.module.firebase.Storage
@@ -23,14 +23,11 @@ import com.application.parkpilot.module.firebase.database.UserAdvance
 import com.application.parkpilot.module.firebase.database.UserBasic
 import com.avatarfirst.avatargenlib.AvatarGenerator
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
-import com.google.firebase.auth.userProfileChangeRequest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 
-class UserRegisterViewModel(activity: UserRegisterActivity) : ViewModel() {
+class UserRegisterViewModel(activity: UserRegister) : ViewModel() {
     // it will store user profile image's Uri
     var photoUrl: Uri? = null
 
@@ -50,7 +47,7 @@ class UserRegisterViewModel(activity: UserRegisterActivity) : ViewModel() {
 
     // it will store MainActivity intent or null
     // why it's here? ans:- [ if user came from Main Activity then we have to throw user again to Main Activity, otherwise do nothing]
-    var nextIntent: Intent? = Intent(activity, MainActivity::class.java)
+    var nextIntent: Intent? = Intent(activity, Main::class.java)
 
 
     // it will get user detail from user collection

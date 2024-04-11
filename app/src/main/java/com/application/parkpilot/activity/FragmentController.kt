@@ -1,12 +1,8 @@
 package com.application.parkpilot.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.widget.Button
-import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.application.parkpilot.R
 import com.application.parkpilot.User
@@ -16,10 +12,8 @@ import com.application.parkpilot.fragment.Setting
 import com.application.parkpilot.fragment.SpotList
 import com.application.parkpilot.viewModel.HomeViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.search.SearchBar
-import com.google.android.material.search.SearchView
 
-class HomeActivity : AppCompatActivity(R.layout.home) {
+class FragmentController : AppCompatActivity(R.layout.home) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

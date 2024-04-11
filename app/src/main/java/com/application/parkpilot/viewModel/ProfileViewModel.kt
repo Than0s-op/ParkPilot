@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.parkpilot.R
 import com.application.parkpilot.User
-import com.application.parkpilot.activity.AuthenticationActivity
-import com.application.parkpilot.activity.MainActivity
-import com.application.parkpilot.activity.UserRegisterActivity
+import com.application.parkpilot.activity.Authentication
+import com.application.parkpilot.activity.Main
+import com.application.parkpilot.activity.UserRegister
 import com.application.parkpilot.module.PhotoLoader
 import com.application.parkpilot.module.firebase.Storage
 import com.application.parkpilot.module.firebase.database.UserBasic
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel:ViewModel() {
     fun login(context: Context){
-        context.startActivity(Intent(context, AuthenticationActivity::class.java))
+        context.startActivity(Intent(context, Authentication::class.java))
     }
 
     fun logout(context: Context) {
@@ -30,7 +30,7 @@ class ProfileViewModel:ViewModel() {
         Toast.makeText(context, "Logout Successfully", Toast.LENGTH_SHORT).show()
 
         // creating the intent of Authentication activity
-        val intent = Intent(context, MainActivity::class.java).apply {
+        val intent = Intent(context, Main::class.java).apply {
             // to clear activity stack
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
@@ -40,7 +40,7 @@ class ProfileViewModel:ViewModel() {
     }
 
     fun personalInformation(context:Context){
-        context.startActivity(Intent(context, UserRegisterActivity::class.java))
+        context.startActivity(Intent(context, UserRegister::class.java))
     }
 
     fun loadProfile(context: Context, profileImage: ImageView,profileName: TextView) {

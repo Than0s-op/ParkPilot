@@ -15,9 +15,8 @@ import com.application.parkpilot.R
 import com.application.parkpilot.UserCollection
 import com.application.parkpilot.UserProfile
 import com.application.parkpilot.viewModel.UserRegisterViewModel
-import com.google.firebase.auth.FirebaseUser
 
-class UserRegisterActivity : AppCompatActivity(R.layout.user_register) {
+class UserRegister : AppCompatActivity(R.layout.user_register) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,13 +37,13 @@ class UserRegisterActivity : AppCompatActivity(R.layout.user_register) {
         // getting userRegister view model reference
         val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return UserRegisterViewModel(this@UserRegisterActivity) as T
+                return UserRegisterViewModel(this@UserRegister) as T
             }
         })[UserRegisterViewModel::class.java]
 
         // it will store MainActivity intent or null
         // why it's here? ans:- [ if user came from Main Activity then we have to throw user again to Main Activity, otherwise do nothing]
-        var nextIntent: Intent? = Intent(this, MainActivity::class.java)
+        var nextIntent: Intent? = Intent(this, Main::class.java)
 
         viewModel.getProfileDetails()
 

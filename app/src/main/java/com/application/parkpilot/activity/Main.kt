@@ -8,7 +8,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.application.parkpilot.User as appUser
 
-class MainActivity : Activity() {
+class Main : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // getting current user status
@@ -42,8 +42,8 @@ class MainActivity : Activity() {
     private fun nextActivity() {
         // start the home activity
         startActivity(Intent(
-            this@MainActivity,
-            HomeActivity::class.java
+            this@Main,
+            FragmentController::class.java
         ).apply {
             // clear the activity stack
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

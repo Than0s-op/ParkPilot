@@ -9,14 +9,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.parkpilot.EventHandler
-import com.application.parkpilot.activity.AuthenticationActivity
-import com.application.parkpilot.activity.MainActivity
+import com.application.parkpilot.activity.Authentication
+import com.application.parkpilot.activity.Main
 import com.application.parkpilot.module.firebase.authentication.GoogleSignIn
 import com.application.parkpilot.module.firebase.authentication.PhoneAuth
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
-class AuthenticationViewModel(activity: AuthenticationActivity) : ViewModel() {
+class AuthenticationViewModel(activity: Authentication) : ViewModel() {
 
     val handler = CoroutineExceptionHandler { _, exception ->
         println("CoroutineExceptionHandler got $exception")
@@ -89,7 +89,7 @@ class AuthenticationViewModel(activity: AuthenticationActivity) : ViewModel() {
 
     fun startNextActivity(context: Context) {
         // init intent to Main activity
-        val intent = Intent(context, MainActivity::class.java)
+        val intent = Intent(context, Main::class.java)
         // clear task stack
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         // start activity

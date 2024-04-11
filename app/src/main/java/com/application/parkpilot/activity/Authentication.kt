@@ -19,7 +19,7 @@ import com.chaos.view.PinView
 import com.hbb20.CountryCodePicker
 
 
-class AuthenticationActivity : AppCompatActivity(R.layout.authentication) {
+class Authentication : AppCompatActivity(R.layout.authentication) {
     private lateinit var progressBar: ProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +45,7 @@ class AuthenticationActivity : AppCompatActivity(R.layout.authentication) {
         // getting authentication view model reference [init]
         val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return AuthenticationViewModel(this@AuthenticationActivity) as T
+                return AuthenticationViewModel(this@Authentication) as T
             }
         })[AuthenticationViewModel::class.java]
 

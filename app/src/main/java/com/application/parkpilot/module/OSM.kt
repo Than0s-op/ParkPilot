@@ -45,6 +45,7 @@ class OSM(private val mapView: MapView) {
         mapView.controller.setZoom(17.0)
         mapView.setMultiTouchControls(true)
         mapView.isClickable = true
+        mapView.setBuiltInZoomControls(false)
 
         // temp
         setCenter(center)

@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.R
-import com.application.parkpilot.activity.SpotDetailActivity
+import com.application.parkpilot.activity.SpotDetail
 import com.application.parkpilot.adapter.CarouselRecyclerView
 import com.application.parkpilot.viewModel.SpotPreviewViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -38,7 +38,7 @@ class SpotPreview : BottomSheetDialogFragment(R.layout.spot_preview) {
         viewModel.loadRating(stationUID)
 
         materialCardView.setOnClickListener {
-            val intent = Intent(context, SpotDetailActivity::class.java).apply {
+            val intent = Intent(context, SpotDetail::class.java).apply {
                 putExtra("stationUID", stationUID)
             }
             startActivity(intent)

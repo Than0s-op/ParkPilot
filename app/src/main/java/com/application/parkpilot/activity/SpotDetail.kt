@@ -3,12 +3,10 @@ package com.application.parkpilot.activity
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.text.Html
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.AccessHours
@@ -18,7 +16,7 @@ import com.application.parkpilot.viewModel.SpotPreviewViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
-class SpotDetailActivity : AppCompatActivity(R.layout.spot_detail) {
+class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
 
     // late init view model property
     private lateinit var viewModel: SpotPreviewViewModel
