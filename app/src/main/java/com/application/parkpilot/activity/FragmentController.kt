@@ -62,7 +62,6 @@ class FragmentController : AppCompatActivity(R.layout.fragment_controller) {
                         changeFragment(mapFragment)
                         return@setOnItemSelectedListener true
                     }
-
                 }
             }
             return@setOnItemSelectedListener false

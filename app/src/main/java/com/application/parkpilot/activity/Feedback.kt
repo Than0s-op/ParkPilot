@@ -1,6 +1,8 @@
 package com.application.parkpilot.activity
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -17,14 +19,17 @@ import com.application.parkpilot.viewModel.FeedbackViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class Feedback : AppCompatActivity(R.layout.feedback) {
+    private lateinit var buttonEditFeedback: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        val buttonEditFeedback: Button = findViewById(R.id.buttonEditFeedback)
         val swipeRefreshLayout: SwipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
+        buttonEditFeedback = findViewById(R.id.buttonEditFeedback)
 
         val stationUID = intent.getStringExtra("stationUID")!!
         val viewModel = FeedbackViewModel()
+
+        setVisibility()
         val layoutFeedbackForm = layoutInflater.inflate(R.layout.feedback_form, null, false).apply {
             val imageViewProfilePicture: ImageView = findViewById(R.id.imageViewProfilePicture)!!
             imageViewProfilePicture.load(viewModel.profilePicture())
@@ -71,5 +76,19 @@ class Feedback : AppCompatActivity(R.layout.feedback) {
         }
 
         viewModel.loadRecycler(this, stationUID, recyclerView)
+    }
+
+    private fun setVisibility() {
+        User.apply {
+            when (type) {
+                ANONYMOUS -> {
+                    buttonEditFeedback.visibility = View.GONE
+                }
+
+                FINDER -> {
+
+                }
+            }
+        }
     }
 }
