@@ -64,15 +64,6 @@
                 android:layout_marginVertical="15dp"
                 app:icon="@drawable/my_location_icon" />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/buttonList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|bottom"
-                android:layout_marginHorizontal="15dp"
-                android:layout_marginVertical="15dp"
-                app:icon="@drawable/my_location_icon" />
-
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <com.google.android.material.navigationrail.NavigationRailView

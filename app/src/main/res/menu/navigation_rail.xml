@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/buttonHome"
+        android:id="@+id/buttonMap"
         android:checked="true"
-        android:icon="@drawable/logout_icon"
-        android:title="Home" />
+        android:icon="@drawable/map_icon"
+        android:title="Map" />
+
+    <item
+        android:id="@+id/buttonList"
+        android:icon="@drawable/dashboard_icon"
+        android:title="List" />
 
     <item
         android:id="@+id/buttonHistory"
-        android:icon="@drawable/logout_icon"
+        android:icon="@drawable/timeline_icon"
         android:title="History" />
 
     <item
         android:id="@+id/buttonProfile"
-        android:icon="@drawable/logout_icon"
+        android:icon="@drawable/settings_icon"
         android:title="Profile" />
-
 </menu>

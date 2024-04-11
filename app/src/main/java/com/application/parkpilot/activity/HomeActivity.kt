@@ -39,7 +39,6 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
         val currentLocationButton: Button = findViewById(R.id.buttonCurrentLocation)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
         val navigationRailView: NavigationRailView = findViewById(R.id.navigationRailView)
-        val buttonList:Button = findViewById(R.id.buttonList)
 
         setMenuVisibility(navigationRailView.menu)
 
@@ -66,10 +65,10 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
             if (navigationRailView.selectedItemId != clickedItem.itemId) {
 
                 when (clickedItem.itemId) {
-//                    R.id.buttonLogout -> {
-//                        viewModel.logout(this)
-//                        return@setOnItemSelectedListener true
-//                    }
+                    R.id.buttonList -> {
+                        startActivity(Intent(this,SpotListActivity::class.java))
+                        return@setOnItemSelectedListener true
+                    }
 
                     R.id.buttonProfile -> {
                         viewModel.profile(this)
@@ -82,7 +81,7 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
                         return@setOnItemSelectedListener true
                     }
 
-                    R.id.buttonHome -> {
+                    R.id.buttonMap -> {
                         return@setOnItemSelectedListener true
                     }
 
@@ -114,11 +113,6 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
         currentLocationButton.setOnClickListener {
             // it will set current location in mapView
             viewModel.getCurrentLocation()
-        }
-
-        buttonList.setOnClickListener{
-            val intent = Intent(this,SpotListActivity::class.java)
-            startActivity(intent)
         }
     }
 
