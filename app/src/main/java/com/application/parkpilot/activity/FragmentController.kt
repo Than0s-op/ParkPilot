@@ -10,7 +10,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.application.parkpilot.R
 import com.application.parkpilot.User
+import com.application.parkpilot.fragment.BookingHistory
 import com.application.parkpilot.fragment.Map
+import com.application.parkpilot.fragment.Setting
+import com.application.parkpilot.fragment.SpotList
 import com.application.parkpilot.viewModel.HomeViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.search.SearchBar
@@ -28,6 +31,9 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
         val viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
         val mapFragment = Map()
+        val spotList = SpotList()
+        val bookingHistory = BookingHistory()
+        val setting = Setting()
 
         setMenuVisibility(bottomNavigationView.menu)
 
@@ -41,22 +47,34 @@ class HomeActivity : AppCompatActivity(R.layout.home) {
 
                 when (clickedItem.itemId) {
                     R.id.buttonList -> {
-                        startActivity(Intent(this, SpotListActivity::class.java))
+                        supportFragmentManager.beginTransaction().apply{
+                            replace(R.id.frameLayout,spotList)
+                            commit()
+                        }
                         return@setOnItemSelectedListener true
                     }
 
                     R.id.buttonProfile -> {
-                        viewModel.profile(this)
+                        supportFragmentManager.beginTransaction().apply{
+                            replace(R.id.frameLayout,setting)
+                            commit()
+                        }
                         return@setOnItemSelectedListener true
                     }
 
                     R.id.buttonHistory -> {
-                        viewModel.history(this)
-
+                        supportFragmentManager.beginTransaction().apply{
+                            replace(R.id.frameLayout,bookingHistory)
+                            commit()
+                        }
                         return@setOnItemSelectedListener true
                     }
 
                     R.id.buttonMap -> {
+                        supportFragmentManager.beginTransaction().apply{
+                            replace(R.id.frameLayout,mapFragment)
+                            commit()
+                        }
                         return@setOnItemSelectedListener true
                     }
 
