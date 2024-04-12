@@ -19,8 +19,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
 
-class ProfileViewModel:ViewModel() {
-    fun login(context: Context){
+class SettingViewModel : ViewModel() {
+    fun login(context: Context) {
         context.startActivity(Intent(context, Authentication::class.java))
     }
 
@@ -39,17 +39,18 @@ class ProfileViewModel:ViewModel() {
         context.startActivity(intent)
     }
 
-    fun personalInformation(context:Context){
+    fun personalInformation(context: Context) {
         context.startActivity(Intent(context, UserRegister::class.java))
     }
 
-    fun loadProfile(context: Context, profileImage: ImageView,profileName: TextView) {
+    fun loadProfile(context: Context, profileImage: ImageView, profileName: TextView) {
         Firebase.auth.currentUser?.let {
             viewModelScope.launch {
                 profileImage.setImageDrawable(
                     PhotoLoader().getImage(
                         context,
-                        Storage().userProfilePhotoGet(User.UID) ?: R.drawable.person_icon
+                        Storage().userProfilePhotoGet(User.UID) ?: R.drawable.person_icon,
+                        false
                     ).drawable
                 )
                 profileName.text = UserBasic().getProfile(User.UID)?.userName ?: "User"

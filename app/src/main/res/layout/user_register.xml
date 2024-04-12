@@ -22,14 +22,6 @@
             android:layout_marginBottom="30dp"
             android:gravity="center_vertical">
 
-            <!--   below code   For round circle around profile           -->
-            <!--            <androidx.cardview.widget.CardView-->
-            <!--                android:layout_width="155dp"-->
-            <!--                android:layout_height="155dp"-->
-            <!--                app:cardCornerRadius="250dp"-->
-            <!--                card_view:elevation="10dp"-->
-            <!--                app:cardBackgroundColor="@color/materialCardViewColor">-->
-
             <androidx.cardview.widget.CardView
                 android:layout_width="120dp"
                 android:layout_height="120dp"
@@ -46,8 +38,6 @@
                     android:src="@drawable/person_icon" />
 
             </androidx.cardview.widget.CardView>
-
-            <!--            </androidx.cardview.widget.CardView>-->
 
             <com.google.android.material.textfield.TextInputLayout
                 style="?attr/textInputFilledStyle"

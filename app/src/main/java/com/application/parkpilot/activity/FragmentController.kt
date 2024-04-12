@@ -1,5 +1,7 @@
 package com.application.parkpilot.activity
 
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +33,8 @@ class FragmentController : AppCompatActivity(R.layout.fragment_controller) {
         val setting = Setting()
 
         setMenuVisibility(bottomNavigationView.menu)
+
+        bottomNavigationView.itemIconTintList = null
 
         // load the profile image in search bar if present
         viewModel.loadProfileImage(this, bottomNavigationView.menu.findItem(R.id.buttonProfile))

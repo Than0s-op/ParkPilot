@@ -14,8 +14,6 @@ class PhotoLoader {
         val profileImageRequest = ImageRequest.Builder(context)
             .data(imageUrl)
             .scale(Scale.FIT)
-            .placeholder(R.drawable.google_icon)
-            .error(R.drawable.gmail_icon)
 
         if(isCircleCrop)
             profileImageRequest.transformations(CircleCropTransformation())
