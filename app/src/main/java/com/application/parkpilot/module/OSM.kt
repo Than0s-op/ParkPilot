@@ -1,23 +1,12 @@
 package com.application.parkpilot.module
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.drawable.BitmapDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
-import android.view.MotionEvent
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
-import androidx.lifecycle.MutableLiveData
 import com.application.parkpilot.ParkPilotMapLegend
 import com.application.parkpilot.R
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.tasks.await
 import org.osmdroid.config.Configuration
@@ -34,8 +23,6 @@ import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
 
 class OSM(private val mapView: MapView) {
 
-    val center = GeoPoint(18.50099198033669, 73.85907568230525)
-
     init {
         // I don't know
         Configuration.getInstance().userAgentValue = "ParkPilot"
@@ -47,6 +34,7 @@ class OSM(private val mapView: MapView) {
         mapView.isClickable = true
         mapView.setBuiltInZoomControls(false)
 
+        val center = GeoPoint(18.50099198033669, 73.85907568230525)
         // temp
         setCenter(center)
 
@@ -125,7 +113,7 @@ class OSM(private val mapView: MapView) {
     //    Fast Overlay (add this)
 //    The fast overlay is great if you have a huge number points to render and they all share the same icon. It is optimized to render over 100k points, however performance will vary based on hardware.
     fun setPinsOnPosition(
-        context:Context,
+        context: Context,
         geoPoints: ArrayList<ParkPilotMapLegend>,
         singleTapTask: (String) -> Unit
     ) {
