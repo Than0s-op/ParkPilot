@@ -1,5 +1,6 @@
 package com.application.parkpilot.adapter
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -8,6 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isEmpty
+import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.R
 import com.application.parkpilot.StationLocation
@@ -17,6 +21,7 @@ import com.application.parkpilot.module.firebase.database.Feedback
 import com.application.parkpilot.module.firebase.database.StationAdvance
 import com.application.parkpilot.module.firebase.database.StationBasic
 import com.application.parkpilot.view.Amenities
+import com.application.parkpilot.viewModel.adapter.SpotList
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.carousel.CarouselLayoutManager
@@ -30,7 +35,6 @@ class SpotListRecyclerView(
     private val stations: List<StationLocation>
 ) : RecyclerView.Adapter<SpotListRecyclerView.ViewHolder>() {
 
-    val storage = Storage()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(layout, parent, false)
         return ViewHolder(view)
@@ -38,63 +42,42 @@ class SpotListRecyclerView(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val stationUID = stations[position].stationUid!!
-        CoroutineScope(Dispatchers.Main).launch {
-            val stationBasic = StationBasic().basicGet(stationUID)
-            stationBasic?.let {
-                holder.textViewName.text = stationBasic.name
-                holder.textViewDistance.text = "N/A"
-                holder.textViewPrice.text = stationBasic.price?.toString()
-                holder.materialCard.setOnClickListener {
-                    startActivity(stationUID)
-                }
-                holder.recyclerView.setOnClickListener{
-                    startActivity(stationUID)
-                }
-                holder.recyclerView.adapter =
-                    CarouselRecyclerView(
-                        context,
-                        R.layout.round_carousel,
-                        storage.parkSpotPhotoGet(stationUID)
-                    )
-            }
-            // ratting
-            val feedbacks = Feedback().feedGet(stationUID)
-            var totalRatting = 0.0f
-            for (i in feedbacks) {
-                totalRatting += i.value.rating
-            }
-            if (feedbacks.isNotEmpty()) {
-                val ratting = totalRatting / feedbacks.size
-                holder.textViewRating.text = String.format("%.1f", ratting)
-                holder.textViewRating.backgroundTintList = getTint(ratting)
-            } else holder.textViewRating.text = "N/A"
+        holder.viewModel.loadBasic(stationUID)
+        holder.viewModel.loadAmenities(stationUID)
+        holder.viewModel.loadRating(stationUID)
+        holder.viewModel.loadImages(stationUID)
 
-            // setting number of user rated
-            holder.textViewNumberOfUser.text = feedbacks.size.toString()
-
-            val stationAdvance = StationAdvance().advanceGet(stationUID)
-            stationAdvance?.let{
-                for(i in it.amenities){
-                    holder.flexboxLayout.addView(Amenities(context,i).textView)
+        val activity = context as AppCompatActivity
+        holder.viewModel.liveDataStationBasic.observe(activity) {
+            holder.textViewName.text = it.name
+            holder.textViewPrice.text = it.price.toString()
+        }
+        holder.viewModel.liveDataImages.observe(activity) {
+            holder.recyclerView.adapter = CarouselRecyclerView(
+                context,
+                R.layout.round_carousel,
+                it
+            )
+        }
+        holder.viewModel.liveDataFeedback.observe(activity) {
+            if (it.second != 0) {
+                val rating = it.first / it.second
+                holder.textViewRating.text = String.format("%.1f", rating)
+                holder.textViewNumberOfUser.text = it.second.toString()
+                holder.textViewRating.backgroundTintList = holder.viewModel.getTint(rating)
+            }
+        }
+        holder.viewModel.liveDataAmenities.observe(activity) {
+            if(holder.flexboxLayout.isEmpty()) {
+                for (i in it) {
+                    holder.flexboxLayout.addView(Amenities(context, i).textView)
                 }
             }
         }
-    }
-
-    private fun getTint(ratting: Float): ColorStateList {
-        return if (ratting <= 2.5) {
-            ColorStateList.valueOf(Color.parseColor("#e5391a"))
-        } else if (ratting < 4) {
-            ColorStateList.valueOf(Color.parseColor("#cb8300"))
-        } else {
-            ColorStateList.valueOf(Color.parseColor("#026a28"))
+        holder.materialCard.setOnClickListener {
+            holder.viewModel.startNextActivity(context, stationUID)
         }
-    }
-    private fun startActivity(stationUID:String){
-        val intent = Intent(context, SpotDetail::class.java).apply {
-            putExtra("stationUID", stationUID)
-        }
-        context.startActivity(intent)
+        holder.textViewDistance.text = "N/A"
     }
 
     override fun getItemCount(): Int {
@@ -102,10 +85,7 @@ class SpotListRecyclerView(
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val recyclerView: RecyclerView =
-            itemView.findViewById<RecyclerView>(R.id.recycleView).apply {
-                layoutManager = CarouselLayoutManager()
-            }
+        val viewModel = SpotList()
         val materialCard: MaterialCardView = itemView.findViewById(R.id.materialCardView)
         val textViewName: TextView = itemView.findViewById(R.id.textViewName)
         val textViewRating: TextView = itemView.findViewById(R.id.textViewRating)
@@ -113,6 +93,9 @@ class SpotListRecyclerView(
         val textViewDistance: TextView = itemView.findViewById(R.id.textViewDistance)
         val textViewPrice: TextView = itemView.findViewById(R.id.textViewPrice)
         val flexboxLayout: FlexboxLayout = itemView.findViewById(R.id.flexboxLayout)
+        val recyclerView: RecyclerView =
+            itemView.findViewById<RecyclerView>(R.id.recycleView).apply {
+                layoutManager = CarouselLayoutManager()
+            }
     }
-
 }

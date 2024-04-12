@@ -15,26 +15,24 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class HistoryRecyclerView(
     private val context: Context,
     private val layout: Int,
-    private val QRDetail: ArrayList<QRCodeCollection>
+    private val qrDetail: ArrayList<QRCodeCollection>
 ) : RecyclerView.Adapter<HistoryRecyclerView.ViewHolder>() {
-    override fun onCreateViewHolder(
-        parent: ViewGroup, viewType: Int
-    ): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(layout, parent, false)
         return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        return QRDetail.size
+        return qrDetail.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.textViewDate.text = QRDetail[position].from.toDate().toString()
-        holder.textViewTime.text = QRDetail[position].from.toString()
-        holder.textViewHours.text = QRDetail[position].to.toString()
+        holder.textViewDate.text = qrDetail[position].from.toDate().toString()
+        holder.textViewTime.text = qrDetail[position].from.toString()
+        holder.textViewHours.text = qrDetail[position].to.toString()
 
         // if QR code is not expired
-        if (!QRDetail[position].valid) {
+        if (!qrDetail[position].valid) {
 
             // set invisible property to "Expired" text View
             holder.textViewExpired.visibility = View.INVISIBLE
@@ -42,7 +40,7 @@ class HistoryRecyclerView(
             // set on click listener to card
             holder.itemView.setOnClickListener {
                 // QR code generation using FireStore 'key'
-                val drawableQRCode = QRGenerator(context).generate(QRDetail[position].key)
+                val drawableQRCode = QRGenerator(context).generate(qrDetail[position].key)
 
                 MaterialAlertDialogBuilder(context)
                     .setView(DialogQRCode(context, drawableQRCode, "This is a QR Code"))
