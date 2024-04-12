@@ -32,6 +32,7 @@
                 android:layout_gravity="bottom|start"
                 android:layout_marginHorizontal="15dp"
                 android:layout_marginVertical="30dp"
+
                 android:text="Anonymous"
                 android:textSize="30sp"
                 android:textStyle="bold" />

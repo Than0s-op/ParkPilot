@@ -25,9 +25,11 @@ import com.avatarfirst.avatargenlib.AvatarGenerator
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.util.Calendar
 
-class UserRegisterViewModel(activity: UserRegister) : ViewModel() {
+class UserRegisterViewModel : ViewModel() {
     // it will store user profile image's Uri
     var photoUrl: Uri? = null
 
@@ -37,17 +39,13 @@ class UserRegisterViewModel(activity: UserRegister) : ViewModel() {
     val imageLoaderResult = MutableLiveData<ImageResult>()
     val isUploaded = MutableLiveData<Boolean>()
 
-    // lazy object creation
-    private val userBasic by lazy { UserBasic() }
-    private val userAdvance by lazy { UserAdvance() }
-    private val storage by lazy { Storage() }
-    val datePicker by lazy { DatePicker(activity) }
-    val photoPicker by lazy { PhotoPicker(activity) }
-
-
-    // it will store MainActivity intent or null
-    // why it's here? ans:- [ if user came from Main Activity then we have to throw user again to Main Activity, otherwise do nothing]
-    var nextIntent: Intent? = Intent(activity, Main::class.java)
+    private val simpleDateFormat = SimpleDateFormat("dd-M-yyyy")
+    private val startDate = simpleDateFormat.parse("25-11-1950")!!
+    private val endDate = simpleDateFormat.parse("25-11-2023")!!
+    private val userBasic = UserBasic()
+    private val userAdvance = UserAdvance()
+    private val storage = Storage()
+    val datePicker = DatePicker(startDate.time,endDate.time)
 
 
     // it will get user detail from user collection
@@ -129,7 +127,7 @@ class UserRegisterViewModel(activity: UserRegister) : ViewModel() {
         }
     }
 
-    fun getAvatar(context: Context, userName: String): Bitmap {
+    private fun getAvatar(context: Context, userName: String): Bitmap {
         return AvatarGenerator.AvatarBuilder(context)
             .setLabel(userName)
             .setAvatarSize(120)
