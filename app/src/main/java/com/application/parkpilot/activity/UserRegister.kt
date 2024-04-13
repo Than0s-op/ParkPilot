@@ -1,6 +1,5 @@
 package com.application.parkpilot.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -11,7 +10,6 @@ import android.widget.ProgressBar
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.application.parkpilot.R
@@ -19,10 +17,9 @@ import com.application.parkpilot.UserCollection
 import com.application.parkpilot.UserProfile
 import com.application.parkpilot.module.PhotoPicker
 import com.application.parkpilot.viewModel.UserRegisterViewModel
-import java.util.Calendar
 
 class UserRegister : AppCompatActivity(R.layout.user_register) {
-    private lateinit var progressBar:ProgressBar
+    private lateinit var progressBar: ProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -132,12 +129,11 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
         // it will execute when user data uploaded successfully or failed to upload
         viewModel.isUploaded.observe(this) { isUploaded ->
             unShowProgress()
-            if(isUploaded){
-                Toast.makeText(this,"Details save successfully",Toast.LENGTH_LONG).show()
+            if (isUploaded) {
+                Toast.makeText(this, "Details save successfully", Toast.LENGTH_LONG).show()
                 finish()
-            }
-            else{
-                Toast.makeText(this,"Failed to save details",Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "Failed to save details", Toast.LENGTH_LONG).show()
             }
         }
     }
