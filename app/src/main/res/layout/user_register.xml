@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     tools:context=".activity.UserRegister">
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -42,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/white"
-                app:cardElevation="10dp"
+                app:cardElevation="5dp"
                 app:contentPadding="15dp">
 
                 <LinearLayout
@@ -95,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/white"
-                app:cardElevation="10dp">
+                app:cardElevation="5dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
