@@ -3,7 +3,6 @@ package com.application.parkpilot.module.firebase.authentication
 import android.app.Activity
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.application.parkpilot.EventHandler
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException

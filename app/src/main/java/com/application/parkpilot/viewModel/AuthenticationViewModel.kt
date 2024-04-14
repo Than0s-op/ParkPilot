@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.application.parkpilot.EventHandler
 import com.application.parkpilot.activity.Authentication
 import com.application.parkpilot.activity.Main
 import com.application.parkpilot.module.firebase.authentication.GoogleSignIn
