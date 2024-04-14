@@ -7,19 +7,20 @@
     android:layout_marginHorizontal="5dp"
     android:layout_marginVertical="10dp"
     app:cardBackgroundColor="@color/white"
-    app:cardElevation="15dp"
+    app:cardElevation="5dp"
     app:contentPadding="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:divider="@drawable/empty_mid_divider"
+        android:showDividers="middle|beginning"
         android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycleView"
             android:layout_width="match_parent"
-            android:layout_height="230dp"
-            android:layout_marginVertical="10dp" />
+            android:layout_height="220dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,7 +30,6 @@
                 android:id="@+id/textViewName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawablePadding="10dp"
                 android:hint="Name"
                 android:textSize="35sp"
                 android:textStyle="bold"
@@ -38,6 +38,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -61,14 +62,15 @@
                 android:id="@+id/flexboxLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:flexWrap="wrap"
                 android:layout_marginTop="8dp"
+                app:flexWrap="wrap"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewDistance">
 
             </com.google.android.flexbox.FlexboxLayout>
 
             <TextView
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="From"
@@ -92,9 +94,9 @@
                 android:id="@+id/linearLayout2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/round_corner_background"
                 android:gravity="center"
-                android:layout_marginTop="15dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewPrice">
