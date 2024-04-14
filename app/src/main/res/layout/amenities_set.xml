@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:drawablePadding="20dp"
         android:gravity="center_vertical"
-        android:text="EV Charging"
+        android:text="@string/ev_charging"
         android:visibility="gone"
         app:drawableStartCompat="@drawable/charging" />
 
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:drawablePadding="20dp"
         android:gravity="center_vertical"
-        android:text="Valet"
+        android:text="@string/valet"
         android:visibility="gone"
         app:drawableStartCompat="@drawable/valet_parking" />
 
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:drawablePadding="20dp"
         android:gravity="center_vertical"
-        android:text="Garage - Covered"
+        android:text="@string/garage"
         android:visibility="gone"
         app:drawableStartCompat="@drawable/garage" />
 
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:drawablePadding="20dp"
         android:gravity="center_vertical"
-        android:text="On-Site Staff"
+        android:text="@string/on_site_staff"
         android:visibility="gone"
         app:drawableStartCompat="@drawable/staff" />
 
@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:drawablePadding="20dp"
         android:gravity="center_vertical"
-        android:text="Wheelchair Accessible"
+        android:text="@string/wheelchair_accessible"
         android:visibility="gone"
         app:drawableStartCompat="@drawable/wheelchair" />
 
