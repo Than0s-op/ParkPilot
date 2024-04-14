@@ -66,6 +66,11 @@ class SpotListRecyclerView(
                 holder.textViewNumberOfUser.text = it.second.toString()
                 holder.textViewRating.backgroundTintList = holder.viewModel.getTint(rating)
             }
+            else{
+                holder.textViewRating.text = "0.0"
+                holder.textViewNumberOfUser.text = "0"
+                holder.textViewRating.backgroundTintList = holder.viewModel.getTint(0.0f)
+            }
         }
         holder.viewModel.liveDataAmenities.observe(activity) {
             if(holder.flexboxLayout.isEmpty()) {
