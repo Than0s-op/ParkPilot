@@ -16,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.carousel.CarouselLayoutManager
 
-class SpotPreview : BottomSheetDialogFragment(R.layout.spot_preview) {
+class SpotPreview : BottomSheetDialogFragment(R.layout.spot_list_item) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

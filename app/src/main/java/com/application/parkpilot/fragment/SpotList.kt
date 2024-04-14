@@ -26,7 +26,7 @@ class SpotList: Fragment(R.layout.spot_list) {
         viewModel.liveDataStationLocation.observe(requireActivity()) {
             it?.let {
                 recyclerView.layoutManager = LinearLayoutManager(requireContext())
-                recyclerView.adapter = SpotListRecyclerView(requireContext(), R.layout.spot_preview, it)
+                recyclerView.adapter = SpotListRecyclerView(requireContext(), R.layout.spot_list_item, it)
             }
         }
     }
