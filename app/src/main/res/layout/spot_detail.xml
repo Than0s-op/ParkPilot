@@ -201,7 +201,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textViewThinkShouldYouKnow"
+                    android:id="@+id/textViewPolicies"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_corner_background"

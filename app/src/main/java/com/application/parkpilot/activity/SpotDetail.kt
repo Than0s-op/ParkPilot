@@ -30,9 +30,9 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
         val textViewRating: TextView = findViewById(R.id.textViewRating)
         val textViewDistance: TextView = findViewById(R.id.textViewDistance)
         val textViewPrice: TextView = findViewById(R.id.textViewPrice)
-        val textViewThinkShouldYouKnow: TextView = findViewById(R.id.textViewThinkShouldYouKnow)
+        val textViewPolicies: TextView = findViewById(R.id.textViewPolicies)
         val buttonFeedback: ExtendedFloatingActionButton = findViewById(R.id.buttonFeedback)
-        val textViewNumberOfUser:TextView = findViewById(R.id.textViewNumberOfUser)
+        val textViewNumberOfUser: TextView = findViewById(R.id.textViewNumberOfUser)
 
         val viewModel = ViewModelProvider(this)[SpotPreviewViewModel::class.java]
         val stationUID = intent.getStringExtra("stationUID")!!
@@ -57,7 +57,7 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
 
         viewModel.stationAdvanceInfo.observe(this) {
             // loading "Think should you know" section
-            loadThinkShouldYouKnow(textViewThinkShouldYouKnow, it.thinkShouldYouKnow)
+            textViewPolicies.text = it.policies
 
             // loading amenities section
             loadAmenities(it.amenities)
@@ -83,34 +83,30 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
         }
     }
 
-    private fun loadThinkShouldYouKnow(
-        textViewThinkShouldYouKnow: TextView, thinkShouldYouKnowList: List<String>
-    ) {
-        val bulletListBuilder = StringBuilder()
-        for (line in thinkShouldYouKnowList) {
-            bulletListBuilder.append("•   $line\n")
-        }
-        val bulletList = bulletListBuilder.substring(0, bulletListBuilder.length - 1).toString()
-        textViewThinkShouldYouKnow.text = bulletList
-    }
-
     private fun loadAccessHours(accessHours: AccessHours) {
-        val tint = ColorStateList.valueOf(Color.parseColor("#D0E4FF"))
+        val tint = ColorStateList.valueOf(getColor(R.color.md_theme_dark_onSecondaryContainer))
         for (day in accessHours.selectedDays) {
             when (day) {
-                "monday" -> findViewById<TextView>(R.id.textViewMonday).backgroundTintList = tint
-                "tuesday" -> findViewById<TextView>(R.id.textViewTuesday).backgroundTintList = tint
-                "wednesday" -> findViewById<TextView>(R.id.textViewWednesday).backgroundTintList =
+                getString(R.string.monday) -> findViewById<TextView>(R.id.textViewMonday).backgroundTintList =
                     tint
 
-                "thursday" -> findViewById<TextView>(R.id.textViewThursday).backgroundTintList =
+                getString(R.string.tuesday) -> findViewById<TextView>(R.id.textViewTuesday).backgroundTintList =
                     tint
 
-                "friday" -> findViewById<TextView>(R.id.textViewFriday).backgroundTintList = tint
-                "saturday" -> findViewById<TextView>(R.id.textViewSaturday).backgroundTintList =
+                getString(R.string.wednesday) -> findViewById<TextView>(R.id.textViewWednesday).backgroundTintList =
                     tint
 
-                "sunday" -> findViewById<TextView>(R.id.textViewSunday).backgroundTintList = tint
+                getString(R.string.thursday) -> findViewById<TextView>(R.id.textViewThursday).backgroundTintList =
+                    tint
+
+                getString(R.string.friday) -> findViewById<TextView>(R.id.textViewFriday).backgroundTintList =
+                    tint
+
+                getString(R.string.saturday) -> findViewById<TextView>(R.id.textViewSaturday).backgroundTintList =
+                    tint
+
+                getString(R.string.sunday) -> findViewById<TextView>(R.id.textViewSunday).backgroundTintList =
+                    tint
             }
         }
         val editTextOpenTime: EditText = findViewById(R.id.editTextOpenTime)
@@ -122,8 +118,20 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
     private fun loadAmenities(amenitiesList: List<String>) {
         for (amenities in amenitiesList) {
             when (amenities) {
-                "valet" -> findViewById<TextView>(R.id.textViewValet).visibility = View.VISIBLE
-                "ev_charging" -> findViewById<TextView>(R.id.textViewEV).visibility = View.VISIBLE
+                getString(R.string.ev_charging) -> findViewById<TextView>(R.id.textViewEV).visibility =
+                    View.VISIBLE
+
+                getString(R.string.valet) -> findViewById<TextView>(R.id.textViewValet).visibility =
+                    View.VISIBLE
+
+                getString(R.string.garage) -> findViewById<TextView>(R.id.textViewGarage).visibility =
+                    View.VISIBLE
+
+                getString(R.string.on_site_staff) -> findViewById<TextView>(R.id.textViewStaff).visibility =
+                    View.VISIBLE
+
+                getString(R.string.wheelchair_accessible) -> findViewById<TextView>(R.id.textViewWheelchair).visibility =
+                    View.VISIBLE
             }
         }
     }
