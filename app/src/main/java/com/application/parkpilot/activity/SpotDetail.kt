@@ -73,9 +73,16 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
         }
 
         viewModel.stationRating.observe(this) {
-            textViewRating.text = String.format("%.1f", it.first / it.second)
-            textViewRating.backgroundTintList = getTint(it.first / it.second)
-            textViewNumberOfUser.text = it.second.toString()
+            if(it.second != 0) {
+                textViewRating.text = String.format("%.1f", it.first / it.second)
+                textViewRating.backgroundTintList = getTint(it.first / it.second)
+                textViewNumberOfUser.text = it.second.toString()
+            }
+            else{
+                textViewRating.text = "0.0"
+                textViewRating.backgroundTintList = getTint(0.0f)
+                textViewNumberOfUser.text = "0"
+            }
         }
 
         viewModel.stationLocation.observe(this) {
