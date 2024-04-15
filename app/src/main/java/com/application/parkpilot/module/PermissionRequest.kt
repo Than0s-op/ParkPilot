@@ -13,6 +13,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsResult
 import com.google.android.gms.location.LocationSettingsStatusCodes
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -38,6 +39,7 @@ class PermissionRequest {
         return hasLocationPermission(context)
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     fun gpsPermissionRequest(context:Context) {
         if (locationPermissionRequest(context)) {
             val interval: Long = 1000 * 60 * 1
