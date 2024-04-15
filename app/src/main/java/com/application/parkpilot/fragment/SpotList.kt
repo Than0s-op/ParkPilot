@@ -26,7 +26,8 @@ class SpotList : Fragment(R.layout.spot_list) {
 
         buttonSort.setOnClickListener {
             viewModel.liveDataStationLocation.value?.let {
-                viewModel.sortByDistance(requireContext(), it)
+//                viewModel.sortByDistance(requireContext(), it)
+                viewModel.sortByRating(it)
             }
         }
 

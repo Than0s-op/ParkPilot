@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.parkpilot.module.PermissionRequest
+import com.application.parkpilot.module.firebase.database.Feedback
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -34,6 +35,27 @@ class SpotListViewModel : ViewModel() {
                 })
             } catch (_: Exception) {
             }
+        }
+    }
+
+    fun sortByRating(list: ArrayList<DS_StationLocation>) {
+        viewModelScope.launch {
+            val feedback = Feedback()
+            val ratings = HashMap<String, Float>()
+            for (station in list) {
+                var rating = 0.0f
+                val stationFeedbacks = feedback.feedGet(station.stationUid!!)
+                for (map in stationFeedbacks) {
+                    rating += map.value.rating
+                }
+                if (stationFeedbacks.isNotEmpty())
+                    ratings[station.stationUid] = rating / stationFeedbacks.size
+                else
+                    ratings[station.stationUid] = 0.0f
+            }
+            liveDataStationLocation.value = ArrayList(list.sortedByDescending {
+                ratings[it.stationUid]
+            })
         }
     }
 }
