@@ -54,8 +54,8 @@ class SpotPreviewViewModel : ViewModel() {
             try {
                 val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
                 currentLocation = fusedLocationClient.lastLocation.await()
-                stationLocation?.let {station->
-                    currentLocation?.let {current->
+                stationLocation?.let { station ->
+                    currentLocation?.let { current ->
                         liveDataDistance.value =
                             String.format("%.1f", current.distanceTo(Location("").apply {
                                 longitude = station.longitude
