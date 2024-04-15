@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 class PermissionRequest {
 
-    private fun hasLocationPermission(context: Context): Boolean {
+    fun hasLocationPermission(context: Context): Boolean {
         val read = ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.ACCESS_COARSE_LOCATION
@@ -39,33 +39,40 @@ class PermissionRequest {
     }
 
     fun gpsPermissionRequest(context:Context) {
-        val interval: Long = 1000 * 60 * 1
-        val fastestInterval: Long = 1000 * 50
+        if (locationPermissionRequest(context)) {
+            val interval: Long = 1000 * 60 * 1
+            val fastestInterval: Long = 1000 * 50
 
-        try {
-            val googleApiClient = GoogleApiClient.Builder(context).addApi(LocationServices.API).build()
-            googleApiClient.connect()
-            val locationRequest: LocationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY).setInterval(interval)
-                .setFastestInterval(fastestInterval)
-            val locationSettingsRequestBuilder =
-                LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
-            locationSettingsRequestBuilder.setAlwaysShow(false)
+            try {
+                val googleApiClient =
+                    GoogleApiClient.Builder(context).addApi(LocationServices.API).build()
+                googleApiClient.connect()
+                val locationRequest: LocationRequest = LocationRequest.create()
+                    .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
+                    .setInterval(interval)
+                    .setFastestInterval(fastestInterval)
+                val locationSettingsRequestBuilder =
+                    LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+                locationSettingsRequestBuilder.setAlwaysShow(false)
 
-            // coroutine scope
-            GlobalScope.launch {
-                val locationSettingsResult: LocationSettingsResult =
-                    LocationServices.SettingsApi.checkLocationSettings(
-                        googleApiClient,
-                        locationSettingsRequestBuilder.build()
-                    ).await()
-                if (locationSettingsResult.status.statusCode == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
-                    locationSettingsResult.status.startResolutionForResult(context as Activity, 0)
+                // coroutine scope
+                GlobalScope.launch {
+                    val locationSettingsResult: LocationSettingsResult =
+                        LocationServices.SettingsApi.checkLocationSettings(
+                            googleApiClient,
+                            locationSettingsRequestBuilder.build()
+                        ).await()
+                    if (locationSettingsResult.status.statusCode == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
+                        locationSettingsResult.status.startResolutionForResult(
+                            context as Activity,
+                            0
+                        )
+                    }
                 }
-            }
 
-        } catch (e: Exception) {
-            Log.d("Permission Request", "${e.stackTrace}")
+            } catch (e: Exception) {
+                Log.d("Permission Request", "${e.stackTrace}")
+            }
         }
     }
 

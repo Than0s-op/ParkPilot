@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.R
 import com.application.parkpilot.StationLocation
 import com.application.parkpilot.activity.SpotDetail
+import com.application.parkpilot.module.PermissionRequest
 import com.application.parkpilot.module.firebase.Storage
 import com.application.parkpilot.module.firebase.database.Feedback
 import com.application.parkpilot.module.firebase.database.StationAdvance
@@ -23,11 +24,13 @@ import com.application.parkpilot.module.firebase.database.StationBasic
 import com.application.parkpilot.view.Amenities
 import com.application.parkpilot.viewModel.adapter.SpotList
 import com.google.android.flexbox.FlexboxLayout
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.carousel.CarouselLayoutManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class SpotListRecyclerView(
     private val context: Context,
@@ -35,6 +38,9 @@ class SpotListRecyclerView(
     private val stations: List<StationLocation>
 ) : RecyclerView.Adapter<SpotListRecyclerView.ViewHolder>() {
 
+    // not recommended in model view view model pattern
+    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+    private val permissionRequest = PermissionRequest()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(layout, parent, false)
         return ViewHolder(view)
@@ -46,6 +52,9 @@ class SpotListRecyclerView(
         holder.viewModel.loadAmenities(stationUID)
         holder.viewModel.loadRating(stationUID)
         holder.viewModel.loadImages(stationUID)
+        if(permissionRequest.hasLocationPermission(context)) {
+            holder.viewModel.getDistance(fusedLocationClient, stations[position].coordinates)
+        }
 
         val activity = context as AppCompatActivity
         holder.viewModel.liveDataStationBasic.observe(activity) {
@@ -79,10 +88,12 @@ class SpotListRecyclerView(
                 }
             }
         }
+        holder.viewModel.liveDataDistance.observe(activity){
+            holder.textViewDistance.text = it.toString()
+        }
         holder.materialCard.setOnClickListener {
             holder.viewModel.startNextActivity(context, stationUID)
         }
-        holder.textViewDistance.text = "N/A"
     }
 
     override fun getItemCount(): Int {

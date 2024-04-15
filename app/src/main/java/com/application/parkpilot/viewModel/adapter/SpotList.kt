@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.location.Location
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +12,10 @@ import androidx.lifecycle.viewModelScope
 import com.application.parkpilot.activity.SpotDetail
 import com.application.parkpilot.module.firebase.Storage
 import com.application.parkpilot.module.firebase.database.Feedback
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import com.application.parkpilot.StationBasic as DC_StationBasic
 import com.application.parkpilot.module.firebase.database.StationAdvance as FS_StationAdvance
 import com.application.parkpilot.module.firebase.database.StationBasic as FS_StationBasic
@@ -25,6 +29,22 @@ class SpotList : ViewModel() {
     val liveDataImages = MutableLiveData<List<Uri>>()
     val liveDataFeedback = MutableLiveData<Pair<Float, Int>>()
     val liveDataAmenities = MutableLiveData<List<String>>()
+    val liveDataDistance = MutableLiveData<String>()
+
+    fun getDistance(client: FusedLocationProviderClient, geoPoint: GeoPoint) {
+        viewModelScope.launch {
+            try {
+                val currentLocation = client.lastLocation.await()
+                liveDataDistance.value =
+                    String.format("%.1f", currentLocation.distanceTo(Location("").apply {
+                        longitude = geoPoint.longitude
+                        latitude = geoPoint.latitude
+                    }) / 1000) + "km"
+            } catch (_: Exception) {
+            }
+        }
+    }
+
     fun loadBasic(stationUID: String) {
         viewModelScope.launch {
             val stationBasic = stationBasic.basicGet(stationUID)

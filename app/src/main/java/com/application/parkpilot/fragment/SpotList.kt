@@ -11,7 +11,7 @@ import com.application.parkpilot.R
 import com.application.parkpilot.adapter.SpotListRecyclerView
 import com.application.parkpilot.viewModel.SpotListViewModel
 
-class SpotList: Fragment(R.layout.spot_list) {
+class SpotList : Fragment(R.layout.spot_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
@@ -19,14 +19,18 @@ class SpotList: Fragment(R.layout.spot_list) {
 
         val viewModel = ViewModelProvider(this)[SpotListViewModel::class.java]
         viewModel.loadStation()
+        viewModel.permission.gpsPermissionRequest(requireContext())
+        
         swipeRefreshLayout.setOnRefreshListener {
             viewModel.loadStation()
+            viewModel.permission.gpsPermissionRequest(requireContext())
             swipeRefreshLayout.isRefreshing = false
         }
         viewModel.liveDataStationLocation.observe(requireActivity()) {
             it?.let {
                 recyclerView.layoutManager = LinearLayoutManager(requireContext())
-                recyclerView.adapter = SpotListRecyclerView(requireContext(), R.layout.spot_list_item, it)
+                recyclerView.adapter =
+                    SpotListRecyclerView(requireContext(), R.layout.spot_list_item, it)
             }
         }
     }
