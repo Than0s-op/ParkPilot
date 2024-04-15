@@ -61,38 +61,21 @@
                     android:hint="Name"
                     android:textSize="35sp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/textViewDistance"
-                    app:layout_constraintStart_toStartOf="@+id/textViewDistance"
+                    app:layout_constraintBottom_toTopOf="@+id/buttonDistance"
+                    app:layout_constraintStart_toStartOf="@+id/buttonDistance"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="away"
-                    android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textViewDistance"
-                    app:layout_constraintStart_toEndOf="@+id/textViewDistance"
-                    app:layout_constraintTop_toTopOf="@+id/textViewDistance" />
-
-                <TextView
-                    android:id="@+id/textViewDistance"
+                <Button
+                    android:id="@+id/buttonDistance"
+                    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:textSize="20sp"
-                    app:drawableStartCompat="@drawable/near_me"
+                    app:icon="@drawable/near_me"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewName" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="From"
-                    android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textViewPrice"
-                    app:layout_constraintEnd_toStartOf="@+id/textViewPrice"
-                    app:layout_constraintTop_toTopOf="@+id/textViewPrice" />
+                    app:layout_constraintTop_toBottomOf="@+id/textViewName"
+                    android:backgroundTint="@color/md_theme_light_primaryContainer" />
 
                 <TextView
                     android:id="@+id/textViewPrice"

@@ -28,7 +28,7 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
         val recyclerView: RecyclerView = findViewById(R.id.recycleView)
         val textViewName: TextView = findViewById(R.id.textViewName)
         val textViewRating: TextView = findViewById(R.id.textViewRating)
-        val textViewDistance: TextView = findViewById(R.id.textViewDistance)
+        val buttonDistance: TextView = findViewById(R.id.buttonDistance)
         val textViewPrice: TextView = findViewById(R.id.textViewPrice)
         val textViewPolicies: TextView = findViewById(R.id.textViewPolicies)
         val buttonFeedback: ExtendedFloatingActionButton = findViewById(R.id.buttonFeedback)
@@ -40,6 +40,7 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
         viewModel.loadAdvanceInfo(stationUID)
         viewModel.loadBasicInfo(stationUID)
         viewModel.loadRating(stationUID)
+        viewModel.getDistance(this, stationUID)
 
         // loading recycler view default (init) properties
         recyclerView.apply {
@@ -49,6 +50,10 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
 
         buttonFeedback.setOnClickListener {
             viewModel.feedback(this, stationUID)
+        }
+
+        buttonDistance.setOnClickListener{
+            viewModel.redirect(this)
         }
 
         viewModel.carouselImages.observe(this) { images ->
@@ -73,20 +78,19 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
         }
 
         viewModel.stationRating.observe(this) {
-            if(it.second != 0) {
+            if (it.second != 0) {
                 textViewRating.text = String.format("%.1f", it.first / it.second)
                 textViewRating.backgroundTintList = getTint(it.first / it.second)
                 textViewNumberOfUser.text = it.second.toString()
-            }
-            else{
+            } else {
                 textViewRating.text = "0.0"
                 textViewRating.backgroundTintList = getTint(0.0f)
                 textViewNumberOfUser.text = "0"
             }
         }
 
-        viewModel.stationLocation.observe(this) {
-//            textViewDistance.text =
+        viewModel.liveDataDistance.observe(this) {
+            buttonDistance.text = it
         }
     }
 
