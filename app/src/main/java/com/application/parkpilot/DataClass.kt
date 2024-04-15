@@ -8,13 +8,22 @@ import org.osmdroid.util.GeoPoint as OSMGeoPoint
 
 data class ParkPilotMapLegend(val title: String, val UID: String, val coordinates: OSMGeoPoint)
 data class UserCollection(
-    val firstName: String,
-    val lastName: String,
+    var firstName: String,
+    var lastName: String,
     val birthDate: String,
     val gender: String
-)
+){
+    init{
+        firstName = firstName.trim().replaceFirstChar(Char::uppercaseChar)
+        lastName = lastName.trim().replaceFirstChar(Char::uppercaseChar)
+    }
+}
 
-data class UserProfile(val userName: String, val userPicture: Uri?=null)
+data class UserProfile(var userName: String, val userPicture: Uri?=null){
+    init{
+        userName = userName.trim().replaceFirstChar(Char::uppercaseChar)
+    }
+}
 data class QRCodeCollection(
     val key: String,
     val to: Int,
@@ -23,7 +32,13 @@ data class QRCodeCollection(
 )
 
 data class StationLocation(val stationUid: String?, val coordinates: FirebaseGeoPoint)
-data class StationBasic(val name: String?, val price: Int?, val rating: Float?)
+data class StationBasic(var name: String?, val price: Int?, val rating: Float?) {
+    init{
+        name?.let{
+            name = name?.trim()?.replaceFirstChar(Char::uppercaseChar)
+        }
+    }
+}
 
 data class StationAdvance(
     val policies: String,

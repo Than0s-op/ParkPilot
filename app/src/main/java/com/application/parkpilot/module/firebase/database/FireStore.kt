@@ -27,7 +27,6 @@ open class FireStore {
 class UserBasic : FireStore() {
     private val collectionName = "usersBasic"
     private val userName = "userName"
-    private val userPicture = "userPicture"
 
     // it will update user name and profile image
     suspend fun setProfile(data: UserProfile, documentID: String): Boolean {
@@ -36,7 +35,7 @@ class UserBasic : FireStore() {
 
         // data mapping
         val map = mapOf(
-            userName to data.userName.trim(),
+            userName to data.userName,
         )
 
         // await function this will block thread
@@ -80,9 +79,9 @@ class UserAdvance : FireStore() {
 
         // data mapping
         val map = mapOf(
-            firstName to data.firstName.trim(),
-            lastName to data.lastName.trim(),
-            birthDate to data.birthDate.trim(),
+            firstName to data.firstName,
+            lastName to data.lastName,
+            birthDate to data.birthDate,
             gender to data.gender
         )
 

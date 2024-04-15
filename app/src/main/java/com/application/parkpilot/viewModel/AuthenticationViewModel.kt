@@ -17,9 +17,6 @@ import kotlinx.coroutines.launch
 
 class AuthenticationViewModel(activity: Authentication) : ViewModel() {
 
-    val handler = CoroutineExceptionHandler { _, exception ->
-        println("CoroutineExceptionHandler got $exception")
-    }
 
 //      .......... [ phone auth ] ................
 
@@ -31,10 +28,10 @@ class AuthenticationViewModel(activity: Authentication) : ViewModel() {
     val verificationCode = phoneAuth.verificationId
 
     // it will store result of code check
-    val verifyPhoneNumberWithCodeResult = MutableLiveData<EventHandler<Boolean>>()
+    val verifyPhoneNumberWithCodeResult = MutableLiveData<Boolean>()
 
     // it will store result of google signIn
-    val googleSignInResult = MutableLiveData<EventHandler<Boolean>>()
+    val googleSignInResult = MutableLiveData<Boolean>()
 
     // it will store state of login scroll view visibility [ To handel reconfiguration]
     var scrollViewLoginVisibility = View.VISIBLE
@@ -54,7 +51,7 @@ class AuthenticationViewModel(activity: Authentication) : ViewModel() {
         viewModelScope.launch {
             // store result of verification code. It will be true (if code match) or false
             verifyPhoneNumberWithCodeResult.value =
-                EventHandler(phoneAuth.verifyPhoneNumberWithCode(OTP))
+                phoneAuth.verifyPhoneNumberWithCode(OTP)
         }
     }
 
@@ -71,7 +68,7 @@ class AuthenticationViewModel(activity: Authentication) : ViewModel() {
     private val resultLauncher =
         activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             // store true or false
-            googleSignInResult.value = EventHandler(result.resultCode == AppCompatActivity.RESULT_OK)
+            googleSignInResult.value = result.resultCode == AppCompatActivity.RESULT_OK
         }
 
 

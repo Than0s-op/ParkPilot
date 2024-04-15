@@ -112,27 +112,11 @@ class UserRegisterViewModel : ViewModel() {
         return age.toString()
     }
 
-    fun getImage(
-        context: Context, imageUrl: Any, width: Int = 192, height: Int = 192
-    ) {
-        // request for profile image of user
-        val profileImageRequest = ImageRequest.Builder(context)
-            .data(imageUrl)
-            .size(width, height)
-            .scale(Scale.FIT)
-            .build()
-
-        viewModelScope.launch {
-            imageLoaderResult.value = context.imageLoader.execute(profileImageRequest)
-        }
-    }
-
     private fun getAvatar(context: Context, userName: String): Bitmap {
         return AvatarGenerator.AvatarBuilder(context)
             .setLabel(userName)
-            .setAvatarSize(120)
+            .setAvatarSize(240)
             .setTextSize(30)
-            .toCircle()
             .build().bitmap
     }
 }
