@@ -46,7 +46,7 @@ class Feedback : AppCompatActivity(R.layout.feedback) {
 
         buttonOk.setOnClickListener {
             if (editTextFeedback.text.isBlank()) {
-                editTextFeedback.error = "Message must not be empty"
+                editTextFeedback.error = "Message must not be blank"
                 return@setOnClickListener
             }
 
