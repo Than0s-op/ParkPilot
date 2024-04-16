@@ -1,0 +1,743 @@
+[33mcommit c31786db5a1021875e7e47fe5d2d9ee92d0073ec[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mtest[m[33m, [m[1;31morigin/test[m[33m, [m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Apr 15 21:13:08 2024 +0530
+
+    sort by rating integrated
+
+[33mcommit f4c8b29fc2d8b6e52b6e24d175e8903aa5ff5220[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Apr 15 18:41:05 2024 +0530
+
+    sort by distance integrated
+
+[33mcommit 62d3020243f57d5c7e1916551375f24bf5ecffff[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Apr 15 14:53:24 2024 +0530
+
+    google map redirect integrated:
+
+[33mcommit ea301fa6185902a4a25d4401ebab5e180f5e6699[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Apr 15 14:12:51 2024 +0530
+
+    a warning fixed
+
+[33mcommit cd44168b8faf2a8f44a3295345552046c0c9d163[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Apr 15 14:11:46 2024 +0530
+
+    distance added
+
+[33mcommit 25c5df7583052417b47692a7cae8ab5479c41359[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Apr 15 07:37:52 2024 +0530
+
+    some fixes
+
+[33mcommit 522b578d11793fb1836e3e338b388af607b4b2b8[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sun Apr 14 16:36:26 2024 +0530
+
+    designing
+
+[33mcommit 521626e5c2f8c081942503647fb1f4938c4f50c2[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sun Apr 14 15:55:05 2024 +0530
+
+    replace hardcode string of amenities
+
+[33mcommit ab4bf534771d4d327d71428ddd2c2b1bceda153b[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sun Apr 14 15:52:40 2024 +0530
+
+    spot list item
+
+[33mcommit c49822e877e62dd9169f630a9b9af42aa958dd3b[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sun Apr 14 15:49:20 2024 +0530
+
+    spot detail rating fix
+
+[33mcommit 7d0724bea731b6b52fcb7a227a1365c02b98e6c9[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sun Apr 14 15:46:11 2024 +0530
+
+    spot list reating fix
+
+[33mcommit 7765582109e19ff3e44534a2a43a412cfbfd8bc4[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sun Apr 14 15:42:41 2024 +0530
+
+    spot list item change
+
+[33mcommit 4ebab077c936623e0858e356ffeec40bcce2cc54[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sun Apr 14 11:15:28 2024 +0530
+
+    theme changes
+
+[33mcommit ae8973545a649bce0441078f8d52dce590d8c096[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sun Apr 14 08:13:30 2024 +0530
+
+    remove some hardcord string and 'think should you know' to 'policies'
+
+[33mcommit 8aa4379f95299f2c6feb93b5e72e4741d81d8aef[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sat Apr 13 10:45:10 2024 +0530
+
+    nothing to say
+
+[33mcommit 8d07a1017d8a005c0fafc84cae9ec527be39e797[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Fri Apr 12 15:42:54 2024 +0530
+
+    user registration activity desiging
+
+[33mcommit 39894d783189904be14ded3f7801ba8d56efcdc7[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Fri Apr 12 11:47:21 2024 +0530
+
+    user registration added save waiting, validation, designing
+
+[33mcommit 1d2a832f44c81142593900f6ccb85522b3c1027e[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Fri Apr 12 09:35:37 2024 +0530
+
+    integrate viewmodel of spotlist adapter
+
+[33mcommit 5f7e0c3d3978aa15e3869afa4c2a6f4d645c111f[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Fri Apr 12 08:00:58 2024 +0530
+
+    some changes
+
+[33mcommit 2394ae7e66eb0e43d5416ed378bcd8064f92c924[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Apr 11 16:40:05 2024 +0530
+
+    hide give feedback button for anonymous user
+
+[33mcommit bd2f37c0b6e8d98acfb4486b6688931954a34019[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Apr 11 16:31:54 2024 +0530
+
+    some fixes
+
+[33mcommit 0cba67009deb867ce7291eb0117edd707b1a545e[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Apr 11 16:04:33 2024 +0530
+
+    spot_list, booking_history, setting into fragment
+
+[33mcommit 236f0d219378bc90374929186d40d7d5113f8e23[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Apr 11 16:03:50 2024 +0530
+
+    spot_list, booking_history, setting into fragment
+
+[33mcommit 5bee4fce8a81e46f10956533376942e6efc72398[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Apr 11 15:38:56 2024 +0530
+
+    integrate map fragment (home activity to map fragment)
+
+[33mcommit 815d3e75bbbe7b10d8f9876bebc8cdd98009bb64[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Apr 11 14:29:00 2024 +0530
+
+    bottom navigation view integrated
+
+[33mcommit 6a3897e66625034746451014731e2c202959fa18[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Apr 11 13:50:05 2024 +0530
+
+    designed menu bar
+
+[33mcommit 410e16c40c1d331b78347ad2a72999641adbce3b[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Apr 11 13:01:28 2024 +0530
+
+    design spot detail and feedback
+
+[33mcommit a72c6bb50f307daa8803624d4ccfd6b9e7c67ba0[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Apr 11 09:09:57 2024 +0530
+
+    design spot detail
+
+[33mcommit c2418f1d28bc18fedd7317948137bbe55c18361c[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Wed Apr 10 18:56:55 2024 +0530
+
+    design spot detail
+
+[33mcommit 9a7ec3b77a8e05f745a3ea688d5a7138af41e05d[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Wed Apr 10 09:44:33 2024 +0530
+
+    integrate collapse layout in spot detail activity
+
+[33mcommit a53ecb7ba399453b62f074e8588d37b838f2a82f[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Tue Apr 9 14:02:50 2024 +0530
+
+    integrate refresh layout in spot list
+
+[33mcommit 69c36a7adcbf0a01c9e20d1db40f0a54248435ce[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Tue Apr 9 11:40:28 2024 +0530
+
+    amenities added in card
+
+[33mcommit 221cff99214ce0143615f64e07fbadd61e81d3ef[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Tue Apr 9 08:58:26 2024 +0530
+
+    force light mode and portrait mode
+
+[33mcommit ef3e4125708095020818a32f365d6d8b85089dd1[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Apr 8 19:10:33 2024 +0530
+
+    design spotlist activity
+
+[33mcommit 06cf8c44c1fa1c0218cf8c9129d1fb5facfa0c89[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Apr 8 14:53:05 2024 +0530
+
+    design spotlist activity
+
+[33mcommit e40439f8d601e63f82b25a5e4e050467210d72ea[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sun Apr 7 18:46:47 2024 +0530
+
+    design authentication activity
+
+[33mcommit 872a6d684064c82e907bd91972d3ae4a9c456a3f[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sat Apr 6 09:38:49 2024 +0530
+
+    spot list review integrate
+
+[33mcommit ffb9fd8470978086a651d3aa01874743398b7375[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sat Mar 30 08:07:13 2024 +0530
+
+    spot list activity
+
+[33mcommit 1a289b0d807f84dbf178299985690dd63ce56059[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Mar 28 15:58:28 2024 +0530
+
+    integrate spot image with carousel
+
+[33mcommit 0cc39e871365c4064548e48a86444ff22ffe363a[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Tue Mar 26 17:12:43 2024 +0530
+
+    fix feedback and rating
+
+[33mcommit e232173496ed44daf3e1e9085a75b1f630edf5b2[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sat Mar 23 08:25:01 2024 +0530
+
+    remove owner user
+
+[33mcommit f468f3eb5ec6139a4d58229474b78fd6c072f58d[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Mar 21 18:09:14 2024 +0530
+
+    some bug fix
+
+[33mcommit 3057658ce0e255ae225f10ec5d3c41d5f65411cd[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sat Mar 16 07:52:56 2024 +0530
+
+    park spot registre successful message
+
+[33mcommit 40d2f96af20f4299a2d647e8d6ba8a0b37b39d18[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Fri Mar 15 11:30:50 2024 +0530
+
+    parking register image loading
+
+[33mcommit a4b9aeb8e3fe73319c61f0d6ffc6787b0a38e148[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Fri Mar 15 11:23:04 2024 +0530
+
+    parking register load fix
+
+[33mcommit 5bede5b41aa84cb97bebeef8e54f9aa55e008be8[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sun Mar 10 07:14:31 2024 +0530
+
+    image picker and time picker integrate in park register activity:
+
+[33mcommit f3d325cbaeff9b812a4fbc2967cea23904e65c2f[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Fri Mar 8 08:59:19 2024 +0530
+
+    bug fixes
+
+[33mcommit c1c2d4b50a8b8df352b4347c66dc6d3b5b822215[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Mar 7 22:01:39 2024 +0530
+
+    feedback activity integrate
+
+[33mcommit cd78db13b7ed99e123e679bca2880b62ed8aff1c[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Mar 7 15:20:49 2024 +0530
+
+    feedback recycler view integraterd
+
+[33mcommit 4b9ff2e67363b18dd4cf2d1b52f13d7555d27adb[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Wed Mar 6 17:58:27 2024 +0530
+
+    feedback activity in progress
+
+[33mcommit 3b375b00ef62bd5b61cdc27c99da25b2b6e6445e[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Tue Mar 5 11:45:54 2024 +0530
+
+    starting price add
+
+[33mcommit 38c2f89ace678cff42d384744098b5ab79257959[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Tue Mar 5 11:22:51 2024 +0530
+
+    profile activity integrated
+
+[33mcommit 6f766684070cbbf275a545fa9e3f3393c892a4a8[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Tue Mar 5 10:13:12 2024 +0530
+
+    profile activity creation
+
+[33mcommit 9ab8096b1bab4c6a176dcee1560121733459ef3b[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Tue Mar 5 05:58:26 2024 +0530
+
+    adapte menu for multiple user type
+
+[33mcommit bdc8722ad319e6b3abee6d739118c59756e1b428[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Mar 4 12:00:41 2024 +0530
+
+    adapte menu for multiple user type
+
+[33mcommit df3e2c2b337666b93b509fdbda5303c3563852c3[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Mar 4 11:14:34 2024 +0530
+
+    adapte main activity for 3 type of user
+
+[33mcommit c6c7659b6b968e9cd9f982195ac3bd097f167639[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sat Mar 2 11:02:18 2024 +0530
+
+    how are you activity created
+
+[33mcommit b050855da4f9154fd1a0abf8505795c8f18fa7dd[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sat Mar 2 10:38:42 2024 +0530
+
+    how are you activity created
+
+[33mcommit fc215d4a3d8e4005c1a071801d0b15eaa675f734[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sun Feb 25 17:39:35 2024 +0530
+
+    parking register
+
+[33mcommit 84bdfd7052779a84bbe9ea73f85ec1b83806e328[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Feb 22 12:32:06 2024 +0530
+
+    fireStore naming convention
+
+[33mcommit 4fcda2c8527ef6f43d9a0ca85ae4f56181d62015[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Feb 22 11:22:50 2024 +0530
+
+    fireStore naming convention
+
+[33mcommit 09953fcc387ad5d39aaac19931de5b18f30319cc[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Feb 22 09:44:19 2024 +0530
+
+    spot detail advance info integrated
+
+[33mcommit 9093ca76aa8ee0409ea6d436c25411dfea975e6b[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Wed Feb 21 10:10:21 2024 +0530
+
+    map rotation enabled
+
+[33mcommit 961dee8e4c12a3bb58c70f5ce8c26c4c7108a027[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Tue Feb 20 10:06:14 2024 +0530
+
+    map rotation enabled
+
+[33mcommit 64f70a5d2b6451b7a7b700bd6b7d39bc4f28c765[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Tue Feb 20 07:30:47 2024 +0530
+
+    map marker in progress
+
+[33mcommit f8dac076242371fd0f100240b18f47c2011ac9e8[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Feb 19 16:20:37 2024 +0530
+
+    spot preview with firestore
+
+[33mcommit 3160c1b62be5a4bf792f3ee187aa0ffd5b157045[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Feb 19 13:32:40 2024 +0530
+
+    spot preview with firestore
+
+[33mcommit 25abbe9f1b8190f841ad05d6e1315d27956673e5[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Feb 19 13:11:55 2024 +0530
+
+    spot preview/dialog view model integration
+
+[33mcommit edb6de13245d4c2110df67ffbb0e77cf1c4118d0[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Feb 19 11:21:00 2024 +0530
+
+    change in loding station legends
+
+[33mcommit 1ed30094a49ce3283e072b48ea90de6b86335e52[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Feb 19 11:02:35 2024 +0530
+
+    FireStore station get methods with dataclasses
+
+[33mcommit 7bcf415f309cd079fffde6592b620c866a4191ea[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Feb 19 09:31:52 2024 +0530
+
+    remove booking system
+
+[33mcommit 609e3287a3c4613357f785b845dbd52649544667[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Feb 19 08:09:36 2024 +0530
+
+    time picker module
+
+[33mcommit 659b0d23ac29e9a5ed419cc9deb9470cb3ee8045[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sat Feb 17 10:46:16 2024 +0530
+
+    is valid qr code
+
+[33mcommit 143a68872bfb3e3ce3c8fbcbee5b877096a80fcb[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Tue Feb 13 11:36:01 2024 +0530
+
+    spot detail view model and user object creation
+
+[33mcommit 6fab7ef0419eb34c3e08e29b2fe317ab103a1768[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Feb 12 22:05:47 2024 +0530
+
+    QR code history recycler view set on item click
+
+[33mcommit 45313b71d891b405959ac8aac52ee20603c7df3f[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Feb 12 21:12:12 2024 +0530
+
+    QR code history activity
+
+[33mcommit 2fd903ce73957c824e1aa67e9e4dced6e96473b7[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sun Feb 11 22:47:40 2024 +0530
+
+    firestore QR in progress
+
+[33mcommit b5c8ac0f4245946d1bea889cfbb73c9875f7d59f[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sun Feb 11 13:33:04 2024 +0530
+
+    auth activity design
+
+[33mcommit 1bc32fac834dc0f84fa34231f4026c650febcc54[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Fri Feb 9 21:43:47 2024 +0530
+
+    QR code integration
+
+[33mcommit 0038c630ffbf0357708e2ef968d0f78e7220a144[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Fri Feb 9 17:49:40 2024 +0530
+
+    razorpay integrate
+
+[33mcommit b46b0eabae9cb64b00894ef0d6e9887bede16767[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Feb 8 14:30:28 2024 +0530
+
+    coroutine handler
+
+[33mcommit 587f313bd97b19d2fdcc3839f2eba0c23ab33c80[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Wed Feb 7 22:16:28 2024 +0530
+
+    event handler integrate in auth
+
+[33mcommit 03ddd4c86e5feac7da6d177ef68fd77fdb0a2592[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Wed Feb 7 17:13:56 2024 +0530
+
+    Event handler
+
+[33mcommit 8204ba7e4a1dbd2dc86a74aec8b423032e438db1[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Wed Feb 7 07:35:46 2024 +0530
+
+    fireStore class inheriate to user
+
+[33mcommit ec6effdde2f295a28056d21c5bff972a27675f0c[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Tue Feb 6 17:07:39 2024 +0530
+
+    QR generator integrate
+
+[33mcommit 2dc8d2984b8eb1c6cb9717917ec0e7c2fb618b7b[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Tue Feb 6 11:05:26 2024 +0530
+
+    Razor pay integration
+
+[33mcommit eee3c91e0e48fa1c4ff606212f42c8d4779d65c0[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sat Feb 3 11:00:24 2024 +0530
+
+    file name changes
+
+[33mcommit 2cb9be1d907878b5b8d24f53f26b411433f13dc4[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sat Feb 3 07:55:34 2024 +0530
+
+    some design changes
+
+[33mcommit 21f1ed7a0e408ae72825c063ffed0b6d02567115[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Fri Feb 2 14:52:27 2024 +0530
+
+    some bug fix
+
+[33mcommit 0638b49badcd7629493ffc3a1fcaf18c2f2e0ff8[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Fri Feb 2 07:17:08 2024 +0530
+
+    integrate user register view model
+
+[33mcommit 04cd850572fe163bff1359d6d2166e0fbaa5823c[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Feb 1 15:02:33 2024 +0530
+
+     view model integration with authentication activity
+
+[33mcommit c15012c863216f5f5d5e39b996aafec284b61219[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Wed Jan 31 09:51:12 2024 +0530
+
+    fix some issues
+
+[33mcommit 77333626e60469c9b8834d7ed2672a65308aaba8[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Jan 29 22:24:31 2024 +0530
+
+    code clean up and formating
+
+[33mcommit 34c49c43cf1bd5f25fd867e4f754b9cfdd357e57[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Jan 25 21:47:08 2024 +0530
+
+    add resend OTP and clean up
+
+[33mcommit b4e82cf163cc35cef7ef1a182466d8ef3f3d14c9[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Jan 25 21:02:25 2024 +0530
+
+    google sign in clean up
+
+[33mcommit deae51758554b33abe48eae4edfffb8d593cb6c1[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Jan 25 20:26:29 2024 +0530
+
+    force user to select google account again
+
+[33mcommit 58568dd0aac392b504e6dcdd8e56e75451b7b7e3[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Jan 25 18:50:40 2024 +0530
+
+    auth code cleanup and modularized
+
+[33mcommit 62fd1b2d47914a3dcdfca38cbd50fef44340fd34[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Tue Jan 23 21:43:44 2024 +0530
+
+    shared preferences
+
+[33mcommit 23ef212c72f07992dff02944e50a89adebc06efe[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Tue Jan 23 17:25:55 2024 +0530
+
+    user registration in progress
+
+[33mcommit 008fc69c8adbc6950bd19a9976a303ad85079a01[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Tue Jan 23 08:03:12 2024 +0530
+
+    formating
+
+[33mcommit a4dee9950d972dbf53fc5604e19344d0d34a7534[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Jan 22 22:11:33 2024 +0530
+
+    formating
+
+[33mcommit 51e4e6de3f1fe6c046578763b7b28868d487260a[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Jan 22 14:22:34 2024 +0530
+
+    photo picker integrate
+
+[33mcommit be830095d65c648112406f162c705f79225bbd47[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Jan 22 11:36:29 2024 +0530
+
+    added mutable live data in date picker
+
+[33mcommit 3304a826ee72f6e66680b2aa8b54a095d2c4c7a7[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Jan 22 11:24:18 2024 +0530
+
+    added listener in date picker
+
+[33mcommit 863e4593e798dcd61b152e1417d7718d938589f0[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Jan 22 10:53:36 2024 +0530
+
+    Date picker module
+
+[33mcommit 93ebbbf8d680d366a83f70a2c0ef1237f696b64b[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sun Jan 21 22:31:22 2024 +0530
+
+    single tap action integrate and registration in progress
+
+[33mcommit 40fa534c09608fe27b30275e58acf91b964cef25[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sat Jan 20 16:06:49 2024 +0530
+
+    integrate map_pins with single top behaviour
+
+[33mcommit d04820aef6a3df2028f7455fb008e2e5f85eb04f[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Jan 18 17:11:36 2024 +0530
+
+    progress Indicator changed
+
+[33mcommit be957e28ff1a9df97c056690f61ac911b59c3ea9[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Wed Jan 17 16:13:28 2024 +0530
+
+    no need of try-catch block
+
+[33mcommit 427e065781bb69c8f00ea3c67f4e82969380c514[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Wed Jan 17 16:11:46 2024 +0530
+
+    fix search result crash
+
+[33mcommit 8baee5aa228804c849f7392e69fe837e8b7d44fe[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Tue Jan 16 20:55:15 2024 +0530
+
+    current location and market click on progress
+
+[33mcommit 47f1efaaa050865acd41fe5ee71fbe538c9ee0f5[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Jan 15 17:38:54 2024 +0530
+
+    location and map in progress
+
+[33mcommit 6bca7c35439c11f5a12565d88728d5d8bd16e4e9[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Mon Jan 15 08:27:06 2024 +0530
+
+    integrate gecoder(search function)
+
+[33mcommit 140b3df7f3d9a03b9f73a7d694f88dd59f3da0f8[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sun Jan 14 21:30:59 2024 +0530
+
+    Abandon Email and Password
+
+[33mcommit 118fc83599036295f6ae71b2dc8f56cab8cfab43[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sat Jan 13 21:50:25 2024 +0530
+
+    I don't know
+
+[33mcommit f8469fe9c721430a915acc18d8ab727c1f42af8e[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Sat Jan 13 19:10:10 2024 +0530
+
+    google signin module integration
+
+[33mcommit 2f5ae8c05e62e25fa43aa227fbb64f9e4045e4c2[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Fri Jan 12 07:59:52 2024 +0530
+
+    some modification
+
+[33mcommit 2c932d2b7576007837baff35418dc50028331eab[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Jan 11 17:31:50 2024 +0530
+
+    handle already logged user
+
+[33mcommit ba4ed131a8c1e09d1e833dc531f944898b6ea579[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Jan 11 16:52:42 2024 +0530
+
+    made changes in Phone auth and Authentication. Turn on noHistory of Authentication activity
+
+[33mcommit 7af868a8c18417be62f5e299808e87a2676aef6f[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Jan 11 15:25:35 2024 +0530
+
+    authentication activity
+
+[33mcommit e7d836e98acebf2146f8e313fd2c2a62f070b0db[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Jan 11 15:13:59 2024 +0530
+
+    fire base phone auth
+
+[33mcommit 677c3390d3917741ea428fecd9213d297bf1258b[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Jan 11 15:09:50 2024 +0530
+
+    theme and color
+
+[33mcommit 1ed0122770be6a119717e335fa82c44cc3f1e091[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Jan 11 14:55:11 2024 +0530
+
+    dynamic color
+
+[33mcommit 840fb54e00ad3823a042ca1e62995819f5e526db[m
+Author: Thano0s <himanshupatil45h@gmail.com>
+Date:   Thu Jan 11 14:51:41 2024 +0530
+
+    first commit

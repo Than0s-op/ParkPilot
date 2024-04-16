@@ -122,7 +122,7 @@ class OSM(private val mapView: MapView) {
         val overlayItemArrayList = ArrayList<OverlayItem>()
 
         // create pin image
-        val markerDrawable = ContextCompat.getDrawable(context, R.drawable.location_on)
+        val markerDrawable = ContextCompat.getDrawable(context, R.drawable.map_marker)
 
         for (geoPoint in geoPoints) {
             val overlayItem = OverlayItem(geoPoint.title, geoPoint.UID, geoPoint.coordinates)

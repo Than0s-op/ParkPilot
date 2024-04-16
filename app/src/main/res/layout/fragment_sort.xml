@@ -24,7 +24,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layoutDirection="rtl"
-        android:text="Jas aal tas" />
+        android:text="Random" />
 
     <RadioButton
         android:id="@+id/distanceFilter"
