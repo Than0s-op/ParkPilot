@@ -26,19 +26,6 @@ class DatePicker(startDate: Long, endDate: Long) {
     // to observe date, hence other classes can access date, when it will change
     var pickedDate = MutableLiveData<String?>()
 
-    // below function will take string(date) as input and convert it into millis(Long)
-    private fun dateToMillis(date: String): Long {
-        // date format should be in yyyy-mm-dd
-        val localDate = LocalDate.parse(date)
-        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
-
-        // set date to the calendar, here monthValue is reduce by 1 to handel a case
-        calendar.set(localDate.year, localDate.monthValue - 1, localDate.dayOfMonth)
-
-        // return date as millis
-        return calendar.timeInMillis
-    }
-
     fun showDatePicker(context: Context, message: String) {
 
         // set message to the date picker, then build it
