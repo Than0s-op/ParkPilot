@@ -16,12 +16,6 @@ import com.google.firebase.auth.auth
 
 class GoogleSignIn : Activity() {
 
-    // for logs
-    private val TAG = "GoogleActivity"
-
-    // for activity result tag
-    private val RC_SIGN_IN = 9001
-
     // it will store firebase auth
     private lateinit var auth: FirebaseAuth
 
@@ -75,14 +69,14 @@ class GoogleSignIn : Activity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
+                    Log.d(Companion.TAG, "signInWithCredential:success")
 
                     // read method name
                     finishActivityWithResult(RESULT_OK)
 
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    Log.w(Companion.TAG, "signInWithCredential:failure", task.exception)
 
                     // read method name
                     finishActivityWithResult(RESULT_CANCELED)
@@ -108,5 +102,13 @@ class GoogleSignIn : Activity() {
 
         // finishing to this activity
         finish()
+    }
+
+    companion object {
+        // for logs
+        private const val TAG = "GoogleActivity"
+
+        // for activity result tag
+        private const val RC_SIGN_IN = 9001
     }
 }
