@@ -14,23 +14,29 @@ import java.io.ByteArrayOutputStream
 
 class Storage {
     private val storageRef = Firebase.storage.reference
+
+    companion object {
+        private const val PROFILE = "userProfileImage/"
+        private const val SPOT = "stationImages/"
+    }
+
     suspend fun userProfilePhotoPut(context: Context, uid: String, image: Any): Uri? {
-        val childRef = storageRef.child("user_profile_photo/${uid}")
-        val data = compress(context,image)
+        val childRef = storageRef.child("$PROFILE${uid}")
+        val data = compress(context, image)
         childRef.putBytes(data).await()
         return userProfilePhotoGet(uid)
     }
 
     suspend fun userProfilePhotoGet(uid: String): Uri? {
         return try {
-            storageRef.child("user_profile_photo/${uid}").downloadUrl.await()
+            storageRef.child("$PROFILE${uid}").downloadUrl.await()
         } catch (e: Exception) {
             null
         }
     }
 
     suspend fun parkSpotPhotoGet(uid: String): List<Uri> {
-        val list = storageRef.child("parkSpot/${uid}/").listAll().await()
+        val list = storageRef.child("$SPOT${uid}/").listAll().await()
         val imagesUri = ArrayList<Uri>()
         for (i in list.items) {
             imagesUri.add(i.downloadUrl.await())
