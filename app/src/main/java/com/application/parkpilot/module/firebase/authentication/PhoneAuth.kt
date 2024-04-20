@@ -1,6 +1,7 @@
 package com.application.parkpilot.module.firebase.authentication
 
 import android.app.Activity
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Firebase
@@ -19,7 +20,7 @@ import java.util.concurrent.TimeUnit
 
 
 // command: "./gradlew signingReport" to get SHA1 and SHA256
-class PhoneAuth(private val activity: Activity) {
+class PhoneAuth(private val context: Context) {
 
     // fire auth initialization
     private var auth: FirebaseAuth = Firebase.auth
@@ -79,19 +80,11 @@ class PhoneAuth(private val activity: Activity) {
             }
         }
 
-    init {
-
-        // Disable reCaptcha
-        // auth.firebaseAuthSettings.setAppVerificationDisabledForTesting(true)
-
-        // Initialize phone auth callbacks
-    }
-
     fun startPhoneNumberVerification(phoneNumber: String) {
         val options =
             PhoneAuthOptions.newBuilder(auth).setPhoneNumber(phoneNumber) // Phone number to verify
                 .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                .setActivity(activity) // Activity (for callback binding)
+                .setActivity(context as Activity) // Activity (for callback binding)
                 .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
                 .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
@@ -110,7 +103,7 @@ class PhoneAuth(private val activity: Activity) {
         val optionsBuilder =
             PhoneAuthOptions.newBuilder(auth).setPhoneNumber(phoneNumber) // Phone number to verify
                 .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                .setActivity(activity) // (optional) Activity for callback binding
+                .setActivity(context as Activity) // (optional) Activity for callback binding
                 // If no activity is passed, reCAPTCHA verification can not be used.
                 .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
                 .setForceResendingToken(resendToken)
@@ -120,7 +113,7 @@ class PhoneAuth(private val activity: Activity) {
 
     private suspend fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential): Boolean {
         var result = false
-        auth.signInWithCredential(credential).addOnCompleteListener(activity) { task ->
+        auth.signInWithCredential(credential).addOnCompleteListener(context as Activity) { task ->
             // entered OTP is correct
             if (task.isSuccessful) {
                 // Sign in success, update UI with the signed-in user's information
