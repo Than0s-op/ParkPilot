@@ -2,7 +2,6 @@ package com.application.parkpilot.fragment
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +11,7 @@ import com.application.parkpilot.R
 import com.application.parkpilot.adapter.SpotListRecyclerView
 import com.application.parkpilot.bottomSheet.SortFragment
 import com.application.parkpilot.viewModel.SpotListViewModel
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
 class SpotList : Fragment(R.layout.spot_list),
     SortFragment.OnRadioButtonSelectedListener {
@@ -27,7 +27,8 @@ class SpotList : Fragment(R.layout.spot_list),
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         val swipeRefreshLayout: SwipeRefreshLayout =
             view.findViewById(R.id.swipeRefreshLayout)
-        val buttonSort: Button = view.findViewById(R.id.buttonSort)
+        val buttonSort: ExtendedFloatingActionButton = view.findViewById(R.id.buttonSort)
+
 
         viewModel = ViewModelProvider(this)[SpotListViewModel::class.java]
         viewModel.loadStation()
@@ -38,6 +39,18 @@ class SpotList : Fragment(R.layout.spot_list),
             val dialog = SortFragment.newInstance(sortingType)
             dialog.onRadioButtonSelectedListener = this
             dialog.show(childFragmentManager, SortFragment.TAG)
+        }
+
+        recyclerView.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+            // the delay of the extension of the FAB is set for 12 items
+            if (scrollY > oldScrollY + 12 && buttonSort.isShown) {
+                buttonSort.hide()
+            }
+
+            // the delay of the extension of the FAB is set for 12 items
+            if (scrollY < oldScrollY - 12 && !buttonSort.isShown) {
+                buttonSort.show()
+            }
         }
 
         swipeRefreshLayout.setOnRefreshListener {
