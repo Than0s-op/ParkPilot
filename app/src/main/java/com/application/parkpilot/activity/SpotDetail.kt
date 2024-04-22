@@ -4,6 +4,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -28,11 +29,12 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
         val recyclerView: RecyclerView = findViewById(R.id.recycleView)
         val textViewName: TextView = findViewById(R.id.textViewName)
         val textViewRating: TextView = findViewById(R.id.textViewRating)
-        val buttonDistance: TextView = findViewById(R.id.buttonDistance)
+        val buttonDistance: Button = findViewById(R.id.buttonDistance)
         val textViewPrice: TextView = findViewById(R.id.textViewPrice)
         val textViewPolicies: TextView = findViewById(R.id.textViewPolicies)
         val buttonFeedback: ExtendedFloatingActionButton = findViewById(R.id.buttonFeedback)
         val textViewNumberOfUser: TextView = findViewById(R.id.textViewNumberOfUser)
+        val buttonBookNow: Button = findViewById(R.id.buttonBookNow)
 
         val viewModel = ViewModelProvider(this)[SpotPreviewViewModel::class.java]
         val stationUID = intent.getStringExtra("stationUID")!!
@@ -54,6 +56,10 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
 
         buttonDistance.setOnClickListener{
             viewModel.redirect(this)
+        }
+
+        buttonBookNow.setOnClickListener{
+
         }
 
         viewModel.carouselImages.observe(this) { images ->

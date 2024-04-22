@@ -77,6 +77,17 @@
                     app:layout_constraintTop_toBottomOf="@+id/textViewName"
                     android:backgroundTint="@color/md_theme_light_primaryContainer" />
 
+                <Button
+                    android:id="@+id/buttonBookNow"
+                    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/md_theme_light_primaryContainer"
+                    android:text="Book Now"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
                 <TextView
                     android:id="@+id/textViewPrice"
                     android:layout_width="wrap_content"

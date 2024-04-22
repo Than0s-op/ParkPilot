@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:divider="@drawable/empty_tall_divider"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:showDividers="middle">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutFromDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            app:layout_constraintEnd_toStartOf="@+id/textInputLayoutFromTime"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="0.6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextFromDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="From Date"
+                android:inputType="textCapSentences"
+                android:singleLine="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutFromTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintStart_toEndOf="@+id/textInputLayoutFromDate"
+            app:layout_constraintTop_toTopOf="@+id/textInputLayoutFromDate">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextFromTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="From Time"
+                android:inputType="textCapSentences"
+                android:singleLine="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutToDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            app:layout_constraintEnd_toStartOf="@+id/textInputLayoutToTime"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="0.6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutFromDate">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextToDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="To Date"
+                android:inputType="textCapSentences"
+                android:singleLine="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutToTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintStart_toEndOf="@+id/textInputLayoutToDate"
+            app:layout_constraintTop_toTopOf="@+id/textInputLayoutToDate">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextToTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="To Time"
+                android:inputType="textCapSentences"
+                android:singleLine="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/buttonBook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Book" />
+
+</LinearLayout>
