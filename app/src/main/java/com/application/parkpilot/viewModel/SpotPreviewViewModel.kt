@@ -37,6 +37,7 @@ class SpotPreviewViewModel : ViewModel() {
     val carouselImages = MutableLiveData<List<Any>>()
     val stationBasicInfo = MutableLiveData<StationBasicDataClass>()
     val stationAdvanceInfo = MutableLiveData<StationAdvanceDataClass>()
+    val bookingPossible = MutableLiveData<Boolean>()
     val stationRating = MutableLiveData<Pair<Float, Int>>()
     val liveDataDistance = MutableLiveData<String>()
     var fromDate: Long? = null
@@ -105,9 +106,20 @@ class SpotPreviewViewModel : ViewModel() {
 
     fun book(fromTimestamp: Timestamp, toTimestamp: Timestamp) {
         val booking = Booking()
+        val stationBasic = StationBasic()
         val ticket = Book(fromTimestamp, toTimestamp, stationUID, User.UID)
         viewModelScope.launch {
-            booking.getCountBetween(ticket)
+            val count = booking.getCountBetween(ticket)
+            stationBasic.basicGet(stationUID)?.let{
+                bookingPossible.value = count < it.reserved!!
+            }
+        }
+    }
+
+    fun generateTicket(fromTimestamp:Timestamp,toTimestamp:Timestamp){
+        val booking= Booking()
+        val ticket = Book(fromTimestamp, toTimestamp, stationUID, User.UID)
+        viewModelScope.launch{
             booking.bookingSet(ticket)
         }
     }

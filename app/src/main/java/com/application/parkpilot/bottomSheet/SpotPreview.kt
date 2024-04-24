@@ -51,7 +51,6 @@ class SpotPreview : BottomSheetDialogFragment(R.layout.spot_list_item) {
 
         viewModel.stationBasicInfo.observe(this) {
             textViewName.text = it.name
-            textViewRating.text = it.rating.toString()
             textViewPrice.text = it.price.toString()
         }
         viewModel.stationRating.observe(this) {

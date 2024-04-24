@@ -33,7 +33,7 @@ data class QRCodeCollection(
 )
 
 data class StationLocation(val stationUid: String?, val coordinates: FirebaseGeoPoint)
-data class StationBasic(var name: String?, val price: Int?, val rating: Float?) {
+data class StationBasic(var name: String?, val price: Int?, val reserved: Int?) {
     init {
         name?.let {
             name = name?.trim()?.replaceFirstChar(Char::uppercaseChar)

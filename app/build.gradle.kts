@@ -90,7 +90,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
 
     // razor pay
-    implementation("com.razorpay:checkout:1.6.36")
+    implementation("com.razorpay:checkout:1.6.38")
 
     // QR generator (https://github.com/alexzhirkevich/custom-qr-generator?tab=readme-ov-file)
     implementation("com.github.alexzhirkevich:custom-qr-generator:1.6.2")

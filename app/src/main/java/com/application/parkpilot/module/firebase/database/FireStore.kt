@@ -224,7 +224,7 @@ class StationBasic : FireStore() {
     private val collectionName = "stationBasic"
     private val name = "name"
     private val price = "price"
-    private val rating = "rating"
+    private val reserved = "reserved"
     suspend fun basicGet(documentID: String): StationBasic? {
         var result: StationBasic? = null
         fireStore.collection(collectionName).document(documentID).get().await().apply {
@@ -233,7 +233,7 @@ class StationBasic : FireStore() {
                     StationBasic(
                         get(name) as String,
                         (get(price) as Long).toInt(),
-                        (get(rating) as? Double)?.toFloat()
+                        (get(reserved) as Long).toInt()
                     )
             }
         }
@@ -247,7 +247,8 @@ class StationBasic : FireStore() {
         // data mapping
         val map = mapOf(
             name to stationBasic.name,
-            price to stationBasic.price
+            price to stationBasic.price,
+            reserved to stationBasic.reserved
         )
 
         // await function this will block thread

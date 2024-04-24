@@ -14,12 +14,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.AccessHours
 import com.application.parkpilot.R
 import com.application.parkpilot.adapter.CarouselRecyclerView
+import com.application.parkpilot.module.RazorPay
 import com.application.parkpilot.viewModel.SpotPreviewViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.razorpay.ExternalWalletListener
+import com.razorpay.PaymentData
+import com.razorpay.PaymentResultWithDataListener
 
-class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
+class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDataListener,
+    ExternalWalletListener {
 
     // late init view model property
     private lateinit var viewModel: SpotPreviewViewModel
@@ -45,9 +50,10 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
         val editTextToTime: EditText = layoutBooking.findViewById(R.id.editTextToTime)
         val buttonBookNow2: Button = layoutBooking.findViewById(R.id.buttonBookNow)
 
-        val viewModel = ViewModelProvider(this)[SpotPreviewViewModel::class.java]
+        viewModel = ViewModelProvider(this)[SpotPreviewViewModel::class.java]
 
         viewModel.stationUID = intent.getStringExtra("stationUID")!!
+        val razorPay = RazorPay(this)
 
 
         viewModel.loadAdvanceInfo(viewModel.stationUID)
@@ -80,7 +86,7 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
             }
             val fromTimestamp = viewModel.getTimeStamp(viewModel.fromTime!!, viewModel.fromDate!!)
             val toTimestamp = viewModel.getTimeStamp(viewModel.toTime!!, viewModel.toDate!!)
-            viewModel.book(fromTimestamp,toTimestamp)
+            viewModel.book(fromTimestamp, toTimestamp)
         }
 
         var flagDate = false
@@ -168,6 +174,14 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
             }
             flagTime = false
         }
+
+        viewModel.bookingPossible.observe(this) { isPossible ->
+            if (isPossible) {
+                razorPay.makePayment(razorPay.INDIA, textViewPrice.text.toString().toInt(), "123")
+            } else {
+                Toast.makeText(this, "Spot not available", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun loadAccessHours(accessHours: AccessHours) {
@@ -231,5 +245,24 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
         } else {
             ColorStateList.valueOf(Color.parseColor("#026a28"))
         }
+    }
+
+    override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
+        try {
+            val fromTimestamp = viewModel.getTimeStamp(viewModel.fromTime!!, viewModel.fromDate!!)
+            val toTimestamp = viewModel.getTimeStamp(viewModel.toTime!!, viewModel.toDate!!)
+            viewModel.generateTicket(fromTimestamp, toTimestamp)
+            Toast.makeText(this, "Payment successfully done", Toast.LENGTH_LONG).show()
+        }catch(E:Exception){
+            println("error: $E")
+        }
+    }
+
+    override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
+        Toast.makeText(this, "Payment failed", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onExternalWalletSelected(p0: String?, p1: PaymentData?) {
+
     }
 }

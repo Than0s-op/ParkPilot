@@ -49,7 +49,7 @@ class SpotList : ViewModel() {
         viewModelScope.launch {
             val stationBasic = stationBasic.basicGet(stationUID)
             stationBasic?.apply {
-                liveDataStationBasic.value = DC_StationBasic(name, price, rating)
+                liveDataStationBasic.value = DC_StationBasic(name, price, reserved)
             }
         }
     }
