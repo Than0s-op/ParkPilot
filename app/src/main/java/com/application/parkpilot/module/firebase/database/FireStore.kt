@@ -1,23 +1,23 @@
 package com.application.parkpilot.module.firebase.database
 
-import android.net.Uri
-import androidx.core.net.toUri
 import com.application.parkpilot.AccessHours
+import com.application.parkpilot.Book
 import com.application.parkpilot.QRCodeCollection
 import com.application.parkpilot.StationAdvance
 import com.application.parkpilot.StationBasic
 import com.application.parkpilot.StationLocation
-import com.application.parkpilot.Time
 import com.application.parkpilot.UserCollection
 import com.application.parkpilot.UserProfile
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
-import com.application.parkpilot.Feedback as FeedbackData
-import com.google.firebase.auth.userProfileChangeRequest
+import com.google.firebase.firestore.AggregateField
+import com.google.firebase.firestore.AggregateSource
+import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
+import com.application.parkpilot.Feedback as FeedbackData
 
 open class FireStore {
     // fireStore initialization
@@ -276,7 +276,7 @@ class StationAdvance : FireStore() {
     suspend fun advanceGet(documentID: String): StationAdvance? {
         var result: StationAdvance? = null
         fireStore.collection(collectionName).document(documentID).get().await().apply {
-            if(get(amenities) != null) {
+            if (get(amenities) != null) {
                 result = StationAdvance(
                     get(policies) as String,
                     get(amenities) as ArrayList<String>,
@@ -326,8 +326,8 @@ class Feedback : FireStore() {
     private val message = "message"
 
     @Suppress("UNCHECKED_CAST")
-    suspend fun feedGet(documentID: String): Map<String,FeedbackData> {
-        val result = hashMapOf<String,FeedbackData>()
+    suspend fun feedGet(documentID: String): Map<String, FeedbackData> {
+        val result = hashMapOf<String, FeedbackData>()
 
         fireStore.collection(collectionName).document(documentID).get().await().let {
             val feedbacks = it.data as? Map<String, Any>
@@ -369,5 +369,55 @@ class Feedback : FireStore() {
 
         // return result
         return result
+    }
+}
+
+class Booking : FireStore() {
+    private val collectionName = "booking"
+    private val from = "from"
+    private val to = "to"
+    private val user = "user"
+    private val station = "station"
+
+    suspend fun bookingSet(ticket: Book): Boolean {
+        var result = false
+
+        val map = mapOf(
+            from to ticket.fromTimestamp,
+            to to ticket.toTimestamp,
+            user to ticket.userID,
+            station to ticket.stationID
+        )
+
+        fireStore.collection(collectionName).document().set(map).addOnSuccessListener {
+            result = true
+        }.await()
+
+        return result
+    }
+
+    suspend fun getCountBetween(ticket: Book):Long {
+        val collection = fireStore.collection(collectionName)
+        val query = collection.where(
+            Filter.and(
+                Filter.equalTo(station, ticket.stationID),
+                Filter.or(
+                    Filter.and(
+                        Filter.lessThanOrEqualTo(from, ticket.toTimestamp),
+                        Filter.greaterThanOrEqualTo(to, ticket.toTimestamp)
+                    ),
+                    Filter.and(
+                        Filter.lessThanOrEqualTo(from, ticket.fromTimestamp),
+                        Filter.greaterThanOrEqualTo(to, ticket.fromTimestamp)
+                    ),
+                    Filter.and(
+                        Filter.greaterThanOrEqualTo(from, ticket.fromTimestamp),
+                        Filter.lessThanOrEqualTo(to, ticket.toTimestamp)
+                    )
+                )
+            )
+        )
+        val queryResult = query.count().get(AggregateSource.SERVER).await()
+        return queryResult.count
     }
 }

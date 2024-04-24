@@ -12,18 +12,19 @@ data class UserCollection(
     var lastName: String,
     val birthDate: String,
     val gender: String
-){
-    init{
+) {
+    init {
         firstName = firstName.trim().replaceFirstChar(Char::uppercaseChar)
         lastName = lastName.trim().replaceFirstChar(Char::uppercaseChar)
     }
 }
 
-data class UserProfile(var userName: String, val userPicture: Uri?=null){
-    init{
+data class UserProfile(var userName: String, val userPicture: Uri? = null) {
+    init {
         userName = userName.trim().replaceFirstChar(Char::uppercaseChar)
     }
 }
+
 data class QRCodeCollection(
     val key: String,
     val to: Int,
@@ -33,8 +34,8 @@ data class QRCodeCollection(
 
 data class StationLocation(val stationUid: String?, val coordinates: FirebaseGeoPoint)
 data class StationBasic(var name: String?, val price: Int?, val rating: Float?) {
-    init{
-        name?.let{
+    init {
+        name?.let {
             name = name?.trim()?.replaceFirstChar(Char::uppercaseChar)
         }
     }
@@ -52,6 +53,13 @@ data class AccessHours(
     val open: String,
     val close: String,
     val selectedDays: List<String>
+)
+
+data class Book(
+    val fromTimestamp: Timestamp,
+    val toTimestamp: Timestamp,
+    val stationID: String,
+    val userID: String,
 )
 
 data class Feedback(val UID: String = User.UID, val rating: Float, val message: String)

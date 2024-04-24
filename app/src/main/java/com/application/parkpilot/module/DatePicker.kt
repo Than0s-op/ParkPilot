@@ -24,7 +24,7 @@ class DatePicker(startDate: Long, endDate: Long) {
         MaterialDatePicker.Builder.datePicker().setCalendarConstraints(constraintsBuilder)
 
     // to observe date, hence other classes can access date, when it will change
-    var pickedDate = MutableLiveData<String?>()
+    var pickedDate = MutableLiveData<Long?>()
 
     fun showDatePicker(context: Context, message: String) {
 
@@ -38,12 +38,15 @@ class DatePicker(startDate: Long, endDate: Long) {
         builtDatePicker.addOnPositiveButtonClickListener {
             // date has been selected
             if (builtDatePicker.selection != null) {
-                // creating a date format
-                val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
-
                 // converting selected date into string and set to the data variable
-                pickedDate.value = simpleDateFormat.format(builtDatePicker.selection)
+                pickedDate.value = builtDatePicker.selection
             }
         }
+    }
+
+    fun format(date: Long): String {
+        // creating a date format
+        val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
+        return simpleDateFormat.format(date)
     }
 }

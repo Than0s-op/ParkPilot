@@ -29,6 +29,7 @@
                 android:id="@+id/editTextFromDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="false"
                 android:hint="From Date"
                 android:inputType="textCapSentences"
                 android:singleLine="true" />
@@ -49,6 +50,7 @@
                 android:id="@+id/editTextFromTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="false"
                 android:hint="From Time"
                 android:inputType="textCapSentences"
                 android:singleLine="true" />
@@ -70,6 +72,7 @@
                 android:id="@+id/editTextToDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="false"
                 android:hint="To Date"
                 android:inputType="textCapSentences"
                 android:singleLine="true" />
@@ -90,6 +93,7 @@
                 android:id="@+id/editTextToTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="false"
                 android:hint="To Time"
                 android:inputType="textCapSentences"
                 android:singleLine="true" />
@@ -100,7 +104,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/buttonBook"
+        android:id="@+id/buttonBookNow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Book" />

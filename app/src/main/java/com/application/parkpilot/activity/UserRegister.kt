@@ -113,8 +113,9 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
         viewModel.datePicker.pickedDate.observe(this) { date ->
             // set date to birthdate editText if is not null
             date?.let {
-                editTextBirthDate.setText(it)
-                editTextAge.setText(viewModel.getAge(it))
+                val date = viewModel.datePicker.format(it)
+                editTextBirthDate.setText(date)
+                editTextAge.setText(viewModel.getAge(date))
             }
         }
 

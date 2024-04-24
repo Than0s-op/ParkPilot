@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ import com.application.parkpilot.R
 import com.application.parkpilot.adapter.CarouselRecyclerView
 import com.application.parkpilot.viewModel.SpotPreviewViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
 class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
@@ -35,32 +37,75 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
         val buttonFeedback: ExtendedFloatingActionButton = findViewById(R.id.buttonFeedback)
         val textViewNumberOfUser: TextView = findViewById(R.id.textViewNumberOfUser)
         val buttonBookNow: Button = findViewById(R.id.buttonBookNow)
+        val layoutBooking = layoutInflater.inflate(R.layout.booking, null, false)
+        val dialogInflater = MaterialAlertDialogBuilder(this).setView(layoutBooking).create()
+        val editTextFromDate: EditText = layoutBooking.findViewById(R.id.editTextFromDate)
+        val editTextFromTime: EditText = layoutBooking.findViewById(R.id.editTextFromTime)
+        val editTextToDate: EditText = layoutBooking.findViewById(R.id.editTextToDate)
+        val editTextToTime: EditText = layoutBooking.findViewById(R.id.editTextToTime)
+        val buttonBookNow2: Button = layoutBooking.findViewById(R.id.buttonBookNow)
 
         val viewModel = ViewModelProvider(this)[SpotPreviewViewModel::class.java]
-        val stationUID = intent.getStringExtra("stationUID")!!
 
-        viewModel.loadAdvanceInfo(stationUID)
-        viewModel.loadBasicInfo(stationUID)
-        viewModel.loadRating(stationUID)
-        viewModel.getDistance(this, stationUID)
+        viewModel.stationUID = intent.getStringExtra("stationUID")!!
+
+
+        viewModel.loadAdvanceInfo(viewModel.stationUID)
+        viewModel.loadBasicInfo(viewModel.stationUID)
+        viewModel.loadRating(viewModel.stationUID)
+        viewModel.getDistance(this, viewModel.stationUID)
 
         // loading recycler view default (init) properties
         recyclerView.apply {
             layoutManager = CarouselLayoutManager()
-            viewModel.loadCarousel(stationUID)
+            viewModel.loadCarousel(viewModel.stationUID)
         }
 
         buttonFeedback.setOnClickListener {
-            viewModel.feedback(this, stationUID)
+            viewModel.feedback(this, viewModel.stationUID)
         }
 
-        buttonDistance.setOnClickListener{
+        buttonDistance.setOnClickListener {
             viewModel.redirect(this)
         }
 
-        buttonBookNow.setOnClickListener{
-
+        buttonBookNow.setOnClickListener {
+            dialogInflater.show()
         }
+
+        buttonBookNow2.setOnClickListener {
+            if (viewModel.fromTime == null || viewModel.fromDate == null || viewModel.toTime == null || viewModel.toDate == null) {
+                Toast.makeText(this, "Please fill the form", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+            val fromTimestamp = viewModel.getTimeStamp(viewModel.fromTime!!, viewModel.fromDate!!)
+            val toTimestamp = viewModel.getTimeStamp(viewModel.toTime!!, viewModel.toDate!!)
+            viewModel.book(fromTimestamp,toTimestamp)
+        }
+
+        var flagDate = false
+        var flagTime = false
+
+        editTextFromDate.setOnClickListener {
+            flagDate = true
+            viewModel.datePicker.showDatePicker(this, "Select From Date")
+        }
+
+        editTextToDate.setOnClickListener {
+            flagDate = false
+            viewModel.datePicker.showDatePicker(this, "Select To Date")
+        }
+
+        editTextFromTime.setOnClickListener {
+            flagTime = true
+            viewModel.timePicker.showTimePicker(supportFragmentManager, null)
+        }
+
+        editTextToTime.setOnClickListener {
+            flagTime = false
+            viewModel.timePicker.showTimePicker(supportFragmentManager, null)
+        }
+
 
         viewModel.carouselImages.observe(this) { images ->
             recyclerView.adapter = CarouselRecyclerView(this, R.layout.square_carousel, images)
@@ -97,6 +142,31 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail) {
 
         viewModel.liveDataDistance.observe(this) {
             buttonDistance.text = it
+        }
+
+        viewModel.datePicker.pickedDate.observe(this) {
+            it?.let {
+                val date = viewModel.datePicker.format(it)
+                if (flagDate) {
+                    editTextFromDate.setText(date)
+                    viewModel.fromDate = it
+                } else {
+                    editTextToDate.setText(date)
+                    viewModel.toDate = it
+                }
+                flagDate = false
+            }
+        }
+
+        viewModel.timePicker.liveDataTimePicker.observe(this) {
+            if (flagTime) {
+                editTextFromTime.setText(viewModel.timePicker.format12(it))
+                viewModel.fromTime = it
+            } else {
+                editTextToTime.setText(viewModel.timePicker.format12(it))
+                viewModel.toTime = it
+            }
+            flagTime = false
         }
     }
 
