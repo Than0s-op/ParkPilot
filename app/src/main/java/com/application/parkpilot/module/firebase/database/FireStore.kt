@@ -10,7 +10,6 @@ import com.application.parkpilot.UserCollection
 import com.application.parkpilot.UserProfile
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.AggregateField
 import com.google.firebase.firestore.AggregateSource
 import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.GeoPoint
@@ -380,7 +379,7 @@ class Booking : FireStore() {
     private val user = "user"
     private val station = "station"
 
-    suspend fun bookingSet(ticket: Book): Boolean {
+    suspend fun bookingSet(ticket: Book): String? {
         var result = false
 
         val map = mapOf(
@@ -390,14 +389,15 @@ class Booking : FireStore() {
             station to ticket.stationID
         )
 
-        fireStore.collection(collectionName).document().set(map).addOnSuccessListener {
+        val id = fireStore.collection(collectionName).document().id
+        fireStore.collection(collectionName).document(id).set(map).addOnSuccessListener {
             result = true
         }.await()
-
-        return result
+        if (result) return id
+        return null
     }
 
-    suspend fun getCountBetween(ticket: Book):Long {
+    suspend fun getCountBetween(ticket: Book): Long {
         val collection = fireStore.collection(collectionName)
         val query = collection.where(
             Filter.and(

@@ -39,6 +39,7 @@ class SpotPreviewViewModel : ViewModel() {
     val stationBasicInfo = MutableLiveData<StationBasicDataClass>()
     val stationAdvanceInfo = MutableLiveData<StationAdvanceDataClass>()
     val bookingPossible = MutableLiveData<Boolean>()
+    val ticketId = MutableLiveData<String?>()
     val stationRating = MutableLiveData<Pair<Float, Int>>()
     val liveDataDistance = MutableLiveData<String>()
     var fromDate: Long? = null
@@ -121,7 +122,7 @@ class SpotPreviewViewModel : ViewModel() {
         val booking= Booking()
         val ticket = Book(fromTimestamp, toTimestamp, stationUID, User.UID)
         viewModelScope.launch{
-            booking.bookingSet(ticket)
+            ticketId.value = booking.bookingSet(ticket)
         }
     }
 

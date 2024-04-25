@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.AccessHours
 import com.application.parkpilot.R
-import com.application.parkpilot.User
 import com.application.parkpilot.adapter.CarouselRecyclerView
 import com.application.parkpilot.module.QRGenerator
 import com.application.parkpilot.module.RazorPay
@@ -188,6 +187,14 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
                 Toast.makeText(this, "Spot not available", Toast.LENGTH_LONG).show()
             }
         }
+
+        viewModel.ticketId.observe(this) { ticketID ->
+            ticketID?.let {
+                val qrcode = qrGenerator.generate(ticketID)
+                MaterialAlertDialogBuilder(this)
+                    .setView(DialogQRCode(this, qrcode, "this you qr").layout).show()
+            }
+        }
     }
 
     private fun loadAccessHours(accessHours: AccessHours) {
@@ -257,9 +264,6 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
         val fromTimestamp = viewModel.getTimeStamp(viewModel.fromTime!!, viewModel.fromDate!!)
         val toTimestamp = viewModel.getTimeStamp(viewModel.toTime!!, viewModel.toDate!!)
         viewModel.generateTicket(fromTimestamp, toTimestamp)
-        val qrcode = qrGenerator.generate(User.UID)
-        MaterialAlertDialogBuilder(this).setView(DialogQRCode(this, qrcode, "this you qr").layout)
-            .show()
         Toast.makeText(this, "Payment successfully done", Toast.LENGTH_LONG).show()
     }
 
