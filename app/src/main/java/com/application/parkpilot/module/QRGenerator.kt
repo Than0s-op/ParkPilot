@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
 import com.application.parkpilot.R
 import com.github.alexzhirkevich.customqrgenerator.QrData
-import com.github.alexzhirkevich.customqrgenerator.style.Color
 import com.github.alexzhirkevich.customqrgenerator.vector.QrCodeDrawable
 import com.github.alexzhirkevich.customqrgenerator.vector.createQrVectorOptions
 import com.github.alexzhirkevich.customqrgenerator.vector.style.QrVectorBallShape
@@ -21,21 +20,11 @@ class QRGenerator(context: Context) {
 
     private val options = createQrVectorOptions {
 
-        padding = .125f
+        padding = .15f
 
-//        background {
-//            drawable = AppCompatResources.getDrawable(context, R.drawable.car_parking)
-//        }
-
-        logo {
-            drawable = AppCompatResources.getDrawable(context, R.drawable.car_park)
-            size = .25f
-            padding = QrVectorLogoPadding.Natural(.15f)
-            shape = QrVectorLogoShape.Circle
-        }
         colors {
             dark = QrVectorColor
-                .Solid(Color(0xff345288))
+                .Solid(context.getColor(R.color.black))
             ball = QrVectorColor.Solid(
                 context.getColor(R.color.black)
             )
@@ -50,11 +39,11 @@ class QRGenerator(context: Context) {
         }
         shapes {
             darkPixel = QrVectorPixelShape
-                .RoundCorners(.25f)
+                .RoundCorners(.15f)
             ball = QrVectorBallShape
-                .RoundCorners(.25f)
+                .RoundCorners(.15f)
             frame = QrVectorFrameShape
-                .RoundCorners(.25f)
+                .RoundCorners(.15f)
         }
     }
 
