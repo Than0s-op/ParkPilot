@@ -12,6 +12,7 @@ import com.application.parkpilot.Time
 import com.application.parkpilot.User
 import com.application.parkpilot.activity.Feedback
 import com.application.parkpilot.module.DatePicker
+import com.application.parkpilot.module.QRGenerator
 import com.application.parkpilot.module.TimePicker
 import com.application.parkpilot.module.firebase.Storage
 import com.application.parkpilot.module.firebase.database.Booking

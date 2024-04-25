@@ -42,9 +42,9 @@ class HistoryRecyclerView(
                 // QR code generation using FireStore 'key'
                 val drawableQRCode = QRGenerator(context).generate(qrDetail[position].key)
 
-                MaterialAlertDialogBuilder(context)
-                    .setView(DialogQRCode(context, drawableQRCode, "This is a QR Code"))
-                    .show()
+//                MaterialAlertDialogBuilder(context)
+//                    .setView(DialogQRCode(context, drawableQRCode, "This is a QR Code"))
+//                    .show()
             }
         }
     }

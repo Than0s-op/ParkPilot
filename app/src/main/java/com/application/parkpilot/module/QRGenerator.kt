@@ -28,9 +28,9 @@ class QRGenerator(context: Context) {
 //        }
 
         logo {
-            drawable = AppCompatResources.getDrawable(context, R.drawable.google_icon)
+            drawable = AppCompatResources.getDrawable(context, R.drawable.car_park)
             size = .25f
-            padding = QrVectorLogoPadding.Natural(.2f)
+            padding = QrVectorLogoPadding.Natural(.15f)
             shape = QrVectorLogoShape.Circle
         }
         colors {
@@ -50,7 +50,7 @@ class QRGenerator(context: Context) {
         }
         shapes {
             darkPixel = QrVectorPixelShape
-                .RoundCorners(.5f)
+                .RoundCorners(.25f)
             ball = QrVectorBallShape
                 .RoundCorners(.25f)
             frame = QrVectorFrameShape

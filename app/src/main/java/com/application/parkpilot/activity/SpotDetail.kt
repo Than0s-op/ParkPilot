@@ -13,8 +13,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.AccessHours
 import com.application.parkpilot.R
+import com.application.parkpilot.User
 import com.application.parkpilot.adapter.CarouselRecyclerView
+import com.application.parkpilot.module.QRGenerator
 import com.application.parkpilot.module.RazorPay
+import com.application.parkpilot.view.DialogQRCode
 import com.application.parkpilot.viewModel.SpotPreviewViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -28,6 +31,7 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
 
     // late init view model property
     private lateinit var viewModel: SpotPreviewViewModel
+    private lateinit var qrGenerator: QRGenerator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +58,7 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
 
         viewModel.stationUID = intent.getStringExtra("stationUID")!!
         val razorPay = RazorPay(this)
+        qrGenerator = QRGenerator(this)
 
 
         viewModel.loadAdvanceInfo(viewModel.stationUID)
@@ -87,6 +92,7 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
             val fromTimestamp = viewModel.getTimeStamp(viewModel.fromTime!!, viewModel.fromDate!!)
             val toTimestamp = viewModel.getTimeStamp(viewModel.toTime!!, viewModel.toDate!!)
             viewModel.book(fromTimestamp, toTimestamp)
+            dialogInflater.dismiss()
         }
 
         var flagDate = false
@@ -248,14 +254,13 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
     }
 
     override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
-        try {
-            val fromTimestamp = viewModel.getTimeStamp(viewModel.fromTime!!, viewModel.fromDate!!)
-            val toTimestamp = viewModel.getTimeStamp(viewModel.toTime!!, viewModel.toDate!!)
-            viewModel.generateTicket(fromTimestamp, toTimestamp)
-            Toast.makeText(this, "Payment successfully done", Toast.LENGTH_LONG).show()
-        }catch(E:Exception){
-            println("error: $E")
-        }
+        val fromTimestamp = viewModel.getTimeStamp(viewModel.fromTime!!, viewModel.fromDate!!)
+        val toTimestamp = viewModel.getTimeStamp(viewModel.toTime!!, viewModel.toDate!!)
+        viewModel.generateTicket(fromTimestamp, toTimestamp)
+        val qrcode = qrGenerator.generate(User.UID)
+        MaterialAlertDialogBuilder(this).setView(DialogQRCode(this, qrcode, "this you qr").layout)
+            .show()
+        Toast.makeText(this, "Payment successfully done", Toast.LENGTH_LONG).show()
     }
 
     override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {

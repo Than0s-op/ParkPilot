@@ -57,8 +57,8 @@ class SpotDetailViewModel : ViewModel() {
             fireStoreQRCode.QRCodeSet(QRCodeCollection(key, 10), Firebase.auth.currentUser!!.uid)
         }
 
-        MaterialAlertDialogBuilder(context)
-            .setView(DialogQRCode(context, drawableQRCode, "This is a QR Code"))
-            .show()
+//        MaterialAlertDialogBuilder(context)
+//            .setView(DialogQRCode(context, drawableQRCode, "This is a QR Code"))
+//            .show()
     }
 }
