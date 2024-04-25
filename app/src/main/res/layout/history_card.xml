@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:backgroundTint="@color/materialCardViewColor"
     app:cardElevation="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,7 +12,7 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/textViewDate"
+            android:id="@+id/textViewFromDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Date"
@@ -22,36 +21,33 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewTime"
+            android:id="@+id/textViewFromTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="Time"
             app:drawableStartCompat="@drawable/clock_icon"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewDate" />
+            app:layout_constraintTop_toBottomOf="@id/textViewFromDate" />
 
         <TextView
-            android:id="@+id/textViewHours"
+            android:id="@+id/textViewToDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Date"
+            app:drawableStartCompat="@drawable/date_range_icon"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewToTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="Hours"
-            app:drawableStartCompat="@drawable/time_icon"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewTime" />
-
-        <TextView
-            android:id="@+id/textViewExpired"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
-            android:text="Expired"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:hint="Time"
+            app:drawableStartCompat="@drawable/clock_icon"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/textViewToDate" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -6,6 +6,7 @@ import com.application.parkpilot.QRCodeCollection
 import com.application.parkpilot.StationAdvance
 import com.application.parkpilot.StationBasic
 import com.application.parkpilot.StationLocation
+import com.application.parkpilot.Ticket
 import com.application.parkpilot.UserCollection
 import com.application.parkpilot.UserProfile
 import com.google.firebase.Firebase
@@ -420,5 +421,24 @@ class Booking : FireStore() {
         )
         val queryResult = query.count().get(AggregateSource.SERVER).await()
         return queryResult.count
+    }
+
+    suspend fun getTicket(uid: String): ArrayList<Ticket> {
+        val collection = fireStore.collection(collectionName)
+        val query = collection.whereEqualTo(user, uid)
+        val ticketList = ArrayList<Ticket>()
+        query.get().await().let {
+            for (document in it) {
+                ticketList.add(
+                    Ticket(
+                        document.data[from] as Timestamp,
+                        document.data[to] as Timestamp,
+                        document.data[station] as String,
+                        document.id
+                    )
+                )
+            }
+        }
+        return ticketList
     }
 }

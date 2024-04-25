@@ -62,4 +62,11 @@ data class Book(
     val userID: String,
 )
 
+data class Ticket(
+    val fromTimestamp:Timestamp,
+    val toTimestamp:Timestamp,
+    val stationID:String,
+    val qrcode:String
+)
+
 data class Feedback(val UID: String = User.UID, val rating: Float, val message: String)
