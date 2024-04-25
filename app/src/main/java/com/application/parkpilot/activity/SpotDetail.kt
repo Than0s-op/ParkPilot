@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.AccessHours
 import com.application.parkpilot.R
+import com.application.parkpilot.User
 import com.application.parkpilot.adapter.CarouselRecyclerView
 import com.application.parkpilot.module.QRGenerator
 import com.application.parkpilot.module.RazorPay
@@ -31,6 +32,7 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
     // late init view model property
     private lateinit var viewModel: SpotPreviewViewModel
     private lateinit var qrGenerator: QRGenerator
+    private lateinit var buttonBookNow: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +46,7 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
         val textViewPolicies: TextView = findViewById(R.id.textViewPolicies)
         val buttonFeedback: ExtendedFloatingActionButton = findViewById(R.id.buttonFeedback)
         val textViewNumberOfUser: TextView = findViewById(R.id.textViewNumberOfUser)
-        val buttonBookNow: Button = findViewById(R.id.buttonBookNow)
+        buttonBookNow = findViewById(R.id.buttonBookNow)
         val layoutBooking = layoutInflater.inflate(R.layout.booking, null, false)
         val dialogInflater = MaterialAlertDialogBuilder(this).setView(layoutBooking).create()
         val editTextFromDate: EditText = layoutBooking.findViewById(R.id.editTextFromDate)
@@ -64,6 +66,8 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
         viewModel.loadBasicInfo(viewModel.stationUID)
         viewModel.loadRating(viewModel.stationUID)
         viewModel.getDistance(this, viewModel.stationUID)
+
+        setVisibility()
 
         // loading recycler view default (init) properties
         recyclerView.apply {
@@ -273,5 +277,19 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
 
     override fun onExternalWalletSelected(p0: String?, p1: PaymentData?) {
 
+    }
+
+    private fun setVisibility() {
+        User.apply {
+            when (type) {
+                ANONYMOUS -> {
+                    buttonBookNow.visibility = View.GONE
+                }
+
+                FINDER -> {
+
+                }
+            }
+        }
     }
 }
