@@ -22,7 +22,7 @@ class RazorPay(private val activity: Activity) {
         checkout.setKeyID(activity.getString(R.string.razor_pay_test_key))
 
         // it will set image to gateway
-        checkout.setImage(R.drawable.google_icon)
+        checkout.setImage(R.drawable.car_park)
     }
 
     fun makePayment(currency: String, amount: Int, orderId: String) {
