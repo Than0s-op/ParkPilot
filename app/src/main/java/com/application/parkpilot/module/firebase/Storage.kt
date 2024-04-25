@@ -16,8 +16,8 @@ class Storage {
     private val storageRef = Firebase.storage.reference
 
     companion object {
-        private const val PROFILE = "userProfileImage/"
-        private const val SPOT = "stationImages/"
+        private const val PROFILE = "user_profile_photo/"
+        private const val SPOT = "parkSpot/"
     }
 
     suspend fun userProfilePhotoPut(context: Context, uid: String, image: Any): Uri? {
