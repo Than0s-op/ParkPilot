@@ -10,12 +10,14 @@ import android.widget.ProgressBar
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.application.parkpilot.R
 import com.application.parkpilot.UserCollection
 import com.application.parkpilot.UserProfile
 import com.application.parkpilot.module.PhotoPicker
+import com.application.parkpilot.viewModel.AuthenticationViewModel
 import com.application.parkpilot.viewModel.UserRegisterViewModel
 
 class Register : AppCompatActivity(R.layout.user_register) {
@@ -33,10 +35,13 @@ class Register : AppCompatActivity(R.layout.user_register) {
         val radioGroupGender: RadioGroup = findViewById(R.id.radioGroupGender)
         val buttonSave: Button = findViewById(R.id.buttonSave)
         progressBar = findViewById(R.id.progressBar)
-        val photoPicker = PhotoPicker(this)
 
-        // getting userRegister view model reference
-        val viewModel = ViewModelProvider(this)[UserRegisterViewModel::class.java]
+        // getting authentication view model reference [init]
+        val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return UserRegisterViewModel(this@Register) as T
+            }
+        })[UserRegisterViewModel::class.java]
 
         viewModel.getProfileDetails()
 
@@ -50,7 +55,7 @@ class Register : AppCompatActivity(R.layout.user_register) {
 
         imageViewProfilePicture.setOnClickListener {
             // start photo picker
-            photoPicker.showPhotoPicker()
+            viewModel.photoPicker.showPhotoPicker()
         }
 
         buttonSave.setOnClickListener {
@@ -120,7 +125,7 @@ class Register : AppCompatActivity(R.layout.user_register) {
         }
 
         // it will execute when photo picker get image
-        photoPicker.pickedImage.observe(this) { imageUri ->
+        viewModel.photoPicker.pickedImage.observe(this) { imageUri ->
             // execute below code if imageUri is not null
             imageUri?.let {
                 viewModel.photoUrl = it

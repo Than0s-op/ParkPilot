@@ -9,14 +9,13 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.AccessHours
 import com.application.parkpilot.R
 import com.application.parkpilot.User
 import com.application.parkpilot.adapter.recycler.Carousel
-import com.application.parkpilot.module.QRGenerator
-import com.application.parkpilot.module.RazorPay
 import com.application.parkpilot.view.DialogQRCode
 import com.application.parkpilot.viewModel.SpotPreviewViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
@@ -31,7 +30,6 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
 
     // late init view model property
     private lateinit var viewModel: SpotPreviewViewModel
-    private lateinit var qrGenerator: QRGenerator
     private lateinit var buttonBookNow: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,11 +53,15 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
         val editTextToTime: EditText = layoutBooking.findViewById(R.id.editTextToTime)
         val buttonBookNow2: Button = layoutBooking.findViewById(R.id.buttonBookNow)
 
-        viewModel = ViewModelProvider(this)[SpotPreviewViewModel::class.java]
+        // getting authentication view model reference [init]
+        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return SpotPreviewViewModel(this@SpotDetail) as T
+            }
+        })[SpotPreviewViewModel::class.java]
 
         viewModel.stationUID = intent.getStringExtra("stationUID")!!
-        val razorPay = RazorPay(this)
-        qrGenerator = QRGenerator(this)
+
 
 
         viewModel.loadAdvanceInfo(viewModel.stationUID)
@@ -186,7 +188,11 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
 
         viewModel.bookingPossible.observe(this) { isPossible ->
             if (isPossible) {
-                razorPay.makePayment(razorPay.INDIA, textViewPrice.text.toString().toInt(), "123")
+                viewModel.razorPay.makePayment(
+                    viewModel.razorPay.INDIA,
+                    textViewPrice.text.toString().toInt(),
+                    "123"
+                )
             } else {
                 Toast.makeText(this, "Spot not available", Toast.LENGTH_LONG).show()
             }
@@ -194,7 +200,7 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
 
         viewModel.ticketId.observe(this) { ticketID ->
             ticketID?.let {
-                val qrcode = qrGenerator.generate(ticketID)
+                val qrcode = viewModel.qrGenerator.generate(ticketID)
                 MaterialAlertDialogBuilder(this)
                     .setView(DialogQRCode(this, qrcode, "this you qr").layout).show()
             }

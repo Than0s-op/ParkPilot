@@ -11,20 +11,21 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.application.parkpilot.Feedback as DC_Feedback
 import com.application.parkpilot.R
 import com.application.parkpilot.User
-import com.application.parkpilot.adapter.recycler.Feedback as RV_Feedback
 import com.application.parkpilot.module.firebase.Storage
-import com.application.parkpilot.module.firebase.database.Feedback as FS_Feedback
 import com.application.parkpilot.module.firebase.database.UserBasic
 import kotlinx.coroutines.launch
+import com.application.parkpilot.module.firebase.database.Feedback as FS_Feedback
 
 class FeedbackViewModel : ViewModel() {
+    private val fireStoreFeedback by lazy { FS_Feedback() }
+    private val userBasic by lazy { UserBasic() }
+    private val storage by lazy { Storage() }
     fun loadRecycler(context: Context, stationUid: String, recyclerView: RecyclerView) {
-        val feedback = FS_Feedback()
+
         viewModelScope.launch {
-            val list = feedback.feedGet(stationUid)
+            val list = fireStoreFeedback.feedGet(stationUid)
             val layoutManger = LinearLayoutManager(context)
             recyclerView.layoutManager = layoutManger
             recyclerView.adapter =
@@ -38,7 +39,6 @@ class FeedbackViewModel : ViewModel() {
     }
 
     fun setFeedback(stationUid: String, feedback: com.application.parkpilot.Feedback) {
-        val fireStoreFeedback = FS_Feedback()
         viewModelScope.launch {
             // required parking spot UID
             fireStoreFeedback.feedSet(feedback, stationUid)
@@ -46,7 +46,6 @@ class FeedbackViewModel : ViewModel() {
     }
 
     fun profilePicture(): Uri? {
-        val userBasic = UserBasic()
         val profilePicture: Uri? = null
         viewModelScope.launch {
             userBasic.getProfile(User.UID)
@@ -56,7 +55,7 @@ class FeedbackViewModel : ViewModel() {
 
     fun loadFeedback(stationUID: String, ratingBar: RatingBar, editTextFeedback: EditText) {
         viewModelScope.launch {
-            val feedback = FS_Feedback().feedGet(stationUID)[User.UID]
+            val feedback = fireStoreFeedback.feedGet(stationUID)[User.UID]
             feedback?.rating?.let {
                 ratingBar.rating = it
             }
@@ -68,7 +67,7 @@ class FeedbackViewModel : ViewModel() {
 
     fun loadProfileImage(imageViewProfilePicture: ImageView) {
         viewModelScope.launch {
-            imageViewProfilePicture.load(Storage().userProfilePhotoGet(User.UID))
+            imageViewProfilePicture.load(storage.userProfilePhotoGet(User.UID))
         }
     }
 }

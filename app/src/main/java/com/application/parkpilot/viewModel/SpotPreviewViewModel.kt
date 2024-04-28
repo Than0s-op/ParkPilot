@@ -1,5 +1,6 @@
 package com.application.parkpilot.viewModel
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.location.Location
@@ -13,6 +14,7 @@ import com.application.parkpilot.User
 import com.application.parkpilot.activity.Feedback
 import com.application.parkpilot.module.DatePicker
 import com.application.parkpilot.module.QRGenerator
+import com.application.parkpilot.module.RazorPay
 import com.application.parkpilot.module.TimePicker
 import com.application.parkpilot.module.firebase.Storage
 import com.application.parkpilot.module.firebase.database.Booking
@@ -20,11 +22,8 @@ import com.application.parkpilot.module.firebase.database.StationAdvance
 import com.application.parkpilot.module.firebase.database.StationBasic
 import com.application.parkpilot.module.firebase.database.StationLocation
 import com.google.android.gms.location.LocationServices
-import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
-import com.google.firebase.firestore.SetOptions
-import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.Calendar
@@ -32,7 +31,7 @@ import com.application.parkpilot.StationAdvance as StationAdvanceDataClass
 import com.application.parkpilot.StationBasic as StationBasicDataClass
 import com.application.parkpilot.module.firebase.database.Feedback as FS_Feedback
 
-class SpotPreviewViewModel : ViewModel() {
+class SpotPreviewViewModel(context: Context) : ViewModel() {
 
     lateinit var stationUID: String
     val carouselImages = MutableLiveData<List<Any>>()
@@ -42,19 +41,28 @@ class SpotPreviewViewModel : ViewModel() {
     val ticketId = MutableLiveData<String?>()
     val stationRating = MutableLiveData<Pair<Float, Int>>()
     val liveDataDistance = MutableLiveData<String>()
+
     var fromDate: Long? = null
     var toDate: Long? = null
     var fromTime: Time? = null
     var toTime: Time? = null
     private var stationLocation: GeoPoint? = null
     private var currentLocation: Location? = null
-    val timePicker = TimePicker("pick the time", TimePicker.CLOCK_12H)
+    val timePicker by lazy { TimePicker("pick the time", TimePicker.CLOCK_12H) }
     val datePicker = Calendar.getInstance().let {
         val startTime = it.timeInMillis
         it.add(Calendar.DAY_OF_MONTH, 30)
         val endTime = it.timeInMillis
         DatePicker(startTime, endTime)
     }
+
+    val razorPay by lazy { RazorPay(context as Activity) }
+    val qrGenerator by lazy { QRGenerator(context) }
+    private val stationBasic by lazy { StationBasic() }
+    private val stationAdvance by lazy { StationAdvance() }
+    private val fireStoreStationLocation by lazy { StationLocation() }
+    private val booking by lazy { Booking() }
+    private val fireStoreFeedback by lazy { FS_Feedback() }
 
     fun loadCarousel(stationUID: String) {
         viewModelScope.launch {
@@ -76,19 +84,19 @@ class SpotPreviewViewModel : ViewModel() {
 
     fun loadBasicInfo(stationUID: String) {
         viewModelScope.launch {
-            stationBasicInfo.value = StationBasic().basicGet(stationUID)
+            stationBasicInfo.value = stationBasic.basicGet(stationUID)
         }
     }
 
     fun loadAdvanceInfo(stationUID: String) {
         viewModelScope.launch {
-            stationAdvanceInfo.value = StationAdvance().advanceGet(stationUID)
+            stationAdvanceInfo.value = stationAdvance.advanceGet(stationUID)
         }
     }
 
     fun getDistance(context: Context, stationUID: String) {
         viewModelScope.launch {
-            stationLocation = StationLocation().locationGet(stationUID)
+            stationLocation = fireStoreStationLocation.locationGet(stationUID)
             try {
                 val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
                 currentLocation = fusedLocationClient.lastLocation.await()
@@ -107,21 +115,18 @@ class SpotPreviewViewModel : ViewModel() {
     }
 
     fun book(fromTimestamp: Timestamp, toTimestamp: Timestamp) {
-        val booking = Booking()
-        val stationBasic = StationBasic()
         val ticket = Book(fromTimestamp, toTimestamp, stationUID, User.UID)
         viewModelScope.launch {
             val count = booking.getCountBetween(ticket)
-            stationBasic.basicGet(stationUID)?.let{
+            stationBasic.basicGet(stationUID)?.let {
                 bookingPossible.value = count < it.reserved!!
             }
         }
     }
 
-    fun generateTicket(fromTimestamp:Timestamp,toTimestamp:Timestamp){
-        val booking= Booking()
+    fun generateTicket(fromTimestamp: Timestamp, toTimestamp: Timestamp) {
         val ticket = Book(fromTimestamp, toTimestamp, stationUID, User.UID)
-        viewModelScope.launch{
+        viewModelScope.launch {
             ticketId.value = booking.bookingSet(ticket)
         }
     }
@@ -141,7 +146,7 @@ class SpotPreviewViewModel : ViewModel() {
 
     fun loadRating(stationUID: String) {
         viewModelScope.launch {
-            val feedbacks = FS_Feedback().feedGet(stationUID)
+            val feedbacks = fireStoreFeedback.feedGet(stationUID)
             var totalRatting = 0.0f
             for (i in feedbacks) {
                 totalRatting += i.value.rating

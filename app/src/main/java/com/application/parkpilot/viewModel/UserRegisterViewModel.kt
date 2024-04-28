@@ -11,6 +11,7 @@ import com.application.parkpilot.User
 import com.application.parkpilot.UserCollection
 import com.application.parkpilot.UserProfile
 import com.application.parkpilot.module.DatePicker
+import com.application.parkpilot.module.PhotoPicker
 import com.application.parkpilot.module.firebase.Storage
 import com.application.parkpilot.module.firebase.database.UserAdvance
 import com.application.parkpilot.module.firebase.database.UserBasic
@@ -21,7 +22,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 
-class UserRegisterViewModel : ViewModel() {
+class UserRegisterViewModel(context: Context) : ViewModel() {
     // it will store user profile image's Uri
     var photoUrl: Uri? = null
 
@@ -34,10 +35,11 @@ class UserRegisterViewModel : ViewModel() {
     private val simpleDateFormat = SimpleDateFormat("dd-M-yyyy")
     private val startDate = simpleDateFormat.parse("25-11-1950")!!
     private val endDate = simpleDateFormat.parse("25-11-2023")!!
-    private val userBasic = UserBasic()
-    private val userAdvance = UserAdvance()
-    private val storage = Storage()
-    val datePicker = DatePicker(startDate.time,endDate.time)
+    private val userBasic by lazy { UserBasic() }
+    private val userAdvance by lazy { UserAdvance() }
+    private val storage by lazy { Storage() }
+    val photoPicker by lazy { PhotoPicker(context) }
+    val datePicker by lazy { DatePicker(startDate.time, endDate.time) }
 
 
     // it will get user detail from user collection

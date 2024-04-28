@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import coil.load
@@ -27,7 +28,7 @@ class Feedback : AppCompatActivity(R.layout.feedback) {
         buttonEditFeedback = findViewById(R.id.buttonEditFeedback)
 
         val stationUID = intent.getStringExtra("stationUID")!!
-        val viewModel = FeedbackViewModel()
+        val viewModel = ViewModelProvider(this)[FeedbackViewModel::class.java]
 
         setVisibility()
         val layoutFeedbackForm = layoutInflater.inflate(R.layout.feedback_form, null, false).apply {
