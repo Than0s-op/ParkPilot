@@ -1,7 +1,5 @@
 package com.application.parkpilot.activity
 
-import android.graphics.Color
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
@@ -13,34 +11,31 @@ import com.application.parkpilot.fragment.BookingHistory
 import com.application.parkpilot.fragment.Map
 import com.application.parkpilot.fragment.Setting
 import com.application.parkpilot.fragment.SpotList
-import com.application.parkpilot.viewModel.HomeViewModel
+import com.application.parkpilot.viewModel.Controller
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class FragmentController : AppCompatActivity(R.layout.fragment_controller) {
+class Controller : AppCompatActivity(R.layout.fragment_controller) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // object creation and initialization of views
 
-        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
+        val bottomNavigationView =
+            findViewById<BottomNavigationView>(R.id.bottomNavigationView).apply {
+                itemIconTintList = null
+            }
 
-        val viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
-
-        val spotList = SpotList()
-        val mapFragment = Map()
-        val bookingHistory = BookingHistory()
-        val setting = Setting()
+        val viewModel = ViewModelProvider(this)[Controller::class.java]
 
         setMenuVisibility(bottomNavigationView.menu)
 
-        bottomNavigationView.itemIconTintList = null
 
         // load the profile image in search bar if present
         viewModel.loadProfileImage(this, bottomNavigationView.menu.findItem(R.id.buttonProfile))
 
         // default fragment
-        changeFragment(spotList)
+        changeFragment(viewModel.spotList)
 
         // when search bar menu's items clicked
         bottomNavigationView.setOnItemSelectedListener { clickedItem ->
@@ -48,22 +43,22 @@ class FragmentController : AppCompatActivity(R.layout.fragment_controller) {
 
                 when (clickedItem.itemId) {
                     R.id.buttonList -> {
-                        changeFragment(spotList)
+                        changeFragment(viewModel.spotList)
                         return@setOnItemSelectedListener true
                     }
 
                     R.id.buttonProfile -> {
-                        changeFragment(setting)
+                        changeFragment(viewModel.setting)
                         return@setOnItemSelectedListener true
                     }
 
                     R.id.buttonHistory -> {
-                        changeFragment(bookingHistory)
+                        changeFragment(viewModel.bookingHistory)
                         return@setOnItemSelectedListener true
                     }
 
                     R.id.buttonMap -> {
-                        changeFragment(mapFragment)
+                        changeFragment(viewModel.mapFragment)
                         return@setOnItemSelectedListener true
                     }
                 }
@@ -71,12 +66,14 @@ class FragmentController : AppCompatActivity(R.layout.fragment_controller) {
             return@setOnItemSelectedListener false
         }
     }
-    private fun changeFragment(fragment: Fragment){
-        supportFragmentManager.beginTransaction().apply{
-            replace(R.id.frameLayout,fragment)
+
+    private fun changeFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.frameLayout, fragment)
             commit()
         }
     }
+
     private fun setMenuVisibility(menu: Menu) {
         User.apply {
             when (type) {

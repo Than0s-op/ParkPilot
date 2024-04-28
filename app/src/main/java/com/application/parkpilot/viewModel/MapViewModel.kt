@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.parkpilot.ParkPilotMapLegend
-import com.application.parkpilot.bottomSheet.SpotPreview
+import com.application.parkpilot.fragment.bottomSheet.SpotPreview
 import com.application.parkpilot.module.OSM
 import com.application.parkpilot.module.firebase.database.StationLocation
 import kotlinx.coroutines.launch

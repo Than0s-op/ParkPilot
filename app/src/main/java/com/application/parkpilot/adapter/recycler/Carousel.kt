@@ -1,4 +1,4 @@
-package com.application.parkpilot.adapter
+package com.application.parkpilot.adapter.recycler
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.application.parkpilot.R
 
-class CarouselRecyclerView(
+class Carousel(
     private val context: Context, private val layout: Int, private val images: List<Any>
-) : RecyclerView.Adapter<CarouselRecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<Carousel.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(layout, parent, false)

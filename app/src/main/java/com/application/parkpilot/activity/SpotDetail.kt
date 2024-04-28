@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.AccessHours
 import com.application.parkpilot.R
 import com.application.parkpilot.User
-import com.application.parkpilot.adapter.CarouselRecyclerView
+import com.application.parkpilot.adapter.recycler.Carousel
 import com.application.parkpilot.module.QRGenerator
 import com.application.parkpilot.module.RazorPay
 import com.application.parkpilot.view.DialogQRCode
@@ -123,7 +123,7 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
 
 
         viewModel.carouselImages.observe(this) { images ->
-            recyclerView.adapter = CarouselRecyclerView(this, R.layout.square_carousel, images)
+            recyclerView.adapter = Carousel(this, R.layout.square_carousel, images)
         }
 
         viewModel.stationAdvanceInfo.observe(this) {

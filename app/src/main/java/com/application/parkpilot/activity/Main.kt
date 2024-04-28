@@ -43,7 +43,7 @@ class Main : Activity() {
         // start the home activity
         startActivity(Intent(
             this@Main,
-            FragmentController::class.java
+            Controller::class.java
         ).apply {
             // clear the activity stack
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

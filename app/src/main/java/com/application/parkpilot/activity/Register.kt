@@ -18,7 +18,7 @@ import com.application.parkpilot.UserProfile
 import com.application.parkpilot.module.PhotoPicker
 import com.application.parkpilot.viewModel.UserRegisterViewModel
 
-class UserRegister : AppCompatActivity(R.layout.user_register) {
+class Register : AppCompatActivity(R.layout.user_register) {
     private lateinit var progressBar: ProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

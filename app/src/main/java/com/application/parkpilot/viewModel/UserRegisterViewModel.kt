@@ -1,23 +1,16 @@
 package com.application.parkpilot.viewModel
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import coil.imageLoader
-import coil.request.ImageRequest
 import coil.request.ImageResult
-import coil.size.Scale
 import com.application.parkpilot.User
 import com.application.parkpilot.UserCollection
 import com.application.parkpilot.UserProfile
-import com.application.parkpilot.activity.Main
-import com.application.parkpilot.activity.UserRegister
 import com.application.parkpilot.module.DatePicker
-import com.application.parkpilot.module.PhotoPicker
 import com.application.parkpilot.module.firebase.Storage
 import com.application.parkpilot.module.firebase.database.UserAdvance
 import com.application.parkpilot.module.firebase.database.UserBasic
@@ -27,7 +20,6 @@ import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.util.Calendar
 
 class UserRegisterViewModel : ViewModel() {
     // it will store user profile image's Uri

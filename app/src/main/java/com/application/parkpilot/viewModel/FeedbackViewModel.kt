@@ -11,30 +11,34 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.application.parkpilot.Feedback as DC_Feedback
 import com.application.parkpilot.R
 import com.application.parkpilot.User
-import com.application.parkpilot.adapter.FeedbackRecyclerView
+import com.application.parkpilot.adapter.recycler.Feedback as RV_Feedback
 import com.application.parkpilot.module.firebase.Storage
-import com.application.parkpilot.module.firebase.database.Feedback
+import com.application.parkpilot.module.firebase.database.Feedback as FS_Feedback
 import com.application.parkpilot.module.firebase.database.UserBasic
 import kotlinx.coroutines.launch
-import com.application.parkpilot.Feedback as FeedbackData
 
 class FeedbackViewModel : ViewModel() {
     fun loadRecycler(context: Context, stationUid: String, recyclerView: RecyclerView) {
-        val feedback = Feedback()
+        val feedback = FS_Feedback()
         viewModelScope.launch {
             val list = feedback.feedGet(stationUid)
             val layoutManger = LinearLayoutManager(context)
             recyclerView.layoutManager = layoutManger
             recyclerView.adapter =
-                FeedbackRecyclerView(context, R.layout.feedback_item, list.toList())
+                com.application.parkpilot.adapter.recycler.Feedback(
+                    context,
+                    R.layout.feedback_item,
+                    list.toList()
+                )
             recyclerView.addItemDecoration(DividerItemDecoration(context, layoutManger.orientation))
         }
     }
 
-    fun setFeedback(stationUid: String, feedback: FeedbackData) {
-        val fireStoreFeedback = Feedback()
+    fun setFeedback(stationUid: String, feedback: com.application.parkpilot.Feedback) {
+        val fireStoreFeedback = FS_Feedback()
         viewModelScope.launch {
             // required parking spot UID
             fireStoreFeedback.feedSet(feedback, stationUid)
@@ -52,7 +56,7 @@ class FeedbackViewModel : ViewModel() {
 
     fun loadFeedback(stationUID: String, ratingBar: RatingBar, editTextFeedback: EditText) {
         viewModelScope.launch {
-            val feedback = Feedback().feedGet(stationUID)[User.UID]
+            val feedback = FS_Feedback().feedGet(stationUID)[User.UID]
             feedback?.rating?.let {
                 ratingBar.rating = it
             }

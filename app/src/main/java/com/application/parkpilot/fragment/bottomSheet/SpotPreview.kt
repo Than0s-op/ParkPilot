@@ -1,4 +1,4 @@
-package com.application.parkpilot.bottomSheet
+package com.application.parkpilot.fragment.bottomSheet
 
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.R
 import com.application.parkpilot.activity.SpotDetail
-import com.application.parkpilot.adapter.CarouselRecyclerView
+import com.application.parkpilot.adapter.recycler.Carousel
 import com.application.parkpilot.viewModel.SpotPreviewViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView
@@ -46,7 +46,7 @@ class SpotPreview : BottomSheetDialogFragment(R.layout.spot_list_item) {
 
         viewModel.carouselImages.observe(this) { images ->
             recyclerView.adapter =
-                CarouselRecyclerView(requireContext(), R.layout.round_carousel, images)
+                Carousel(requireContext(), R.layout.round_carousel, images)
         }
 
         viewModel.stationBasicInfo.observe(this) {

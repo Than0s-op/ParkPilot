@@ -1,4 +1,4 @@
-package com.application.parkpilot.bottomSheet
+package com.application.parkpilot.fragment.bottomSheet
 
 import android.os.Bundle
 import android.view.LayoutInflater

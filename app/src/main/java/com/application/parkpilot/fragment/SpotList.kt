@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.application.parkpilot.R
-import com.application.parkpilot.adapter.SpotListRecyclerView
-import com.application.parkpilot.bottomSheet.SortFragment
+import com.application.parkpilot.adapter.recycler.SpotList
+import com.application.parkpilot.fragment.bottomSheet.SortFragment
 import com.application.parkpilot.viewModel.SpotListViewModel
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
@@ -61,7 +61,7 @@ class SpotList : Fragment(R.layout.spot_list),
 
         viewModel.liveDataStationLocation.observe(requireActivity()) {
             it?.let {
-                recyclerView.adapter = SpotListRecyclerView(
+                recyclerView.adapter = SpotList(
                     requireContext(), R.layout.spot_list_item, it
                 )
             }

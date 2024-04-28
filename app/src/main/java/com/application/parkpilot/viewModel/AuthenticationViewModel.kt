@@ -1,5 +1,6 @@
 package com.application.parkpilot.viewModel
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.View
@@ -15,17 +16,14 @@ import com.application.parkpilot.module.firebase.authentication.PhoneAuth
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
-class AuthenticationViewModel(activity: Authentication) : ViewModel() {
+class AuthenticationViewModel(context: Context) : ViewModel() {
 
 
 //      .......... [ phone auth ] ................
 
 
     // phone auth init
-    private val phoneAuth = PhoneAuth(activity)
-
-    // it is just a live data of phone auth and stored reference of it
-    val verificationCode = phoneAuth.verificationId
+    val phoneAuth by lazy { PhoneAuth(context) }
 
     // it will store result of code check
     val verifyPhoneNumberWithCodeResult = MutableLiveData<Boolean>()
@@ -47,11 +45,11 @@ class AuthenticationViewModel(activity: Authentication) : ViewModel() {
         phoneAuth.startPhoneNumberVerification(phoneNumberWithCountryCode)
     }
 
-    fun verifyPhoneNumberWithCode(OTP: String) {
+    fun verifyPhoneNumberWithCode(otp: String) {
         viewModelScope.launch {
             // store result of verification code. It will be true (if code match) or false
             verifyPhoneNumberWithCodeResult.value =
-                phoneAuth.verifyPhoneNumberWithCode(OTP)
+                phoneAuth.verifyPhoneNumberWithCode(otp)
         }
     }
 
@@ -66,7 +64,7 @@ class AuthenticationViewModel(activity: Authentication) : ViewModel() {
 
     // this will capture the google sign in auth activity result
     private val resultLauncher =
-        activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        (context as AppCompatActivity).registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             // store true or false
             googleSignInResult.value = result.resultCode == AppCompatActivity.RESULT_OK
         }

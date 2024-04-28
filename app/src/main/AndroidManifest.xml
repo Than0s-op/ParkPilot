@@ -42,7 +42,7 @@
         </activity>
 
         <activity
-            android:name=".activity.FragmentController"
+            android:name=".activity.Controller"
             android:configChanges="orientation"
             android:exported="true"
             android:screenOrientation="portrait">
@@ -58,7 +58,7 @@
         </activity>
 
         <activity
-            android:name=".activity.UserRegister"
+            android:name=".activity.Register"
             android:configChanges="orientation"
             android:exported="true"
             android:screenOrientation="portrait">

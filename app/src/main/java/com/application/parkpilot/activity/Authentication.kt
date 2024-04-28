@@ -87,7 +87,7 @@ class Authentication : AppCompatActivity(R.layout.authentication) {
         }
 
         // view model verification Id observer, It will be react when verification Id will change
-        viewModel.verificationCode.observe(this) { verificationCode ->
+        viewModel.phoneAuth.verificationId.observe(this) { verificationCode ->
 
             // If OTP send successfully or unsuccessfully, then hide progress bar
             unShowProgress()

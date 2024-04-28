@@ -1,4 +1,4 @@
-package com.application.parkpilot.adapter
+package com.application.parkpilot.adapter.recycler
 
 import android.app.Activity
 import android.content.Context
@@ -13,11 +13,11 @@ import com.application.parkpilot.module.QRGenerator
 import com.application.parkpilot.view.DialogQRCode
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class HistoryRecyclerView(
+class History(
     private val context: Context,
     private val layout: Int,
     private val tickets: ArrayList<Ticket>
-) : RecyclerView.Adapter<HistoryRecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<History.ViewHolder>() {
     val qrGenerator = QRGenerator(context)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(layout, parent, false)

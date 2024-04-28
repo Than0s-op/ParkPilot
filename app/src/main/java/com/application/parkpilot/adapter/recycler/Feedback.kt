@@ -1,4 +1,4 @@
-package com.application.parkpilot.adapter
+package com.application.parkpilot.adapter.recycler
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -17,9 +17,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class FeedbackRecyclerView(
-    private val context: Context, private val layout: Int, private val feedback: List<Pair<String,Feedback>>
-) : RecyclerView.Adapter<FeedbackRecyclerView.ViewHolder>() {
+class Feedback(
+    private val context: Context, private val layout: Int, private val feedback: List<Pair<String, Feedback>>
+) : RecyclerView.Adapter<com.application.parkpilot.adapter.recycler.Feedback.ViewHolder>() {
     private val userBasic = UserBasic()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(layout, parent, false)
