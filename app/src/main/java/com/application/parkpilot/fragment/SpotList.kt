@@ -24,6 +24,7 @@ class SpotList : Fragment(R.layout.spot_list),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding = SpotListBinding.bind(view)
         viewModel = ViewModelProvider(this)[SpotListViewModel::class.java]
         viewModel.loadStation()
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())

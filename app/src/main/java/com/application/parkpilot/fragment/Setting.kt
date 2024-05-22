@@ -13,6 +13,8 @@ class Setting : Fragment(R.layout.setting) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding = SettingBinding.bind(view)
+
         loadViews()
 
         val viewModel = SettingViewModel()

@@ -95,7 +95,7 @@ class SpotList(
         val textViewPrice: TextView = itemView.findViewById(R.id.textViewPrice)
         val flexboxLayout: FlexboxLayout = itemView.findViewById(R.id.flexboxLayout)
         val recyclerView: RecyclerView =
-            itemView.findViewById<RecyclerView>(R.id.recycleView).apply {
+            itemView.findViewById<RecyclerView>(R.id.recyclerView).apply {
                 layoutManager = CarouselLayoutManager()
             }
     }
