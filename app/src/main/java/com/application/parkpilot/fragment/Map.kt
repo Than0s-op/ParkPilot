@@ -6,42 +6,43 @@ import android.view.View
 import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
 import com.application.parkpilot.R
+import com.application.parkpilot.databinding.MapBinding
 import com.application.parkpilot.viewModel.MapViewModel
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 
 class Map : Fragment(R.layout.map) {
 
+    private lateinit var binding:MapBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val searchBar: SearchBar = view.findViewById(R.id.searchBar)
-        val searchView: SearchView = view.findViewById(R.id.searchView)
-        val currentLocationButton: Button = view.findViewById(R.id.buttonCurrentLocation)
+
+        binding = MapBinding.bind(view)
 
         // getting authentication view model reference
         val viewModel = ViewModelProvider(this)[MapViewModel::class.java]
 
         // initializing OSM map object
-        viewModel.setMapView(view.findViewById(R.id.mapViewOSM))
+        viewModel.setMapView(binding.mapViewOSM)
 
         // this method will add pins on map
         viewModel.loadMapViewPins(requireContext(),parentFragmentManager)
 
         // when user will type in search bar and press search(action) button (present on keyboard)
-        searchView.editText.setOnEditorActionListener { _, _, _ ->
+        binding.searchView.editText.setOnEditorActionListener { _, _, _ ->
             // setting the typed text to the search bar
-            searchBar.setText(searchView.text)
+            binding.searchBar.setText(binding.searchView.text)
 
             // hide the searchView(search suggestion box)
-            searchView.hide()
+            binding.searchView.hide()
 
             // creating co-routine scope to run search method
-            viewModel.search(requireContext(),searchView.text.toString())
+            viewModel.search(requireContext(),binding.searchView.text.toString())
             false
         }
 
         // when current location button press
-        currentLocationButton.setOnClickListener {
+        binding.buttonCurrentLocation.setOnClickListener {
             // it will set current location in mapView
             viewModel.getCurrentLocation(requireContext())
         }
