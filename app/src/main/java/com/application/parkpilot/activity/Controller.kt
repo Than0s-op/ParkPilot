@@ -10,7 +10,6 @@ import com.application.parkpilot.databinding.ControllerBinding
 import com.application.parkpilot.viewModel.Controller
 
 class Controller : AppCompatActivity() {
-
     private lateinit var binding: ControllerBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
