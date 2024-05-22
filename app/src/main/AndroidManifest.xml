@@ -58,7 +58,7 @@
         </activity>
 
         <activity
-            android:name=".activity.Register"
+            android:name=".activity.UserRegister"
             android:configChanges="orientation"
             android:exported="true"
             android:screenOrientation="portrait">

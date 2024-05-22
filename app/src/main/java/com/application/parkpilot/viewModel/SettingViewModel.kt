@@ -11,7 +11,7 @@ import com.application.parkpilot.R
 import com.application.parkpilot.User
 import com.application.parkpilot.activity.Authentication
 import com.application.parkpilot.activity.Main
-import com.application.parkpilot.activity.Register
+import com.application.parkpilot.activity.UserRegister
 import com.application.parkpilot.module.PhotoLoader
 import com.application.parkpilot.module.firebase.Storage
 import com.application.parkpilot.module.firebase.database.UserBasic
@@ -40,7 +40,7 @@ class SettingViewModel : ViewModel() {
     }
 
     fun personalInformation(context: Context) {
-        context.startActivity(Intent(context, Register::class.java))
+        context.startActivity(Intent(context, UserRegister::class.java))
     }
 
     fun loadProfile(context: Context, profileImage: ImageView, profileName: TextView) {
