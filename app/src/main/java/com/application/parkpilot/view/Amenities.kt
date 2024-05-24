@@ -2,6 +2,7 @@ package com.application.parkpilot.view
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.util.TypedValue
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -25,7 +26,8 @@ class Amenities(context: Context, text: String) {
         textView.setPadding(padding, padding, padding, padding)
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11.0f)
         textView.setBackgroundResource(R.drawable.round_corner_background)
+        textView.setTextColor(Color.parseColor("#FFFFFF"))
         textView.backgroundTintList =
-            ColorStateList.valueOf(context.resources.getColor(R.color.white))
+            ColorStateList.valueOf(context.resources.getColor(R.color.black))
     }
 }
