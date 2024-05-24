@@ -26,6 +26,6 @@ class Amenities(context: Context, text: String) {
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11.0f)
         textView.setBackgroundResource(R.drawable.round_corner_background)
         textView.backgroundTintList =
-            ColorStateList.valueOf(context.resources.getColor(R.color.md_theme_light_primaryContainer))
+            ColorStateList.valueOf(context.resources.getColor(R.color.white))
     }
 }

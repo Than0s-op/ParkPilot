@@ -208,7 +208,7 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
     }
 
     private fun loadAccessHours(accessHours: AccessHours) {
-        val tint = ColorStateList.valueOf(getColor(R.color.md_theme_dark_onSecondaryContainer))
+        val tint = ColorStateList.valueOf(getColor(R.color.black))
         for (day in accessHours.selectedDays) {
             when (day) {
                 getString(R.string.monday) -> findViewById<TextView>(R.id.textViewMonday).backgroundTintList =

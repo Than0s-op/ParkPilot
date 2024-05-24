@@ -74,15 +74,13 @@
                     android:textSize="20sp"
                     app:icon="@drawable/near_me"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewName"
-                    android:backgroundTint="@color/md_theme_light_primaryContainer" />
+                    app:layout_constraintTop_toBottomOf="@+id/textViewName" />
 
                 <Button
                     android:id="@+id/buttonBookNow"
                     style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/md_theme_light_primaryContainer"
                     android:text="Book Now"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -173,8 +171,7 @@
                     android:drawablePadding="5dp"
                     android:gravity="center_vertical"
                     android:text="open on"
-                    app:drawableStartCompat="@drawable/circle_background"
-                    app:drawableTint="@color/md_theme_dark_onSecondaryContainer" />
+                    app:drawableStartCompat="@drawable/circle_background" />
 
                 <include layout="@layout/time_shower" />
 
@@ -184,8 +181,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="@drawable/empty_tall_divider"
-                android:showDividers="middle"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:showDividers="middle">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -199,9 +196,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_corner_background"
-                    android:backgroundTint="@color/md_theme_dark_onSecondaryContainer"
-                    android:padding="15dp"
-                    android:lineHeight="30dp" />
+                    android:lineHeight="30dp"
+                    android:padding="15dp" />
 
             </LinearLayout>
 
