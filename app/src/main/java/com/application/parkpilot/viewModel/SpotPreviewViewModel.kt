@@ -82,6 +82,10 @@ class SpotPreviewViewModel(context: Context) : ViewModel() {
         return Timestamp(seconds, 0)
     }
 
+    fun getCurrentTimestamp(): Timestamp {
+        return Timestamp.now()
+    }
+
     fun loadBasicInfo(stationUID: String) {
         viewModelScope.launch {
             stationBasicInfo.value = stationBasic.basicGet(stationUID)

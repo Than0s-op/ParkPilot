@@ -96,7 +96,11 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
             }
             val fromTimestamp = viewModel.getTimeStamp(viewModel.fromTime!!, viewModel.fromDate!!)
             val toTimestamp = viewModel.getTimeStamp(viewModel.toTime!!, viewModel.toDate!!)
-            viewModel.book(fromTimestamp, toTimestamp)
+            if (toTimestamp < fromTimestamp || fromTimestamp < viewModel.getCurrentTimestamp()) {
+                Toast.makeText(this,"Enter valid date and time",Toast.LENGTH_LONG).show()
+            } else {
+                viewModel.book(fromTimestamp, toTimestamp)
+            }
             dialogInflater.dismiss()
         }
 
@@ -190,7 +194,7 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
             if (isPossible) {
                 viewModel.razorPay.makePayment(
                     viewModel.razorPay.INDIA,
-                    textViewPrice.text.toString().toInt(),
+                    textViewPrice.text.toString().toInt() * 1000,
                     "123"
                 )
             } else {
