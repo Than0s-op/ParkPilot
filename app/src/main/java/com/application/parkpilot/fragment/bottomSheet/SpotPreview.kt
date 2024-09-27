@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.application.parkpilot.R
 import com.application.parkpilot.activity.SpotDetail
@@ -23,7 +24,11 @@ class SpotPreview : BottomSheetDialogFragment(R.layout.spot_list_item) {
 
         val stationUID = tag!!
 
-        val viewModel = ViewModelProvider(this)[SpotPreviewViewModel::class.java]
+        val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return SpotPreviewViewModel(requireContext()) as T
+            }
+        })[SpotPreviewViewModel::class.java]
 
         binding.recyclerView.layoutManager = CarouselLayoutManager()
         viewModel.loadCarousel(stationUID)

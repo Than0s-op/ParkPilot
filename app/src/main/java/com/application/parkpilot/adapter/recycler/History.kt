@@ -12,6 +12,9 @@ import com.application.parkpilot.Ticket
 import com.application.parkpilot.module.QRGenerator
 import com.application.parkpilot.view.DialogQRCode
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class History(
     private val context: Context,
@@ -29,10 +32,11 @@ class History(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.textViewFromDate.text = tickets[position].fromTimestamp.toDate().toString()
-//        holder.textViewFromTime.text = tickets[position].from.toString()
-        holder.textViewToDate.text = tickets[position].toTimestamp.toDate().toString()
-//        holder.textViewToTime.text = tickets[position]
+        holder.textViewFromDate.text = getDate(tickets[position].fromTimestamp.toDate().time)
+        holder.textViewFromTime.text = getTime(tickets[position].fromTimestamp.toDate().time)
+        holder.textViewToDate.text = getDate(tickets[position].toTimestamp.toDate().time)
+        holder.textViewToTime.text = getTime(tickets[position].toTimestamp.toDate().time)
+        holder.textViewStationName.text = tickets[position].stationID
 
         // set on click listener to card
         holder.itemView.setOnClickListener {
@@ -51,10 +55,30 @@ class History(
         }
     }
 
+    private fun convertDateToSpecificFormat(date: Date, format: String): String {
+        // Create a SimpleDateFormat with the desired format
+        val sdf = SimpleDateFormat(format, Locale.getDefault())
+
+        // Format the given Date object
+        return sdf.format(date)
+    }
+
+    private fun getDate(timestamp: Long): String {
+//        val format = "dd-MM-yyyy HH:mm:ss"  // Desired format
+        val format = "dd-MM-yyyy"  // Desired format
+        return convertDateToSpecificFormat(Date(timestamp), format)
+    }
+
+    private fun getTime(timestamp: Long): String {
+        val format = "HH:mm:ss"  // Desired format
+        return convertDateToSpecificFormat(Date(timestamp), format)
+    }
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textViewFromDate: TextView = itemView.findViewById(R.id.textViewFromDate)
         val textViewFromTime: TextView = itemView.findViewById(R.id.textViewFromTime)
         val textViewToDate: TextView = itemView.findViewById(R.id.textViewToDate)
         val textViewToTime: TextView = itemView.findViewById(R.id.textViewToTime)
+        val textViewStationName: TextView = itemView.findViewById(R.id.textViewStationName)
     }
 }

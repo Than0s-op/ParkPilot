@@ -433,7 +433,8 @@ class Booking : FireStore() {
                     Ticket(
                         document.data[from] as Timestamp,
                         document.data[to] as Timestamp,
-                        document.data[station] as String,
+                        StationBasic().basicGet(document.data[station] as String)?.name
+                            ?: "I don't know",
                         document.id
                     )
                 )
