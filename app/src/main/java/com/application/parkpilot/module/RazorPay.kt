@@ -31,7 +31,7 @@ class RazorPay(private val activity: Activity) {
         // currency = "INR"... like this
         val payloadHelper = PayloadHelper(currency, amount, orderId).apply {
             name = "Than0s"
-            this.amount = amount
+            this.amount = amount * 1000
         }
         checkout.open(activity, payloadHelper.getJson())
     }

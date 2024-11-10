@@ -194,7 +194,7 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
             if (isPossible) {
                 viewModel.razorPay.makePayment(
                     viewModel.razorPay.INDIA,
-                    textViewPrice.text.toString().toInt() * 1000,
+                    textViewPrice.text.toString().toInt(),
                     "123"
                 )
             } else {
