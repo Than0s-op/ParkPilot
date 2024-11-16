@@ -84,7 +84,7 @@ class OSM(private val mapView: MapView) {
     }
 
     suspend fun getLastKnowLocation(context: Context): GeoPoint? {
-
+        println("level1")
         // permission class object creation
         val activity = PermissionRequest()
 
@@ -93,7 +93,7 @@ class OSM(private val mapView: MapView) {
 
         // check is location permission granted or not. If Not request to user for location permission
         if (activity.locationPermissionRequest(context)) {
-
+            println("level2")
             // request to turn on location(GPS)
             activity.gpsPermissionRequest(context)
 
@@ -103,7 +103,11 @@ class OSM(private val mapView: MapView) {
                     // Got last known location. In some rare situations this can be null.
                     if (location != null) {
                         currentLocation = GeoPoint(location.latitude, location.longitude)
+                        addMarker(GeoPoint(location.latitude, location.longitude))
                     }
+                    println("success")
+                }.addOnFailureListener {
+                    println("failure: $it")
                 }.await()
         }
         return currentLocation
@@ -115,7 +119,7 @@ class OSM(private val mapView: MapView) {
     fun setPinsOnPosition(
         context: Context,
         geoPoints: ArrayList<ParkPilotMapLegend>,
-        singleTapTask: (String,Boolean) -> Unit,
+        singleTapTask: (String, Boolean) -> Unit,
     ) {
 
         // contain all pins with "single tap" and "long press" binding
@@ -139,7 +143,7 @@ class OSM(private val mapView: MapView) {
             overlayItemArrayList,
             object : OnItemGestureListener<OverlayItem> {
                 override fun onItemSingleTapUp(i: Int, overlayItem: OverlayItem): Boolean {
-                    singleTapTask(overlayItem.snippet,overlayItem.title == "Free Spot")
+                    singleTapTask(overlayItem.snippet, overlayItem.title == "Free Spot")
                     return true // Handled this event.
                 }
 
@@ -157,7 +161,7 @@ class OSM(private val mapView: MapView) {
     fun addMarker(coordinates: GeoPoint): Marker {
         val marker = Marker(mapView)
         marker.position = coordinates
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+//        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
         mapView.overlays.add(marker)
         return marker
     }
