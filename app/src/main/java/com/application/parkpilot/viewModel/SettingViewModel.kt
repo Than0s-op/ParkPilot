@@ -43,18 +43,30 @@ class SettingViewModel : ViewModel() {
         context.startActivity(Intent(context, UserRegister::class.java))
     }
 
-    fun loadProfile(context: Context, profileImage: ImageView, profileName: TextView) {
-        Firebase.auth.currentUser?.let {
-            viewModelScope.launch {
-                profileImage.setImageDrawable(
-                    PhotoLoader().getImage(
-                        context,
-                        Storage().userProfilePhotoGet(User.UID) ?: R.drawable.person_icon,
-                        false
-                    ).drawable
-                )
-                profileName.text = UserBasic().getProfile(User.UID)?.userName ?: "User"
+    fun loadProfile(
+        context: Context,
+        profileImage: ImageView,
+        profileName: TextView,
+        onComplete: () -> Unit
+    ) {
+        viewModelScope.launch {
+            Firebase.auth.currentUser?.let {
+                val image = Storage().userProfilePhotoGet(User.UID)
+                val name = UserBasic().getProfile(User.UID)?.userName
+                image?.let {
+                    profileImage.setImageDrawable(
+                        PhotoLoader().getImage(
+                            context,
+                            it,
+                            false
+                        ).drawable
+                    )
+                }
+                name?.let {
+                    profileName.text = it
+                }
             }
+            onComplete()
         }
     }
 }

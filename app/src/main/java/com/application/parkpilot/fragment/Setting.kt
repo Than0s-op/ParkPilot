@@ -23,7 +23,9 @@ class Setting : Fragment(R.layout.setting) {
             requireContext(),
             binding.imageViewProfilePicture,
             binding.textViewUserName
-        )
+        ) {
+            hideShimmer()
+        }
 
         binding.buttonEditProfile.setOnClickListener {
             viewModel.personalInformation(requireContext())
@@ -34,6 +36,12 @@ class Setting : Fragment(R.layout.setting) {
         binding.textViewLogin.setOnClickListener {
             viewModel.login(requireContext())
         }
+    }
+
+    private fun hideShimmer(){
+        binding.shimmerLayout.visibility = View.GONE
+        binding.textViewUserName.visibility = View.VISIBLE
+        binding.imageViewProfilePicture.visibility = View.VISIBLE
     }
 
     private fun loadViews() {
