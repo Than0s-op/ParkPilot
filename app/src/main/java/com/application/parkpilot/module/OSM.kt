@@ -115,18 +115,22 @@ class OSM(private val mapView: MapView) {
     fun setPinsOnPosition(
         context: Context,
         geoPoints: ArrayList<ParkPilotMapLegend>,
-        singleTapTask: (String) -> Unit
+        singleTapTask: (String,Boolean) -> Unit,
     ) {
 
         // contain all pins with "single tap" and "long press" binding
         val overlayItemArrayList = ArrayList<OverlayItem>()
 
         // create pin image
-        val markerDrawable = ContextCompat.getDrawable(context, R.drawable.map_marker)
+        val freeMarkerDrawable = ContextCompat.getDrawable(context, R.drawable.free_spot_pin_min)
+        val markerDrawable = ContextCompat.getDrawable(context, R.drawable.spot_pin_min)
 
         for (geoPoint in geoPoints) {
             val overlayItem = OverlayItem(geoPoint.title, geoPoint.UID, geoPoint.coordinates)
-            overlayItem.setMarker(markerDrawable)
+            if (geoPoint.isFreeSpot)
+                overlayItem.setMarker(freeMarkerDrawable)
+            else
+                overlayItem.setMarker(markerDrawable)
             overlayItemArrayList.add(overlayItem)
         }
 
@@ -135,7 +139,7 @@ class OSM(private val mapView: MapView) {
             overlayItemArrayList,
             object : OnItemGestureListener<OverlayItem> {
                 override fun onItemSingleTapUp(i: Int, overlayItem: OverlayItem): Boolean {
-                    singleTapTask(overlayItem.snippet)
+                    singleTapTask(overlayItem.snippet,overlayItem.title == "Free Spot")
                     return true // Handled this event.
                 }
 

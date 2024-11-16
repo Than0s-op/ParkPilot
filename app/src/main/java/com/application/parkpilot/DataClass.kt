@@ -7,7 +7,9 @@ import com.google.firebase.firestore.GeoPoint as FirebaseGeoPoint
 import org.osmdroid.util.GeoPoint as OSMGeoPoint
 
 
-data class ParkPilotMapLegend(val title: String, val UID: String, val coordinates: OSMGeoPoint)
+data class ParkPilotMapLegend(
+    val title: String, val UID: String, val coordinates: OSMGeoPoint,val isFreeSpot:Boolean
+)
 data class UserCollection(
     var firstName: String,
     var lastName: String,

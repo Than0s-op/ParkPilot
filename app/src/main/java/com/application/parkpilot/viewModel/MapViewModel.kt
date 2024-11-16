@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.application.parkpilot.ParkPilotMapLegend
 import com.application.parkpilot.fragment.bottomSheet.SpotPreview
 import com.application.parkpilot.module.OSM
+import com.application.parkpilot.module.firebase.database.FreeSpot
 import com.application.parkpilot.module.firebase.database.StationLocation
 import kotlinx.coroutines.launch
 import org.osmdroid.util.GeoPoint
@@ -48,8 +49,8 @@ class MapViewModel : ViewModel() {
     fun loadMapViewPins(context: Context, supportFragmentManager: FragmentManager) {
 
         // creating the lambda function to pass with "set pins on position" method
-        val singleTapTask = { uID: String ->
-            SpotPreview().show(supportFragmentManager, uID)
+        val singleTapTask = { uID: String,isFreeSpot:Boolean ->
+            SpotPreview(isFreeSpot).show(supportFragmentManager, uID)
         }
 
         viewModelScope.launch {
@@ -66,7 +67,23 @@ class MapViewModel : ViewModel() {
                         "Station",
                         info.stationUid!!,
                         // converting firebase geoPoint to OSM geoPoint
-                        GeoPoint(info.coordinates.latitude, info.coordinates.longitude)
+                        GeoPoint(info.coordinates.latitude, info.coordinates.longitude),
+                        isFreeSpot = info.isFree
+                    )
+                )
+            }
+
+            val freeSpots = FreeSpot().getLocations()
+            // iterate the collection
+            for (info in freeSpots) {
+                // adding "ParkPilotMapLegend" data-class object in arraylist
+                stations.add(
+                    ParkPilotMapLegend(
+                        "Free Spot",
+                        info.stationUid!!,
+                        // converting firebase geoPoint to OSM geoPoint
+                        GeoPoint(info.coordinates.latitude, info.coordinates.longitude),
+                        isFreeSpot = info.isFree
                     )
                 )
             }

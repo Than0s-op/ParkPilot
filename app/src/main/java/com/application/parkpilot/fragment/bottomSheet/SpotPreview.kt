@@ -15,7 +15,8 @@ import com.application.parkpilot.viewModel.SpotPreviewViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.carousel.CarouselLayoutManager
 
-class SpotPreview : BottomSheetDialogFragment(R.layout.spot_list_item) {
+class SpotPreview(private val isFreeSpot: Boolean) :
+    BottomSheetDialogFragment(R.layout.spot_list_item) {
     private lateinit var binding: SpotListItemBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -24,20 +25,30 @@ class SpotPreview : BottomSheetDialogFragment(R.layout.spot_list_item) {
 
         val stationUID = tag!!
 
+
         val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return SpotPreviewViewModel(requireContext()) as T
             }
         })[SpotPreviewViewModel::class.java]
 
+        loadView()
+        viewModel.stationUID = tag!!
+
         binding.recyclerView.layoutManager = CarouselLayoutManager()
-        viewModel.loadCarousel(stationUID)
-        viewModel.loadBasicInfo(stationUID)
-        viewModel.loadRating(stationUID)
+
+        if (!isFreeSpot) {
+            viewModel.loadCarousel(stationUID)
+            viewModel.loadBasicInfo(stationUID)
+            viewModel.loadRating(stationUID)
+        } else {
+            viewModel.getFreeSpotDetails()
+        }
 
         binding.materialCardView.setOnClickListener {
             val intent = Intent(context, SpotDetail::class.java).apply {
                 putExtra("stationUID", stationUID)
+                putExtra("isFree", isFreeSpot)
             }
             startActivity(intent)
         }
@@ -55,6 +66,20 @@ class SpotPreview : BottomSheetDialogFragment(R.layout.spot_list_item) {
             binding.textViewRating.text = String.format("%.1f", it.first / it.second)
             binding.textViewRating.backgroundTintList = getTint(it.first / it.second)
             binding.textViewNumberOfUser.text = it.second.toString()
+        }
+        viewModel.freeSpotInfo.observe(this) {
+            binding.textViewName.text = it.landMark
+            binding.recyclerView.adapter =
+                Carousel(requireContext(), R.layout.round_carousel, it.images)
+            viewModel.getDistance(requireContext())
+        }
+    }
+
+    private fun loadView() {
+        if (isFreeSpot) {
+            binding.textViewPrice.visibility = View.GONE
+            binding.textViewRating.visibility = View.GONE
+            binding.textViewNumberOfUser.visibility = View.GONE
         }
     }
 
