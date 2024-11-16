@@ -2,6 +2,7 @@ package com.application.parkpilot
 
 import android.net.Uri
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.GeoPoint as FirebaseGeoPoint
 import org.osmdroid.util.GeoPoint as OSMGeoPoint
 
@@ -32,7 +33,12 @@ data class QRCodeCollection(
     val valid: Boolean = true
 )
 
-data class StationLocation(val stationUid: String?, val coordinates: FirebaseGeoPoint)
+data class StationLocation(
+    val stationUid: String?,
+    val coordinates: FirebaseGeoPoint,
+    val isFree: Boolean = false,
+)
+
 data class StationBasic(var name: String?, val price: Int?, val reserved: Int?) {
     init {
         name?.let {
@@ -55,6 +61,14 @@ data class AccessHours(
     val selectedDays: List<String>
 )
 
+data class FreeSpotDetails(
+    val documentId: String = "",
+    val landMark: String = "",
+    val location: GeoPoint = GeoPoint(0.0, 0.0),
+    val policies: String = "",
+    val images: List<Uri> = emptyList()
+)
+
 data class Book(
     val fromTimestamp: Timestamp,
     val toTimestamp: Timestamp,
@@ -63,10 +77,10 @@ data class Book(
 )
 
 data class Ticket(
-    val fromTimestamp:Timestamp,
-    val toTimestamp:Timestamp,
-    val stationID:String,
-    val qrcode:String
+    val fromTimestamp: Timestamp,
+    val toTimestamp: Timestamp,
+    val stationID: String,
+    val qrcode: String
 )
 
 data class Feedback(val UID: String = User.UID, val rating: Float, val message: String)

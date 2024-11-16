@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.parkpilot.Book
+import com.application.parkpilot.FreeSpotDetails
 import com.application.parkpilot.Time
 import com.application.parkpilot.User
 import com.application.parkpilot.activity.Feedback
@@ -18,6 +19,7 @@ import com.application.parkpilot.module.RazorPay
 import com.application.parkpilot.module.TimePicker
 import com.application.parkpilot.module.firebase.Storage
 import com.application.parkpilot.module.firebase.database.Booking
+import com.application.parkpilot.module.firebase.database.FreeSpot
 import com.application.parkpilot.module.firebase.database.StationAdvance
 import com.application.parkpilot.module.firebase.database.StationBasic
 import com.application.parkpilot.module.firebase.database.StationLocation
@@ -27,6 +29,7 @@ import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.Calendar
+import kotlin.properties.Delegates
 import com.application.parkpilot.StationAdvance as StationAdvanceDataClass
 import com.application.parkpilot.StationBasic as StationBasicDataClass
 import com.application.parkpilot.module.firebase.database.Feedback as FS_Feedback
@@ -34,9 +37,11 @@ import com.application.parkpilot.module.firebase.database.Feedback as FS_Feedbac
 class SpotPreviewViewModel(context: Context) : ViewModel() {
 
     lateinit var stationUID: String
+    var isFree by Delegates.notNull<Boolean>()
     val carouselImages = MutableLiveData<List<Any>>()
     val stationBasicInfo = MutableLiveData<StationBasicDataClass>()
     val stationAdvanceInfo = MutableLiveData<StationAdvanceDataClass>()
+    val freeSpotInfo = MutableLiveData<FreeSpotDetails>()
     val bookingPossible = MutableLiveData<Boolean>()
     val ticketId = MutableLiveData<String?>()
     val stationRating = MutableLiveData<Pair<Float, Int>>()
@@ -88,6 +93,7 @@ class SpotPreviewViewModel(context: Context) : ViewModel() {
 
     fun loadBasicInfo(stationUID: String) {
         viewModelScope.launch {
+            stationLocation = fireStoreStationLocation.locationGet(stationUID)
             stationBasicInfo.value = stationBasic.basicGet(stationUID)
         }
     }
@@ -98,9 +104,8 @@ class SpotPreviewViewModel(context: Context) : ViewModel() {
         }
     }
 
-    fun getDistance(context: Context, stationUID: String) {
+    fun getDistance(context: Context) {
         viewModelScope.launch {
-            stationLocation = fireStoreStationLocation.locationGet(stationUID)
             try {
                 val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
                 currentLocation = fusedLocationClient.lastLocation.await()
@@ -156,6 +161,16 @@ class SpotPreviewViewModel(context: Context) : ViewModel() {
                 totalRatting += i.value.rating
             }
             stationRating.value = Pair(totalRatting, feedbacks.size)
+        }
+    }
+
+    fun getFreeSpotDetails() {
+        viewModelScope.launch {
+            val freeSpot = FreeSpot()
+            freeSpot.getDetails(stationUID).let {
+                freeSpotInfo.value = it
+                stationLocation = it.location
+            }
         }
     }
 

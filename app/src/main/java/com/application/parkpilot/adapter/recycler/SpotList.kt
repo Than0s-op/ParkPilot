@@ -33,51 +33,78 @@ class SpotList(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val stationUID = stations[position].stationUid!!
-        holder.viewModel.loadBasic(stationUID)
-        holder.viewModel.loadAmenities(stationUID)
-        holder.viewModel.loadRating(stationUID)
-        holder.viewModel.loadImages(stationUID)
         if (permissionRequest.hasLocationPermission(context)) {
             holder.viewModel.getDistance(fusedLocationClient, stations[position].coordinates)
         }
 
-        val activity = context as AppCompatActivity
-        holder.viewModel.liveDataStationBasic.observe(activity) {
-            holder.textViewName.text = it.name
-            holder.textViewPrice.text = it.price.toString()
-        }
-        holder.viewModel.liveDataImages.observe(activity) {
-            holder.recyclerView.adapter = Carousel(
-                context,
-                R.layout.round_carousel,
-                it
-            )
-        }
-        holder.viewModel.liveDataFeedback.observe(activity) {
-            if (it.second != 0) {
-                val rating = it.first / it.second
-                holder.textViewRating.text = String.format("%.1f", rating)
-                holder.textViewNumberOfUser.text = it.second.toString()
-                holder.textViewRating.backgroundTintList = holder.viewModel.getTint(rating)
-            } else {
-                holder.textViewRating.text = "0.0"
-                holder.textViewNumberOfUser.text = "0"
-                holder.textViewRating.backgroundTintList = holder.viewModel.getTint(0.0f)
-            }
-        }
-        holder.viewModel.liveDataAmenities.observe(activity) {
-            if (holder.flexboxLayout.isEmpty()) {
-                for (i in it) {
-                    holder.flexboxLayout.addView(Amenities(context, i).textView)
-                }
-            }
-        }
-        holder.viewModel.liveDataDistance.observe(activity) {
+        holder.viewModel.liveDataDistance.observe(context as AppCompatActivity) {
             holder.textViewDistance.text = it.toString()
         }
-        holder.materialCard.setOnClickListener {
-            holder.viewModel.startNextActivity(context, stationUID)
+
+        if (stations[position].isFree) {
+            holder.textViewRating.visibility = View.GONE
+            holder.textViewPrice.visibility = View.GONE
+            holder.flexboxLayout.visibility = View.GONE
+            holder.textViewNumberOfUser.visibility = View.GONE
+            holder.materialCard.setOnClickListener {
+                holder.viewModel.startNextActivity(context, stations[position].stationUid!!)
+            }
+
+            holder.viewModel.getFreeSpotDetails(stations[position].stationUid!!)
+            holder.viewModel.liveDataFreeSpotDetails.observe(context as AppCompatActivity) {
+                holder.recyclerView.adapter = Carousel(
+                    context,
+                    R.layout.round_carousel,
+                    it.images
+                )
+                holder.textViewName.text = it.landMark
+            }
+
+            holder.materialCard.setOnClickListener {
+                holder.viewModel.startNextActivity(context, stations[position].stationUid!!, true)
+            }
+
+        } else {
+            val stationUID = stations[position].stationUid!!
+            holder.viewModel.loadBasic(stationUID)
+            holder.viewModel.loadAmenities(stationUID)
+            holder.viewModel.loadRating(stationUID)
+            holder.viewModel.loadImages(stationUID)
+
+            val activity = context as AppCompatActivity
+            holder.viewModel.liveDataStationBasic.observe(activity) {
+                holder.textViewName.text = it.name
+                holder.textViewPrice.text = it.price.toString()
+            }
+            holder.viewModel.liveDataImages.observe(activity) {
+                holder.recyclerView.adapter = Carousel(
+                    context,
+                    R.layout.round_carousel,
+                    it
+                )
+            }
+            holder.viewModel.liveDataFeedback.observe(activity) {
+                if (it.second != 0) {
+                    val rating = it.first / it.second
+                    holder.textViewRating.text = String.format("%.1f", rating)
+                    holder.textViewNumberOfUser.text = it.second.toString()
+                    holder.textViewRating.backgroundTintList = holder.viewModel.getTint(rating)
+                } else {
+                    holder.textViewRating.text = "0.0"
+                    holder.textViewNumberOfUser.text = "0"
+                    holder.textViewRating.backgroundTintList = holder.viewModel.getTint(0.0f)
+                }
+            }
+            holder.viewModel.liveDataAmenities.observe(activity) {
+                if (holder.flexboxLayout.isEmpty()) {
+                    for (i in it) {
+                        holder.flexboxLayout.addView(Amenities(context, i).textView)
+                    }
+                }
+            }
+            holder.materialCard.setOnClickListener {
+                holder.viewModel.startNextActivity(context, stationUID)
+            }
         }
     }
 

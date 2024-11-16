@@ -9,9 +9,11 @@ import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.application.parkpilot.FreeSpotDetails
 import com.application.parkpilot.activity.SpotDetail
 import com.application.parkpilot.module.firebase.Storage
 import com.application.parkpilot.module.firebase.database.Feedback
+import com.application.parkpilot.module.firebase.database.FreeSpot
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.launch
@@ -27,6 +29,7 @@ class SpotList : ViewModel() {
     private val feedback = Feedback()
     val liveDataStationBasic = MutableLiveData<DC_StationBasic>()
     val liveDataImages = MutableLiveData<List<Uri>>()
+    val liveDataFreeSpotDetails = MutableLiveData<FreeSpotDetails>()
     val liveDataFeedback = MutableLiveData<Pair<Float, Int>>()
     val liveDataAmenities = MutableLiveData<List<String>>()
     val liveDataDistance = MutableLiveData<String>()
@@ -90,9 +93,17 @@ class SpotList : ViewModel() {
         }
     }
 
-    fun startNextActivity(context: Context, stationUID: String) {
+    fun getFreeSpotDetails(documentId: String) {
+        viewModelScope.launch {
+            val details = FreeSpot().getDetails(documentId)
+            liveDataFreeSpotDetails.value = details
+        }
+    }
+
+    fun startNextActivity(context: Context, stationUID: String,isFree:Boolean = false) {
         val intent = Intent(context, SpotDetail::class.java).apply {
             putExtra("stationUID", stationUID)
+            putExtra("isFree",isFree)
         }
         context.startActivity(intent)
     }

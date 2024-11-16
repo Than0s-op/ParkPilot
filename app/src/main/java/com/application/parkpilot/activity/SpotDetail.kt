@@ -16,6 +16,8 @@ import com.application.parkpilot.AccessHours
 import com.application.parkpilot.R
 import com.application.parkpilot.User
 import com.application.parkpilot.adapter.recycler.Carousel
+import com.application.parkpilot.databinding.BookingBinding
+import com.application.parkpilot.databinding.SpotDetailBinding
 import com.application.parkpilot.view.DialogQRCode
 import com.application.parkpilot.viewModel.SpotPreviewViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
@@ -25,33 +27,22 @@ import com.razorpay.ExternalWalletListener
 import com.razorpay.PaymentData
 import com.razorpay.PaymentResultWithDataListener
 
-class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDataListener,
+class SpotDetail : AppCompatActivity(), PaymentResultWithDataListener,
     ExternalWalletListener {
 
     // late init view model property
     private lateinit var viewModel: SpotPreviewViewModel
-    private lateinit var buttonBookNow: Button
+
+    //    private lateinit var buttonBookNow: Button
+    private lateinit var binding: SpotDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // view init
-        val recyclerView: RecyclerView = findViewById(R.id.recycleView)
-        val textViewName: TextView = findViewById(R.id.textViewName)
-        val textViewRating: TextView = findViewById(R.id.textViewRating)
-        val buttonDistance: Button = findViewById(R.id.buttonDistance)
-        val textViewPrice: TextView = findViewById(R.id.textViewPrice)
-        val textViewPolicies: TextView = findViewById(R.id.textViewPolicies)
-        val buttonFeedback: ExtendedFloatingActionButton = findViewById(R.id.buttonFeedback)
-        val textViewNumberOfUser: TextView = findViewById(R.id.textViewNumberOfUser)
-        buttonBookNow = findViewById(R.id.buttonBookNow)
-        val layoutBooking = layoutInflater.inflate(R.layout.booking, null, false)
-        val dialogInflater = MaterialAlertDialogBuilder(this).setView(layoutBooking).create()
-        val editTextFromDate: EditText = layoutBooking.findViewById(R.id.editTextFromDate)
-        val editTextFromTime: EditText = layoutBooking.findViewById(R.id.editTextFromTime)
-        val editTextToDate: EditText = layoutBooking.findViewById(R.id.editTextToDate)
-        val editTextToTime: EditText = layoutBooking.findViewById(R.id.editTextToTime)
-        val buttonBookNow2: Button = layoutBooking.findViewById(R.id.buttonBookNow)
+        val layoutBooking: BookingBinding = BookingBinding.inflate(layoutInflater)
+        val dialogInflater = MaterialAlertDialogBuilder(this).setView(layoutBooking.root).create()
+        binding = SpotDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // getting authentication view model reference [init]
         viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
@@ -61,35 +52,39 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
         })[SpotPreviewViewModel::class.java]
 
         viewModel.stationUID = intent.getStringExtra("stationUID")!!
+        viewModel.isFree = intent.getBooleanExtra("isFree", false)
 
 
-
-        viewModel.loadAdvanceInfo(viewModel.stationUID)
-        viewModel.loadBasicInfo(viewModel.stationUID)
-        viewModel.loadRating(viewModel.stationUID)
-        viewModel.getDistance(this, viewModel.stationUID)
+        if (!viewModel.isFree) {
+            viewModel.loadAdvanceInfo(viewModel.stationUID)
+            viewModel.loadBasicInfo(viewModel.stationUID)
+            viewModel.loadRating(viewModel.stationUID)
+            viewModel.loadCarousel(viewModel.stationUID)
+        } else {
+            viewModel.getFreeSpotDetails()
+        }
 
         setVisibility()
 
         // loading recycler view default (init) properties
-        recyclerView.apply {
+        binding.recycleView.apply {
             layoutManager = CarouselLayoutManager()
-            viewModel.loadCarousel(viewModel.stationUID)
         }
 
-        buttonFeedback.setOnClickListener {
+
+        binding.buttonFeedback.setOnClickListener {
             viewModel.feedback(this, viewModel.stationUID)
         }
 
-        buttonDistance.setOnClickListener {
+        binding.buttonDistance.setOnClickListener {
             viewModel.redirect(this)
         }
 
-        buttonBookNow.setOnClickListener {
+        binding.buttonBookNow.setOnClickListener {
             dialogInflater.show()
         }
 
-        buttonBookNow2.setOnClickListener {
+        layoutBooking.buttonBookNow.setOnClickListener {
             if (viewModel.fromTime == null || viewModel.fromDate == null || viewModel.toTime == null || viewModel.toDate == null) {
                 Toast.makeText(this, "Please fill the form", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
@@ -97,7 +92,7 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
             val fromTimestamp = viewModel.getTimeStamp(viewModel.fromTime!!, viewModel.fromDate!!)
             val toTimestamp = viewModel.getTimeStamp(viewModel.toTime!!, viewModel.toDate!!)
             if (toTimestamp < fromTimestamp || fromTimestamp < viewModel.getCurrentTimestamp()) {
-                Toast.makeText(this,"Enter valid date and time",Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Enter valid date and time", Toast.LENGTH_LONG).show()
             } else {
                 viewModel.book(fromTimestamp, toTimestamp)
             }
@@ -107,34 +102,34 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
         var flagDate = false
         var flagTime = false
 
-        editTextFromDate.setOnClickListener {
+        layoutBooking.editTextFromDate.setOnClickListener {
             flagDate = true
             viewModel.datePicker.showDatePicker(this, "Select From Date")
         }
 
-        editTextToDate.setOnClickListener {
+        layoutBooking.editTextToDate.setOnClickListener {
             flagDate = false
             viewModel.datePicker.showDatePicker(this, "Select To Date")
         }
 
-        editTextFromTime.setOnClickListener {
+        layoutBooking.editTextFromTime.setOnClickListener {
             flagTime = true
             viewModel.timePicker.showTimePicker(supportFragmentManager, null)
         }
 
-        editTextToTime.setOnClickListener {
+        layoutBooking.editTextToTime.setOnClickListener {
             flagTime = false
             viewModel.timePicker.showTimePicker(supportFragmentManager, null)
         }
 
 
         viewModel.carouselImages.observe(this) { images ->
-            recyclerView.adapter = Carousel(this, R.layout.square_carousel, images)
+            binding.recycleView.adapter = Carousel(this, R.layout.square_carousel, images)
         }
 
         viewModel.stationAdvanceInfo.observe(this) {
             // loading "Think should you know" section
-            textViewPolicies.text = it.policies
+            binding.textViewPolicies.text = it.policies
 
             // loading amenities section
             loadAmenities(it.amenities)
@@ -144,35 +139,43 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
 //            textViewAccessHours.text = it.accessHours
         }
 
+        viewModel.freeSpotInfo.observe(this) {
+            binding.textViewName.text = it.landMark
+            binding.recycleView.adapter = Carousel(this, R.layout.square_carousel, it.images)
+            viewModel.getDistance(this)
+            binding.textViewPolicies.text = it.policies
+        }
+
         viewModel.stationBasicInfo.observe(this) {
-            textViewName.text = it.name
-            textViewPrice.text = it.price.toString()
+            viewModel.getDistance(this)
+            binding.textViewName.text = it.name
+            binding.textViewPrice.text = it.price.toString()
         }
 
         viewModel.stationRating.observe(this) {
             if (it.second != 0) {
-                textViewRating.text = String.format("%.1f", it.first / it.second)
-                textViewRating.backgroundTintList = getTint(it.first / it.second)
-                textViewNumberOfUser.text = it.second.toString()
+                binding.textViewRating.text = String.format("%.1f", it.first / it.second)
+                binding.textViewRating.backgroundTintList = getTint(it.first / it.second)
+                binding.textViewNumberOfUser.text = it.second.toString()
             } else {
-                textViewRating.text = "0.0"
-                textViewRating.backgroundTintList = getTint(0.0f)
-                textViewNumberOfUser.text = "0"
+                binding.textViewRating.text = "0.0"
+                binding.textViewRating.backgroundTintList = getTint(0.0f)
+                binding.textViewNumberOfUser.text = "0"
             }
         }
 
         viewModel.liveDataDistance.observe(this) {
-            buttonDistance.text = it
+            binding.buttonDistance.text = it
         }
 
         viewModel.datePicker.pickedDate.observe(this) {
             it?.let {
                 val date = viewModel.datePicker.format(it)
                 if (flagDate) {
-                    editTextFromDate.setText(date)
+                    layoutBooking.editTextFromDate.setText(date)
                     viewModel.fromDate = it
                 } else {
-                    editTextToDate.setText(date)
+                    layoutBooking.editTextToDate.setText(date)
                     viewModel.toDate = it
                 }
                 flagDate = false
@@ -181,10 +184,10 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
 
         viewModel.timePicker.liveDataTimePicker.observe(this) {
             if (flagTime) {
-                editTextFromTime.setText(viewModel.timePicker.format12(it))
+                layoutBooking.editTextFromTime.setText(viewModel.timePicker.format12(it))
                 viewModel.fromTime = it
             } else {
-                editTextToTime.setText(viewModel.timePicker.format12(it))
+                layoutBooking.editTextToTime.setText(viewModel.timePicker.format12(it))
                 viewModel.toTime = it
             }
             flagTime = false
@@ -194,7 +197,7 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
             if (isPossible) {
                 viewModel.razorPay.makePayment(
                     viewModel.razorPay.INDIA,
-                    textViewPrice.text.toString().toInt(),
+                    binding.textViewPrice.text.toString().toInt(),
                     "123"
                 )
             } else {
@@ -293,13 +296,21 @@ class SpotDetail : AppCompatActivity(R.layout.spot_detail), PaymentResultWithDat
         User.apply {
             when (type) {
                 ANONYMOUS -> {
-                    buttonBookNow.visibility = View.GONE
+                    binding.buttonBookNow.visibility = View.GONE
                 }
 
                 FINDER -> {
 
                 }
             }
+        }
+        if (viewModel.isFree) {
+            binding.buttonFeedback.visibility = View.GONE
+            binding.textViewPrice.visibility = View.GONE
+            binding.textViewRating.visibility = View.GONE
+            binding.textViewNumberOfUser.visibility = View.GONE
+            binding.amenitiesSet.visibility = View.GONE
+            binding.accessHoursSet.visibility = View.GONE
         }
     }
 }

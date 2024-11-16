@@ -18,6 +18,7 @@ class Storage {
     companion object {
         private const val PROFILE = "user_profile_photo/"
         private const val SPOT = "parkSpot/"
+        private const val FREE_SPOT = "free_spot/"
     }
 
     suspend fun userProfilePhotoPut(context: Context, uid: String, image: Any): Uri? {
@@ -42,6 +43,15 @@ class Storage {
             imagesUri.add(i.downloadUrl.await())
         }
         return imagesUri
+    }
+
+    suspend fun getFreeSpotImages(uid: String): List<Uri> {
+        val list = storageRef.child("$FREE_SPOT${uid}/").listAll().await()
+        val imageList = mutableListOf<Uri>()
+        for (image in list.items) {
+            imageList.add(image.downloadUrl.await())
+        }
+        return imageList
     }
 
     private suspend fun compress(context: Context, image: Any): ByteArray {

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.parkpilot.module.PermissionRequest
 import com.application.parkpilot.module.firebase.database.Feedback
+import com.application.parkpilot.module.firebase.database.FreeSpot
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -18,7 +19,10 @@ class SpotListViewModel : ViewModel() {
     val permission = PermissionRequest()
     fun loadStation() {
         viewModelScope.launch {
-            liveDataStationLocation.value = FS_StationLocation().locationGet()
+            val paidSpotList = FS_StationLocation().locationGet()
+            val freeSpotList = FreeSpot().getLocations()
+            val allSpotList = paidSpotList + freeSpotList
+            liveDataStationLocation.value = ArrayList(allSpotList)
         }
     }
 

@@ -2,6 +2,7 @@ package com.application.parkpilot.module.firebase.database
 
 import com.application.parkpilot.AccessHours
 import com.application.parkpilot.Book
+import com.application.parkpilot.FreeSpotDetails
 import com.application.parkpilot.QRCodeCollection
 import com.application.parkpilot.StationAdvance
 import com.application.parkpilot.StationBasic
@@ -9,6 +10,7 @@ import com.application.parkpilot.StationLocation
 import com.application.parkpilot.Ticket
 import com.application.parkpilot.UserCollection
 import com.application.parkpilot.UserProfile
+import com.application.parkpilot.module.firebase.Storage
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.AggregateSource
@@ -16,6 +18,7 @@ import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.storage
 import kotlinx.coroutines.tasks.await
 import com.application.parkpilot.Feedback as FeedbackData
 
@@ -181,7 +184,13 @@ class StationLocation : FireStore() {
 
         fireStore.collection(collectionName).get().await().let { collection ->
             for (document in collection) {
-                result.add(StationLocation(document.id, document.data[coordinates] as GeoPoint))
+                result.add(
+                    StationLocation(
+                        stationUid = document.id,
+                        coordinates = document.data[coordinates] as GeoPoint,
+                        isFree = false
+                    )
+                )
             }
         }
         return result
@@ -217,6 +226,44 @@ class StationLocation : FireStore() {
 
         // return result
         return result
+    }
+}
+
+class FreeSpot : FireStore() {
+    suspend fun getLocations(): ArrayList<StationLocation> {
+        val result = ArrayList<StationLocation>()
+        fireStore.collection(COLLECTION_NAME).get().await().let { collection ->
+            for (document in collection) {
+                result.add(
+                    StationLocation(
+                        stationUid = document.id,
+                        coordinates = document.data[LOCATION] as GeoPoint,
+                        isFree = true
+                    )
+                )
+            }
+        }
+        return result
+    }
+
+    suspend fun getDetails(documentId: String): FreeSpotDetails {
+        val doc = fireStore.collection(COLLECTION_NAME).document(documentId).get().await()
+        val storage = Storage().getFreeSpotImages(documentId)
+
+        return FreeSpotDetails(
+            documentId = documentId,
+            landMark = doc.data?.get(LAND_MARK) as String,
+            location = doc.data?.get(LOCATION) as GeoPoint,
+            policies = doc.data?.get(POLICIES) as String,
+            images = storage
+        )
+    }
+
+    companion object {
+        const val COLLECTION_NAME = "free_spots"
+        const val LOCATION = "location"
+        const val LAND_MARK = "land_mark"
+        const val POLICIES = "policies"
     }
 }
 

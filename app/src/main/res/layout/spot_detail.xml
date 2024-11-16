@@ -132,6 +132,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
+                android:id="@+id/amenitiesSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="@drawable/empty_tall_divider"
@@ -150,6 +151,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/accessHoursSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="@drawable/empty_tall_divider"
