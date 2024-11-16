@@ -7,6 +7,7 @@ import android.media.Image
 import android.net.Uri
 import coil.imageLoader
 import coil.request.ImageRequest
+import com.application.parkpilot.Utils
 import com.google.firebase.Firebase
 import com.google.firebase.storage.storage
 import kotlinx.coroutines.tasks.await
@@ -21,16 +22,18 @@ class Storage {
         private const val FREE_SPOT = "free_spot/"
     }
 
-    suspend fun userProfilePhotoPut(context: Context, uid: String, image: Any): Uri? {
-        val childRef = storageRef.child("$PROFILE${uid}")
-        val data = compress(context, image)
-        childRef.putBytes(data).await()
+    suspend fun userProfilePhotoPut(uid: String, uri: Uri?): Uri? {
+        val childRef = storageRef.child("user_profile_photo/${uid}")
+        if (uri == null) return null
+        if (Utils.isLocalUri(uri)) {
+            childRef.putFile(uri)
+        }
         return userProfilePhotoGet(uid)
     }
 
     suspend fun userProfilePhotoGet(uid: String): Uri? {
         return try {
-            storageRef.child("$PROFILE${uid}").downloadUrl.await()
+            storageRef.child("user_profile_photo/${uid}").downloadUrl.await()
         } catch (e: Exception) {
             null
         }
@@ -52,19 +55,5 @@ class Storage {
             imageList.add(image.downloadUrl.await())
         }
         return imageList
-    }
-
-    private suspend fun compress(context: Context, image: Any): ByteArray {
-        val request = ImageRequest.Builder(context)
-            .data(image)
-            .size(600, 600)
-            .build()
-        val drawable = context.imageLoader.execute(request).drawable
-
-        // this next level logic present on firebase doc
-        val bitmap = (drawable as BitmapDrawable).bitmap
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        return baos.toByteArray()
     }
 }

@@ -30,6 +30,7 @@ open class FireStore {
 class UserBasic : FireStore() {
     private val collectionName = "usersBasic"
     private val userName = "userName"
+    private val userPicture = "userPicture"
 
     // it will update user name and profile image
     suspend fun setProfile(data: UserProfile, documentID: String): Boolean {
@@ -38,7 +39,7 @@ class UserBasic : FireStore() {
 
         // data mapping
         val map = mapOf(
-            userName to data.userName,
+            userName to data.userName.trim()
         )
 
         // await function this will block thread
@@ -59,11 +60,18 @@ class UserBasic : FireStore() {
             // is firstName present? if yes, it means data are present otherwise not
             if (get(userName) != null) {
                 result = UserProfile(
-                    get(userName) as String,
+                    get(userName) as String
                 )
             }
         }
         return result
+    }
+
+    suspend fun isUnique(userName: String): Boolean {
+        val aggregateCount =
+            fireStore.collection(collectionName).whereEqualTo(this.userName, userName).count()
+                .get(AggregateSource.SERVER).await()
+        return aggregateCount.count == 0L
     }
 }
 

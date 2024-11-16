@@ -21,6 +21,7 @@ import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.util.Calendar
 
 class UserRegisterViewModel(context: Context) : ViewModel() {
     // it will store user profile image's Uri
@@ -31,27 +32,41 @@ class UserRegisterViewModel(context: Context) : ViewModel() {
     val userProfile = MutableLiveData<UserProfile?>()
     val imageLoaderResult = MutableLiveData<ImageResult>()
     val isUploaded = MutableLiveData<Boolean>()
+    val isUnique = MutableLiveData<Boolean>()
 
-    private val simpleDateFormat = SimpleDateFormat("dd-M-yyyy")
-    private val startDate = simpleDateFormat.parse("25-11-1950")!!
-    private val endDate = simpleDateFormat.parse("25-11-2023")!!
-    private val userBasic by lazy { UserBasic() }
-    private val userAdvance by lazy { UserAdvance() }
-    private val storage by lazy { Storage() }
-    val photoPicker by lazy { PhotoPicker(context) }
-    val datePicker by lazy { DatePicker(startDate.time, endDate.time) }
+    private val userBasic = UserBasic()
+    private val userAdvance = UserAdvance()
+    private val storage = Storage()
+    private val calendar = Calendar.getInstance()
+    private val endDate = calendar.let {
+        it.add(Calendar.YEAR, -18)
+        it.timeInMillis
+    }
+    private val startDate = calendar.let {
+        it.add(Calendar.YEAR, -50)
+        it.timeInMillis
+    }
+    val datePicker = DatePicker(startDate, endDate)
+    val photoPicker = PhotoPicker(context)
 
 
-    // it will get user detail from user collection
-    fun getUserDetails() {
+//    // it will get user detail from user collection
+//    fun getUserDetails() {
+//        viewModelScope.launch {
+//            // call to fireStore
+//
+//        }
+//    }
+
+    fun isUnique(userName: String) {
         viewModelScope.launch {
-            // call to fireStore
-            userInformation.value = userAdvance.userGet(User.UID)
+            isUnique.value = userBasic.isUnique(userName)
         }
     }
 
-    fun getProfileDetails() {
+    fun getProfileDetails(onComplete: () -> Unit) {
         viewModelScope.launch {
+            userInformation.value = userAdvance.userGet(User.UID)
             val result = userBasic.getProfile(User.UID)
             if (result != null) {
                 userProfile.value =
@@ -64,6 +79,7 @@ class UserRegisterViewModel(context: Context) : ViewModel() {
                     )
                 } else userProfile.value = null
             }
+            onComplete()
         }
     }
 
@@ -74,9 +90,8 @@ class UserRegisterViewModel(context: Context) : ViewModel() {
             result = result and userAdvance.userSet(userCollection, User.UID)
 
             storage.userProfilePhotoPut(
-                context,
                 User.UID,
-                photoUrl ?: getAvatar(context, userProfile.userName)
+                photoUrl
             )
 
             result =

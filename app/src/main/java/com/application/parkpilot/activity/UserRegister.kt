@@ -6,39 +6,44 @@ import android.view.WindowManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.application.parkpilot.R
 import com.application.parkpilot.UserCollection
 import com.application.parkpilot.UserProfile
+import com.application.parkpilot.Utils
 import com.application.parkpilot.databinding.UserRegisterBinding
 import com.application.parkpilot.viewModel.UserRegisterViewModel
 
-class UserRegister : AppCompatActivity(R.layout.user_register) {
+class UserRegister : AppCompatActivity() {
     private lateinit var binding: UserRegisterBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // init view
         binding = UserRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // getting authentication view model reference [init]
+
+        // getting userRegister view model reference
         val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return UserRegisterViewModel(this@UserRegister) as T
             }
         })[UserRegisterViewModel::class.java]
 
-        viewModel.getProfileDetails()
+        viewModel.getProfileDetails({
+            binding.shimmerLayout.shimmerLayout.visibility = View.GONE
+            binding.linearLayout.visibility = View.VISIBLE
+        })
 
         // get user details from user collection
-        viewModel.getUserDetails()
+//        viewModel.getUserDetails()
 
         binding.editTextBirthDate.setOnClickListener {
             // start and end dates format should be yyyy-mm-dd (modify this function)
-            viewModel.datePicker.showDatePicker(this, "Select Birth Date")
+            viewModel.datePicker.show(this,"Pick birth date")
         }
 
         binding.imageViewProfilePicture.setOnClickListener {
@@ -46,14 +51,42 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
             viewModel.photoPicker.showPhotoPicker()
         }
 
+        binding.editTextUserName.addTextChangedListener {
+            it.toString().apply {
+                if (viewModel.userProfile.value?.userName != this) {
+                    viewModel.isUnique(this)
+                } else {
+                    viewModel.isUnique.value = true
+                }
+            }
+        }
+
+        binding.topAppBar.setNavigationOnClickListener {
+            finish()
+        }
+
         binding.buttonSave.setOnClickListener {
             var isValid = true
-            isValid = isValid(binding.editTextUserName) and isValid
-            isValid = isValid(binding.editTextFirstName) and isValid
-            isValid = isValid(binding.editTextLastName) and isValid
-            isValid = isValid(binding.editTextBirthDate) and isValid
 
-            if (isValid) {
+            if (isInvalidName(binding.editTextFirstName.text.toString())) {
+                binding.editTextFirstName.error = "Field must contain [A-Z] [a-z] characters"
+                isValid = false
+            }
+            if (isInvalidName(binding.editTextLastName.text.toString())) {
+                binding.editTextLastName.error = "Field must contain [A-Z] [a-z] characters"
+                isValid = false
+            }
+            if (isInvalidUserName(binding.editTextUserName.text.toString())) {
+                binding.editTextUserName.error =
+                    "Field must contain [A-Z] [a-z] [0-9] [@_$] characters"
+                isValid = false
+            }
+            if (binding.editTextAge.text.toString() < "18") {
+                binding.editTextAge.error = "Age must be 18 or above"
+                isValid = false
+            }
+
+            if (isValid && viewModel.isUnique.value == true) {
                 showProgress()
 
                 // uploading the user data
@@ -108,7 +141,7 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
             date?.let {
                 val date = viewModel.datePicker.format(it)
                 binding.editTextBirthDate.setText(date)
-                binding.editTextAge.setText(viewModel.getAge(date))
+                binding.editTextAge.setText(date)
             }
         }
 
@@ -121,31 +154,38 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
             }
         }
 
+        viewModel.isUnique.observe(this) { isUnique ->
+            if (!isUnique) {
+                binding.editTextUserName.error = "Already taken"
+            }
+        }
+
         // it will execute when user data uploaded successfully or failed to upload
         viewModel.isUploaded.observe(this) { isUploaded ->
             unShowProgress()
             if (isUploaded) {
-                Toast.makeText(this, "Details save successfully", Toast.LENGTH_LONG).show()
+                Utils.truthToast(this, "Details save successfully")
                 finish()
             } else {
-                Toast.makeText(this, "Failed to save details", Toast.LENGTH_LONG).show()
+                Utils.errorToast(this, "Failed to save details")
             }
         }
     }
 
-    private fun isValid(editText: EditText): Boolean {
-        return if (editText.text.isBlank()) {
-            editText.error = "Must not be blank"
-            false
-        } else {
-            editText.error = null
-            true
-        }
+    private fun isInvalidName(name: String): Boolean {
+        val pattern = Regex("[A-Za-z]+")
+        return !pattern.matches(name)
+    }
+
+    private fun isInvalidUserName(name: String): Boolean {
+        val pattern = Regex("[A-Za-z0-9@_$]+")
+        return !pattern.matches(name)
     }
 
     private fun showProgress() {
         // show progress bar
         binding.progressBar.visibility = View.VISIBLE
+        binding.buttonSave.visibility = View.GONE
 
         // to disable user interaction with ui
         window.setFlags(
@@ -157,6 +197,7 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
     private fun unShowProgress() {
         // hide progress bar
         binding.progressBar.visibility = View.GONE
+        binding.buttonSave.visibility = View.VISIBLE
 
         // to enable user interaction with ui
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)

@@ -26,7 +26,7 @@ class DatePicker(startDate: Long, endDate: Long) {
     // to observe date, hence other classes can access date, when it will change
     var pickedDate = MutableLiveData<Long?>()
 
-    fun showDatePicker(context: Context, message: String) {
+    fun show(context: Context, message: String) {
 
         // set message to the date picker, then build it
         val builtDatePicker = datePicker.setTitleText(message).build()

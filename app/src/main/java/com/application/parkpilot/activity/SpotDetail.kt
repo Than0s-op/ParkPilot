@@ -104,12 +104,12 @@ class SpotDetail : AppCompatActivity(), PaymentResultWithDataListener,
 
         layoutBooking.editTextFromDate.setOnClickListener {
             flagDate = true
-            viewModel.datePicker.showDatePicker(this, "Select From Date")
+            viewModel.datePicker.show(this, "Select From Date")
         }
 
         layoutBooking.editTextToDate.setOnClickListener {
             flagDate = false
-            viewModel.datePicker.showDatePicker(this, "Select To Date")
+            viewModel.datePicker.show(this, "Select To Date")
         }
 
         layoutBooking.editTextFromTime.setOnClickListener {
