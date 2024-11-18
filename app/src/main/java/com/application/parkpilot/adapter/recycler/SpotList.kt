@@ -8,17 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.R
 import com.application.parkpilot.SpotListCardDetails
-import com.application.parkpilot.StationLocation
 import com.application.parkpilot.activity.SpotDetail
-import com.application.parkpilot.module.PermissionRequest
 import com.application.parkpilot.view.Amenities
 import com.google.android.flexbox.FlexboxLayout
-import com.google.android.gms.location.LocationServices
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.carousel.CarouselLayoutManager
 import kotlin.math.roundToInt
@@ -27,7 +22,7 @@ class SpotList(
     private val context: Context,
     private val layout: Int,
     private val stations: List<SpotListCardDetails>
-) : RecyclerView.Adapter<com.application.parkpilot.adapter.recycler.SpotList.ViewHolder>() {
+) : RecyclerView.Adapter<SpotList.ViewHolder>() {
 
     // not recommended in model view view model pattern
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
