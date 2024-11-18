@@ -7,6 +7,8 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.R
@@ -31,10 +33,13 @@ class SpotList(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (stations[position].isFree) {
+        val spot = stations[position]
+
+        if (spot.isFree) {
+            setFreeSpotVisibility(holder)
+        } else {
             setVisibility(holder)
         }
-        val spot = stations[position]
 
         holder.recyclerView.adapter = Carousel(
             context,
@@ -95,12 +100,24 @@ class SpotList(
         }
     }
 
-    private fun setVisibility(holder: ViewHolder) {
+    private fun setFreeSpotVisibility(holder: ViewHolder) {
         holder.textViewRating.visibility = View.GONE
         holder.textViewPrice.visibility = View.GONE
         holder.flexboxLayout.visibility = View.GONE
         holder.textViewNumberOfUser.visibility = View.GONE
-//        holder.materialCard.background
+        holder.textViewFrom.visibility = View.GONE
+        holder.imageViewFree.visibility = View.VISIBLE
+        holder.linearLayoutRating.setBackgroundColor(Color.parseColor("#ffffff"))
+    }
+
+    private fun setVisibility(holder: ViewHolder) {
+        holder.textViewRating.visibility = View.VISIBLE
+        holder.textViewPrice.visibility = View.VISIBLE
+        holder.flexboxLayout.visibility = View.VISIBLE
+        holder.textViewNumberOfUser.visibility = View.VISIBLE
+        holder.textViewFrom.visibility = View.VISIBLE
+        holder.imageViewFree.visibility = View.GONE
+        holder.linearLayoutRating.setBackgroundResource(R.drawable.round_corner_background)
     }
 
     private fun formatDistance(distanceKm: Double, precision: Int = 1): String {
@@ -119,8 +136,11 @@ class SpotList(
         val textViewName: TextView = itemView.findViewById(R.id.textViewName)
         val textViewRating: TextView = itemView.findViewById(R.id.textViewRating)
         val textViewNumberOfUser: TextView = itemView.findViewById(R.id.textViewNumberOfUser)
+        val textViewFrom: TextView = itemView.findViewById(R.id.textView2)
         val textViewDistance: TextView = itemView.findViewById(R.id.textViewDistance)
         val textViewPrice: TextView = itemView.findViewById(R.id.textViewPrice)
+        val linearLayoutRating: LinearLayout = itemView.findViewById(R.id.linearLayout2)
+        val imageViewFree: ImageView = itemView.findViewById(R.id.freeImageView)
         val flexboxLayout: FlexboxLayout = itemView.findViewById(R.id.flexboxLayout)
         val recyclerView: RecyclerView =
             itemView.findViewById<RecyclerView>(R.id.recyclerView).apply {

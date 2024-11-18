@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:divider="@drawable/empty_mid_divider"
         android:orientation="vertical"
-        android:showDividers="middle|beginning">
+        android:showDividers="middle">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -93,7 +93,7 @@
                 android:id="@+id/linearLayout2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/round_corner_background"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -118,6 +118,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/freeImageView"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/free"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

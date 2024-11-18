@@ -2,10 +2,12 @@ package com.application.parkpilot.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.application.parkpilot.R
+import com.application.parkpilot.adapter.recycler.History
 import com.application.parkpilot.adapter.recycler.SpotList
 import com.application.parkpilot.databinding.SpotListBinding
 import com.application.parkpilot.fragment.bottomSheet.SortFragment
@@ -59,6 +61,23 @@ class SpotList : Fragment(R.layout.spot_list),
             )
             hideShimmer()
         }
+
+        binding.searchView.setOnQueryTextListener(object : OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val filteredList = viewModel.liveDataStationList.value?.filter {
+                    it.name.contains(newText ?: "", true)
+                } ?: emptyList()
+
+                binding.recyclerView.adapter = SpotList(
+                    requireContext(), R.layout.spot_list_item, filteredList
+                )
+                return true
+            }
+        })
     }
 
     override fun onRadioButtonSelected(selectedRadioButtonId: Int) {
