@@ -33,10 +33,39 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ScrollView
+                android:id="@+id/shimmerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical"
+                    app:divider="@drawable/empty_mid_divider"
+                    app:showDividers="middle|end">
+
+                    <include layout="@layout/shimmer_spot_list_item" />
+
+                    <include layout="@layout/shimmer_spot_list_item" />
+
+                    <include layout="@layout/shimmer_spot_list_item" />
+
+                    <include layout="@layout/shimmer_spot_list_item" />
+
+                    <include layout="@layout/shimmer_spot_list_item" />
+
+                    <include layout="@layout/shimmer_spot_list_item" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </ScrollView>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:visibility="gone" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/buttonSort"
@@ -49,4 +78,5 @@
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </androidx.appcompat.widget.LinearLayoutCompat>
