@@ -5,7 +5,7 @@ import com.application.parkpilot.Book
 import com.application.parkpilot.FreeSpotDetails
 import com.application.parkpilot.QRCodeCollection
 import com.application.parkpilot.StationAdvance
-import com.application.parkpilot.StationBasic
+import com.application.parkpilot.StationBasic as StationBasic_DC
 import com.application.parkpilot.StationLocation
 import com.application.parkpilot.Ticket
 import com.application.parkpilot.UserCollection
@@ -280,40 +280,18 @@ class StationBasic : FireStore() {
     private val name = "name"
     private val price = "price"
     private val reserved = "reserved"
-    suspend fun basicGet(documentID: String): StationBasic? {
-        var result: StationBasic? = null
+    suspend fun basicGet(documentID: String): StationBasic_DC? {
+        var result: StationBasic_DC? = null
         fireStore.collection(collectionName).document(documentID).get().await().apply {
             if (get(name) != null) {
                 result =
-                    StationBasic(
+                    StationBasic_DC(
                         get(name) as String,
                         (get(price) as Long).toInt(),
                         (get(reserved) as Long).toInt()
                     )
             }
         }
-        return result
-    }
-
-    suspend fun basicSet(stationBasic: StationBasic, documentID: String): Boolean {
-        // for success result
-        var result = false
-
-        // data mapping
-        val map = mapOf(
-            name to stationBasic.name,
-            price to stationBasic.price,
-            reserved to stationBasic.reserved
-        )
-
-        // await function this will block thread
-        fireStore.collection(collectionName).document(documentID).set(map, SetOptions.merge())
-            .addOnSuccessListener {
-                // call successfully perform
-                result = true
-            }.await()
-
-        // return result
         return result
     }
 }

@@ -8,8 +8,9 @@ import org.osmdroid.util.GeoPoint as OSMGeoPoint
 
 
 data class ParkPilotMapLegend(
-    val title: String, val UID: String, val coordinates: OSMGeoPoint,val isFreeSpot:Boolean
+    val title: String, val UID: String, val coordinates: OSMGeoPoint, val isFreeSpot: Boolean
 )
+
 data class UserCollection(
     var firstName: String,
     var lastName: String,
@@ -41,7 +42,11 @@ data class StationLocation(
     val isFree: Boolean = false,
 )
 
-data class StationBasic(var name: String?, val price: Int?, val reserved: Int?) {
+data class StationBasic(
+    var name: String? = null,
+    val price: Int? = null,
+    val reserved: Int? = null
+) {
     init {
         name?.let {
             name = name?.trim()?.replaceFirstChar(Char::uppercaseChar)
@@ -83,6 +88,17 @@ data class Ticket(
     val toTimestamp: Timestamp,
     val stationID: String,
     val qrcode: String
+)
+
+data class SpotListCardDetails(
+    val documentId: String,
+    val name: String = "",
+    val price: Int? = null,
+    val distance: Double? = null,
+    val amenities: List<String>? = null,
+    val rating: Pair<Float, Int>? = null,
+    val images: List<Uri> = emptyList(),
+    val isFree: Boolean = false
 )
 
 data class Feedback(val UID: String = User.UID, val rating: Float, val message: String)

@@ -1,6 +1,9 @@
 package com.application.parkpilot.adapter.recycler
 
 import android.content.Context
+import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,102 +12,105 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.RecyclerView
 import com.application.parkpilot.R
+import com.application.parkpilot.SpotListCardDetails
 import com.application.parkpilot.StationLocation
+import com.application.parkpilot.activity.SpotDetail
 import com.application.parkpilot.module.PermissionRequest
 import com.application.parkpilot.view.Amenities
-import com.application.parkpilot.viewModel.adapter.SpotList
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.carousel.CarouselLayoutManager
+import kotlin.math.roundToInt
 
 class SpotList(
     private val context: Context,
     private val layout: Int,
-    private val stations: List<StationLocation>
+    private val stations: List<SpotListCardDetails>
 ) : RecyclerView.Adapter<com.application.parkpilot.adapter.recycler.SpotList.ViewHolder>() {
 
     // not recommended in model view view model pattern
-    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-    private val permissionRequest = PermissionRequest()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(layout, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (permissionRequest.hasLocationPermission(context)) {
-            holder.viewModel.getDistance(fusedLocationClient, stations[position].coordinates)
-        }
-
-        holder.viewModel.liveDataDistance.observe(context as AppCompatActivity) {
-            holder.textViewDistance.text = it.toString()
-        }
-
         if (stations[position].isFree) {
-            holder.textViewRating.visibility = View.GONE
-            holder.textViewPrice.visibility = View.GONE
-            holder.flexboxLayout.visibility = View.GONE
-            holder.textViewNumberOfUser.visibility = View.GONE
-            holder.materialCard.setOnClickListener {
-                holder.viewModel.startNextActivity(context, stations[position].stationUid!!)
-            }
+            setVisibility(holder)
+        }
+        val spot = stations[position]
 
-            holder.viewModel.getFreeSpotDetails(stations[position].stationUid!!)
-            holder.viewModel.liveDataFreeSpotDetails.observe(context as AppCompatActivity) {
-                holder.recyclerView.adapter = Carousel(
-                    context,
-                    R.layout.round_carousel,
-                    it.images
-                )
-                holder.textViewName.text = it.landMark
-            }
+        holder.recyclerView.adapter = Carousel(
+            context,
+            R.layout.round_carousel,
+            spot.images
+        )
 
-            holder.materialCard.setOnClickListener {
-                holder.viewModel.startNextActivity(context, stations[position].stationUid!!, true)
-            }
+        holder.textViewName.text = spot.name
 
+        spot.price?.let {
+            holder.textViewPrice.text = it.toString()
+        }
+
+        spot.distance?.let {
+            holder.textViewDistance.text = formatDistance(it)
+        }
+
+        val numberOfUser = spot.rating?.second ?: 0
+        val totalRating = spot.rating?.first ?: 0f
+        var rating = 0f
+        if (numberOfUser != 0) {
+            rating = totalRating / numberOfUser
+        }
+        holder.textViewRating.text = String.format("%.1f", rating)
+        holder.textViewNumberOfUser.text = numberOfUser.toString()
+        holder.textViewRating.backgroundTintList = getTint(rating)
+
+        for (i in spot.amenities ?: emptyList()) {
+            holder.flexboxLayout.addView(Amenities(context, i).textView)
+        }
+
+        holder.materialCard.setOnClickListener {
+            startNextActivity(
+                context = context,
+                stationUID = spot.documentId,
+                isFree = spot.isFree
+            )
+        }
+    }
+
+    private fun startNextActivity(context: Context, stationUID: String, isFree: Boolean = false) {
+        val intent = Intent(context, SpotDetail::class.java).apply {
+            putExtra("stationUID", stationUID)
+            putExtra("isFree", isFree)
+        }
+        context.startActivity(intent)
+    }
+
+
+    private fun getTint(ratting: Float): ColorStateList {
+        return if (ratting <= 2.5) {
+            ColorStateList.valueOf(Color.parseColor("#e5391a"))
+        } else if (ratting < 4) {
+            ColorStateList.valueOf(Color.parseColor("#cb8300"))
         } else {
-            val stationUID = stations[position].stationUid!!
-            holder.viewModel.loadBasic(stationUID)
-            holder.viewModel.loadAmenities(stationUID)
-            holder.viewModel.loadRating(stationUID)
-            holder.viewModel.loadImages(stationUID)
+            ColorStateList.valueOf(Color.parseColor("#026a28"))
+        }
+    }
 
-            val activity = context as AppCompatActivity
-            holder.viewModel.liveDataStationBasic.observe(activity) {
-                holder.textViewName.text = it.name
-                holder.textViewPrice.text = it.price.toString()
-            }
-            holder.viewModel.liveDataImages.observe(activity) {
-                holder.recyclerView.adapter = Carousel(
-                    context,
-                    R.layout.round_carousel,
-                    it
-                )
-            }
-            holder.viewModel.liveDataFeedback.observe(activity) {
-                if (it.second != 0) {
-                    val rating = it.first / it.second
-                    holder.textViewRating.text = String.format("%.1f", rating)
-                    holder.textViewNumberOfUser.text = it.second.toString()
-                    holder.textViewRating.backgroundTintList = holder.viewModel.getTint(rating)
-                } else {
-                    holder.textViewRating.text = "0.0"
-                    holder.textViewNumberOfUser.text = "0"
-                    holder.textViewRating.backgroundTintList = holder.viewModel.getTint(0.0f)
-                }
-            }
-            holder.viewModel.liveDataAmenities.observe(activity) {
-                if (holder.flexboxLayout.isEmpty()) {
-                    for (i in it) {
-                        holder.flexboxLayout.addView(Amenities(context, i).textView)
-                    }
-                }
-            }
-            holder.materialCard.setOnClickListener {
-                holder.viewModel.startNextActivity(context, stationUID)
-            }
+    private fun setVisibility(holder: ViewHolder) {
+        holder.textViewRating.visibility = View.GONE
+        holder.textViewPrice.visibility = View.GONE
+        holder.flexboxLayout.visibility = View.GONE
+        holder.textViewNumberOfUser.visibility = View.GONE
+//        holder.materialCard.background
+    }
+
+    private fun formatDistance(distanceKm: Double, precision: Int = 1): String {
+        return when {
+            distanceKm < 1 -> "${(distanceKm * 1000).roundToInt()}m"
+            else -> "%.${precision}f km".format(distanceKm)
         }
     }
 
@@ -113,7 +119,6 @@ class SpotList(
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val viewModel = SpotList()
         val materialCard: MaterialCardView = itemView.findViewById(R.id.materialCardView)
         val textViewName: TextView = itemView.findViewById(R.id.textViewName)
         val textViewRating: TextView = itemView.findViewById(R.id.textViewRating)

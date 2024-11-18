@@ -26,9 +26,8 @@ class SpotList : Fragment(R.layout.spot_list),
 
         binding = SpotListBinding.bind(view)
         viewModel = ViewModelProvider(this)[SpotListViewModel::class.java]
-        viewModel.loadStation()
+        viewModel.loadStations(requireContext())
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.permission.gpsPermissionRequest(requireContext())
 
         binding.buttonSort.setOnClickListener {
             val dialog = SortFragment.newInstance(sortingType)
@@ -49,17 +48,16 @@ class SpotList : Fragment(R.layout.spot_list),
         }
 
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.loadStation()
-            viewModel.permission.gpsPermissionRequest(requireContext())
+            showShimmer()
+            viewModel.loadStations(requireContext())
             binding.swipeRefreshLayout.isRefreshing = false
         }
 
-        viewModel.liveDataStationLocation.observe(requireActivity()) {
-            it?.let {
-                binding.recyclerView.adapter = SpotList(
-                    requireContext(), R.layout.spot_list_item, it
-                )
-            }
+        viewModel.liveDataStationList.observe(requireActivity()) {
+            binding.recyclerView.adapter = SpotList(
+                requireContext(), R.layout.spot_list_item, it
+            )
+            hideShimmer()
         }
     }
 
@@ -69,11 +67,19 @@ class SpotList : Fragment(R.layout.spot_list),
     }
 
     private fun triggerSorting() {
-        viewModel.liveDataStationLocation.value?.let { stations ->
-            when (sortingType) {
-                1 -> viewModel.sortByDistance(requireContext(), stations)
-                2 -> viewModel.sortByRating(stations)
-            }
+        when (sortingType) {
+            1 -> viewModel.sortByDistance()
+            2 -> viewModel.sortByRating()
         }
+    }
+
+    private fun showShimmer() {
+        binding.shimmerLayout.visibility = View.VISIBLE
+        binding.recyclerView.visibility = View.GONE
+    }
+
+    private fun hideShimmer() {
+        binding.shimmerLayout.visibility = View.GONE
+        binding.recyclerView.visibility = View.VISIBLE
     }
 }

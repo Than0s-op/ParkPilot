@@ -93,7 +93,6 @@ class OSM(private val mapView: MapView) {
 
         // check is location permission granted or not. If Not request to user for location permission
         if (activity.locationPermissionRequest(context)) {
-            println("level2")
             // request to turn on location(GPS)
             activity.gpsPermissionRequest(context)
 
