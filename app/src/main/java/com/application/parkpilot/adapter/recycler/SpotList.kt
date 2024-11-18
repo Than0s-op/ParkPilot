@@ -62,6 +62,7 @@ class SpotList(
         holder.textViewNumberOfUser.text = numberOfUser.toString()
         holder.textViewRating.backgroundTintList = getTint(rating)
 
+        holder.flexboxLayout.removeAllViews()
         for (i in spot.amenities ?: emptyList()) {
             holder.flexboxLayout.addView(Amenities(context, i).textView)
         }
