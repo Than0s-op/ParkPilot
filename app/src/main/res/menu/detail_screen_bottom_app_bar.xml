@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menuButtonReview"
         android:icon="@drawable/comment_icon"
-        android:title="Feedback"
-        app:showAsAction="always" />
+        android:showAsAction="ifRoom"
+        android:title="Feedback" />
 
     <item
         android:id="@+id/menuButtonNavigate"
         android:icon="@drawable/near_me"
-        android:title="Navigate"
-        app:showAsAction="always" />
+        android:showAsAction="ifRoom"
+        android:title="Navigate" />
 
 </menu>

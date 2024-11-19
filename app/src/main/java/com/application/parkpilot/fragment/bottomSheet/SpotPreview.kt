@@ -91,13 +91,13 @@ class SpotPreview(private val isFreeSpot: Boolean) :
     }
 
     private fun showShimmer() {
-        binding.materialCardView.visibility = View.GONE
+        binding.linearLayout.visibility = View.GONE
         binding.shimmerLayout.shimmerLayout.visibility = View.VISIBLE
     }
 
     private fun hideShimmer() {
         binding.shimmerLayout.shimmerLayout.visibility = View.GONE
-        binding.materialCardView.visibility = View.VISIBLE
+        binding.linearLayout.visibility = View.VISIBLE
     }
 
     private fun loadView() {

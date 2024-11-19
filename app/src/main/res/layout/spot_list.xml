@@ -75,6 +75,7 @@
                     <include layout="@layout/shimmer_spot_list_item" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
             </ScrollView>
 
             <androidx.recyclerview.widget.RecyclerView

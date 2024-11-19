@@ -107,7 +107,7 @@ class SpotList(
         holder.textViewNumberOfUser.visibility = View.GONE
         holder.textViewFrom.visibility = View.GONE
         holder.imageViewFree.visibility = View.VISIBLE
-        holder.linearLayoutRating.setBackgroundColor(Color.parseColor("#ffffff"))
+        holder.linearLayoutRating.visibility = View.GONE
     }
 
     private fun setVisibility(holder: ViewHolder) {
@@ -117,7 +117,7 @@ class SpotList(
         holder.textViewNumberOfUser.visibility = View.VISIBLE
         holder.textViewFrom.visibility = View.VISIBLE
         holder.imageViewFree.visibility = View.GONE
-        holder.linearLayoutRating.setBackgroundResource(R.drawable.round_corner_background)
+        holder.linearLayoutRating.visibility = View.VISIBLE
     }
 
     private fun formatDistance(distanceKm: Double, precision: Int = 1): String {
