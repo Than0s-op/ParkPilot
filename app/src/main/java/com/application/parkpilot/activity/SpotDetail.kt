@@ -1,5 +1,6 @@
 package com.application.parkpilot.activity
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -9,6 +10,9 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.children
+import androidx.core.view.forEachIndexed
+import androidx.core.view.get
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +26,6 @@ import com.application.parkpilot.view.DialogQRCode
 import com.application.parkpilot.viewModel.SpotPreviewViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.razorpay.ExternalWalletListener
 import com.razorpay.PaymentData
 import com.razorpay.PaymentResultWithDataListener
@@ -41,6 +44,7 @@ class SpotDetail : AppCompatActivity(), PaymentResultWithDataListener,
 
         val layoutBooking: BookingBinding = BookingBinding.inflate(layoutInflater)
         val dialogInflater = MaterialAlertDialogBuilder(this).setView(layoutBooking.root).create()
+
         binding = SpotDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -54,6 +58,25 @@ class SpotDetail : AppCompatActivity(), PaymentResultWithDataListener,
         viewModel.stationUID = intent.getStringExtra("stationUID")!!
         viewModel.isFree = intent.getBooleanExtra("isFree", false)
 
+        binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menuButtonReview -> {
+                    if (User.type == User.ANONYMOUS) {
+                        startActivity(Intent(this, Authentication::class.java))
+                    } else {
+                        viewModel.feedback(this, viewModel.stationUID)
+                    }
+                    true
+                }
+
+                R.id.menuButtonNavigate -> {
+                    viewModel.redirect(this)
+                    true
+                }
+
+                else -> false
+            }
+        }
 
         if (!viewModel.isFree) {
             viewModel.loadAdvanceInfo(viewModel.stationUID)
@@ -71,18 +94,18 @@ class SpotDetail : AppCompatActivity(), PaymentResultWithDataListener,
             layoutManager = CarouselLayoutManager()
         }
 
-
-        binding.buttonFeedback.setOnClickListener {
-            viewModel.feedback(this, viewModel.stationUID)
-        }
-
-        binding.buttonDistance.setOnClickListener {
-            viewModel.redirect(this)
-        }
-
         binding.buttonBookNow.setOnClickListener {
-            dialogInflater.show()
+            if (User.type == User.ANONYMOUS) {
+                startActivity(Intent(this, Authentication::class.java))
+            } else {
+                dialogInflater.show()
+            }
         }
+
+        binding.topAppBar.setNavigationOnClickListener {
+            finish()
+        }
+
 
         layoutBooking.buttonBookNow.setOnClickListener {
             if (viewModel.fromTime == null || viewModel.fromDate == null || viewModel.toTime == null || viewModel.toDate == null) {
@@ -124,7 +147,7 @@ class SpotDetail : AppCompatActivity(), PaymentResultWithDataListener,
 
 
         viewModel.carouselImages.observe(this) { images ->
-            binding.recycleView.adapter = Carousel(this, R.layout.square_carousel, images)
+            binding.recycleView.adapter = Carousel(this, R.layout.round_carousel, images)
         }
 
         viewModel.stationAdvanceInfo.observe(this) {
@@ -141,7 +164,7 @@ class SpotDetail : AppCompatActivity(), PaymentResultWithDataListener,
 
         viewModel.freeSpotInfo.observe(this) {
             binding.textViewName.text = it.landMark
-            binding.recycleView.adapter = Carousel(this, R.layout.square_carousel, it.images)
+            binding.recycleView.adapter = Carousel(this, R.layout.round_carousel, it.images)
             viewModel.getDistance(this)
             binding.textViewPolicies.text = it.policies
         }
@@ -162,10 +185,6 @@ class SpotDetail : AppCompatActivity(), PaymentResultWithDataListener,
                 binding.textViewRating.backgroundTintList = getTint(0.0f)
                 binding.textViewNumberOfUser.text = "0"
             }
-        }
-
-        viewModel.liveDataDistance.observe(this) {
-            binding.buttonDistance.text = it
         }
 
         viewModel.datePicker.pickedDate.observe(this) {
@@ -293,24 +312,16 @@ class SpotDetail : AppCompatActivity(), PaymentResultWithDataListener,
     }
 
     private fun setVisibility() {
-        User.apply {
-            when (type) {
-                ANONYMOUS -> {
-                    binding.buttonBookNow.visibility = View.GONE
-                }
-
-                FINDER -> {
-
-                }
-            }
-        }
         if (viewModel.isFree) {
-            binding.buttonFeedback.visibility = View.GONE
-            binding.textViewPrice.visibility = View.GONE
+            binding.priceLayout.visibility = View.GONE
             binding.textViewRating.visibility = View.GONE
             binding.textViewNumberOfUser.visibility = View.GONE
-            binding.amenitiesSet.visibility = View.GONE
-            binding.accessHoursSet.visibility = View.GONE
+            binding.amenitiesCard.visibility = View.GONE
+            binding.accessHoursCard.visibility = View.GONE
+            binding.buttonBookNow.visibility = View.GONE
+            binding.freeImageView.visibility = View.VISIBLE
+            // feedback
+            binding.bottomAppBar.menu.getItem(0).setVisible(false)
         }
     }
 }
