@@ -23,7 +23,6 @@ class FeedbackViewModel : ViewModel() {
     private val userBasic by lazy { UserBasic() }
     private val storage by lazy { Storage() }
     fun loadRecycler(context: Context, stationUid: String, recyclerView: RecyclerView) {
-
         viewModelScope.launch {
             val list = fireStoreFeedback.feedGet(stationUid)
             val layoutManger = LinearLayoutManager(context)
@@ -34,7 +33,6 @@ class FeedbackViewModel : ViewModel() {
                     R.layout.feedback_item,
                     list.toList()
                 )
-            recyclerView.addItemDecoration(DividerItemDecoration(context, layoutManger.orientation))
         }
     }
 
