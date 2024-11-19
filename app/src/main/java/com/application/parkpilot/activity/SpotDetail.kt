@@ -147,6 +147,7 @@ class SpotDetail : AppCompatActivity(), PaymentResultWithDataListener,
 
         viewModel.carouselImages.observe(this) { images ->
             binding.recycleView.adapter = Carousel(this, R.layout.round_carousel, images)
+            viewModel.getDistance(this)
         }
 
         viewModel.stationAdvanceInfo.observe(this) {
@@ -164,13 +165,12 @@ class SpotDetail : AppCompatActivity(), PaymentResultWithDataListener,
         viewModel.freeSpotInfo.observe(this) {
             binding.textViewName.text = it.landMark
             binding.recycleView.adapter = Carousel(this, R.layout.round_carousel, it.images)
-            viewModel.getDistance(this)
             binding.textViewPolicies.text = it.policies
+            viewModel.getDistance(this)
             hideShimmer()
         }
 
         viewModel.stationBasicInfo.observe(this) {
-            viewModel.getDistance(this)
             binding.textViewName.text = it.name
             binding.textViewPrice.text = it.price.toString()
         }
@@ -244,28 +244,42 @@ class SpotDetail : AppCompatActivity(), PaymentResultWithDataListener,
 
     private fun loadAccessHours(accessHours: AccessHours) {
         val tint = ColorStateList.valueOf(getColor(R.color.black))
+        val textColor = ColorStateList.valueOf(getColor(R.color.white))
         for (day in accessHours.selectedDays) {
             when (day) {
-                getString(R.string.monday) -> findViewById<TextView>(R.id.textViewMonday).backgroundTintList =
-                    tint
+                getString(R.string.monday) -> findViewById<TextView>(R.id.textViewMonday).apply {
+                    backgroundTintList = tint
+                    setTextColor(textColor)
+                }
 
-                getString(R.string.tuesday) -> findViewById<TextView>(R.id.textViewTuesday).backgroundTintList =
-                    tint
+                getString(R.string.tuesday) -> findViewById<TextView>(R.id.textViewTuesday).apply {
+                    backgroundTintList = tint
+                    setTextColor(textColor)
+                }
 
-                getString(R.string.wednesday) -> findViewById<TextView>(R.id.textViewWednesday).backgroundTintList =
-                    tint
+                getString(R.string.wednesday) -> findViewById<TextView>(R.id.textViewWednesday).apply {
+                    backgroundTintList = tint
+                    setTextColor(textColor)
+                }
 
-                getString(R.string.thursday) -> findViewById<TextView>(R.id.textViewThursday).backgroundTintList =
-                    tint
+                getString(R.string.thursday) -> findViewById<TextView>(R.id.textViewThursday).apply {
+                    backgroundTintList = tint
+                    setTextColor(textColor)
+                }
 
-                getString(R.string.friday) -> findViewById<TextView>(R.id.textViewFriday).backgroundTintList =
-                    tint
+                getString(R.string.friday) -> findViewById<TextView>(R.id.textViewFriday).apply {
+                    backgroundTintList = tint
+                    setTextColor(textColor)
+                }
 
-                getString(R.string.saturday) -> findViewById<TextView>(R.id.textViewSaturday).backgroundTintList =
-                    tint
+                getString(R.string.saturday) -> findViewById<TextView>(R.id.textViewSaturday).apply {
+                    backgroundTintList = tint
+                    setTextColor(textColor)
+                }
 
-                getString(R.string.sunday) -> findViewById<TextView>(R.id.textViewSunday).backgroundTintList =
-                    tint
+                getString(R.string.sunday) -> findViewById<TextView>(R.id.textViewSunday).apply {
+                    backgroundTintList = tint
+                }
             }
         }
         val editTextOpenTime: EditText = findViewById(R.id.editTextOpenTime)

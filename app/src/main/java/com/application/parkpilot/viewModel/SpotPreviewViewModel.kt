@@ -100,6 +100,7 @@ class SpotPreviewViewModel(context: Context) : ViewModel() {
     fun getDistance(context: Context) {
         viewModelScope.launch {
             try {
+                println("here location")
                 val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
                 currentLocation = fusedLocationClient.lastLocation.await()
                 stationLocation?.let { station ->
@@ -111,7 +112,8 @@ class SpotPreviewViewModel(context: Context) : ViewModel() {
                             }) / 1000) + "km"
                     }
                 }
-            } catch (_: Exception) {
+            } catch (e: Exception) {
+                println("exception: ${e.message}")
             }
         }
     }

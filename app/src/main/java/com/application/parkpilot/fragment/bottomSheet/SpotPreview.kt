@@ -59,6 +59,7 @@ class SpotPreview(private val isFreeSpot: Boolean) :
         viewModel.carouselImages.observe(this) { images ->
             binding.recyclerView.adapter =
                 Carousel(requireContext(), R.layout.round_carousel, images)
+            viewModel.getDistance(requireContext())
         }
 
         viewModel.stationAdvanceInfo.observe(this) {
@@ -90,13 +91,13 @@ class SpotPreview(private val isFreeSpot: Boolean) :
     }
 
     private fun showShimmer() {
-        binding.linearLayout.visibility = View.GONE
+        binding.materialCardView.visibility = View.GONE
         binding.shimmerLayout.shimmerLayout.visibility = View.VISIBLE
     }
 
     private fun hideShimmer() {
         binding.shimmerLayout.shimmerLayout.visibility = View.GONE
-        binding.linearLayout.visibility = View.VISIBLE
+        binding.materialCardView.visibility = View.VISIBLE
     }
 
     private fun loadView() {
