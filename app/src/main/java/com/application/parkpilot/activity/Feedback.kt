@@ -57,6 +57,10 @@ class Feedback : AppCompatActivity(R.layout.feedback) {
             if (rating < 1) formBinding.ratingBar.rating = 1.0f
         }
 
+        binding.topAppBar.setNavigationOnClickListener {
+            finish()
+        }
+
         binding.buttonEditFeedback.setOnClickListener {
             viewModel.loadFeedback(stationUID, formBinding.ratingBar, formBinding.editTextFeedback)
             dialogInflater.show()
