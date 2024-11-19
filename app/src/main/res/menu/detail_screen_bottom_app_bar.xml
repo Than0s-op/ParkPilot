@@ -3,13 +3,13 @@
     <item
         android:id="@+id/menuButtonReview"
         android:icon="@drawable/comment_icon"
-        android:showAsAction="ifRoom"
+        android:showAsAction="always"
         android:title="Feedback" />
 
     <item
         android:id="@+id/menuButtonNavigate"
         android:icon="@drawable/near_me"
-        android:showAsAction="ifRoom"
+        android:showAsAction="always"
         android:title="Navigate" />
 
 </menu>
