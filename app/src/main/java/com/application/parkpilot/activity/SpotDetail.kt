@@ -79,10 +79,9 @@ class SpotDetail : AppCompatActivity(), PaymentResultWithDataListener,
         }
 
         if (!viewModel.isFree) {
-            viewModel.loadAdvanceInfo(viewModel.stationUID)
-            viewModel.loadBasicInfo(viewModel.stationUID)
-            viewModel.loadRating(viewModel.stationUID)
-            viewModel.loadCarousel(viewModel.stationUID)
+            viewModel.loadDetailScreen {
+                hideShimmer()
+            }
         } else {
             viewModel.getFreeSpotDetails()
         }
@@ -167,6 +166,7 @@ class SpotDetail : AppCompatActivity(), PaymentResultWithDataListener,
             binding.recycleView.adapter = Carousel(this, R.layout.round_carousel, it.images)
             viewModel.getDistance(this)
             binding.textViewPolicies.text = it.policies
+            hideShimmer()
         }
 
         viewModel.stationBasicInfo.observe(this) {
@@ -231,6 +231,15 @@ class SpotDetail : AppCompatActivity(), PaymentResultWithDataListener,
                     .setView(DialogQRCode(this, qrcode, "this you qr").layout).show()
             }
         }
+
+        viewModel.liveDataDistance.observe(this) {
+            binding.textViewDistance.text = it
+        }
+    }
+
+    private fun hideShimmer() {
+        binding.shimmerEffect.visibility = View.GONE
+        binding.scrollView.visibility = View.VISIBLE
     }
 
     private fun loadAccessHours(accessHours: AccessHours) {

@@ -1,56 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<com.facebook.shimmer.ShimmerFrameLayout android:id="@+id/shimmerLayout"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmerLayout"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:orientation="vertical">
 
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingBottom="100dp">
+        <!-- Shimmer for First Card -->
+        <View
+            android:background="@drawable/shimmer_background"
+            android:layout_height="400dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent" />
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:orientation="vertical">
+        <!-- Shimmer for Amenities Card -->
+        <View
+            android:background="@drawable/shimmer_background"
+            android:layout_height="250dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent" />
 
-                <!-- Shimmer for First Card -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/shimmer_background" />
+        <!-- Shimmer for Access Hours Card -->
+        <View
+            android:background="@drawable/shimmer_background"
+            android:layout_height="300dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent" />
 
-                <!-- Shimmer for Amenities Card -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/shimmer_background" />
+        <!-- Shimmer for Policies Card -->
+        <View
+            android:background="@drawable/shimmer_background"
+            android:layout_height="200dp"
+            android:layout_width="match_parent" />
 
-                <!-- Shimmer for Access Hours Card -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/shimmer_background" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <!-- Shimmer for Policies Card -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:background="@drawable/shimmer_background" />
+</com.facebook.shimmer.ShimmerFrameLayout>
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
 
-        </androidx.core.widget.NestedScrollView>
-
-    </com.facebook.shimmer.ShimmerFrameLayout>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>

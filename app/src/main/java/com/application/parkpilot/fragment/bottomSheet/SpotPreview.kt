@@ -11,6 +11,7 @@ import com.application.parkpilot.R
 import com.application.parkpilot.activity.SpotDetail
 import com.application.parkpilot.adapter.recycler.Carousel
 import com.application.parkpilot.databinding.SpotListItemBinding
+import com.application.parkpilot.view.Amenities
 import com.application.parkpilot.viewModel.SpotPreviewViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.carousel.CarouselLayoutManager
@@ -38,10 +39,12 @@ class SpotPreview(private val isFreeSpot: Boolean) :
         binding.recyclerView.layoutManager = CarouselLayoutManager()
 
         if (!isFreeSpot) {
-            viewModel.loadCarousel(stationUID)
-            viewModel.loadBasicInfo(stationUID)
-            viewModel.loadRating(stationUID)
+            showShimmer()
+            viewModel.loadDetailScreen {
+                hideShimmer()
+            }
         } else {
+            showShimmer()
             viewModel.getFreeSpotDetails()
         }
 
@@ -58,6 +61,13 @@ class SpotPreview(private val isFreeSpot: Boolean) :
                 Carousel(requireContext(), R.layout.round_carousel, images)
         }
 
+        viewModel.stationAdvanceInfo.observe(this) {
+            binding.flexboxLayout.removeAllViews()
+            for (i in it.amenities) {
+                binding.flexboxLayout.addView(Amenities(requireContext(), i).textView)
+            }
+        }
+
         viewModel.stationBasicInfo.observe(this) {
             binding.textViewName.text = it.name
             binding.textViewPrice.text = it.price.toString()
@@ -72,14 +82,28 @@ class SpotPreview(private val isFreeSpot: Boolean) :
             binding.recyclerView.adapter =
                 Carousel(requireContext(), R.layout.round_carousel, it.images)
             viewModel.getDistance(requireContext())
+            hideShimmer()
         }
+        viewModel.liveDataDistance.observe(this) {
+            binding.textViewDistance.text = it
+        }
+    }
+
+    private fun showShimmer() {
+        binding.linearLayout.visibility = View.GONE
+        binding.shimmerLayout.shimmerLayout.visibility = View.VISIBLE
+    }
+
+    private fun hideShimmer() {
+        binding.shimmerLayout.shimmerLayout.visibility = View.GONE
+        binding.linearLayout.visibility = View.VISIBLE
     }
 
     private fun loadView() {
         if (isFreeSpot) {
-            binding.textViewPrice.visibility = View.GONE
-            binding.textViewRating.visibility = View.GONE
-            binding.textViewNumberOfUser.visibility = View.GONE
+            binding.linearLayout2.visibility = View.GONE
+            binding.priceLayout.visibility = View.GONE
+            binding.freeImageView.visibility = View.VISIBLE
         }
     }
 

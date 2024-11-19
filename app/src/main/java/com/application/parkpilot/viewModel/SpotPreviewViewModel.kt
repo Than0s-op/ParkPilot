@@ -69,12 +69,6 @@ class SpotPreviewViewModel(context: Context) : ViewModel() {
     private val booking by lazy { Booking() }
     private val fireStoreFeedback by lazy { FS_Feedback() }
 
-    fun loadCarousel(stationUID: String) {
-        viewModelScope.launch {
-            carouselImages.value = Storage().parkSpotPhotoGet(stationUID)
-        }
-    }
-
     fun getTimeStamp(time: Time, date: Long): Timestamp {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = date
@@ -91,16 +85,15 @@ class SpotPreviewViewModel(context: Context) : ViewModel() {
         return Timestamp.now()
     }
 
-    fun loadBasicInfo(stationUID: String) {
+    fun loadDetailScreen(onComplete: () -> Unit) {
         viewModelScope.launch {
             stationLocation = fireStoreStationLocation.locationGet(stationUID)
             stationBasicInfo.value = stationBasic.basicGet(stationUID)
-        }
-    }
-
-    fun loadAdvanceInfo(stationUID: String) {
-        viewModelScope.launch {
             stationAdvanceInfo.value = stationAdvance.advanceGet(stationUID)
+            val feedbacks = fireStoreFeedback.feedGet(stationUID)
+            stationRating.value = Pair(feedbacks.map { it.value.rating }.sum(), feedbacks.size)
+            carouselImages.value = Storage().parkSpotPhotoGet(stationUID)
+            onComplete()
         }
     }
 
@@ -150,17 +143,6 @@ class SpotPreviewViewModel(context: Context) : ViewModel() {
                 val mapIntent = Intent(Intent.ACTION_VIEW, uri)
                 context.startActivity(mapIntent)
             }
-        }
-    }
-
-    fun loadRating(stationUID: String) {
-        viewModelScope.launch {
-            val feedbacks = fireStoreFeedback.feedGet(stationUID)
-            var totalRatting = 0.0f
-            for (i in feedbacks) {
-                totalRatting += i.value.rating
-            }
-            stationRating.value = Pair(totalRatting, feedbacks.size)
         }
     }
 
