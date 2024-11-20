@@ -12,8 +12,8 @@ class DialogQRCode(activity: Activity, QRCode: Drawable, description: String) {
 
     init {
         val imageViewQRCode: ImageView = layout.findViewById(R.id.imageViewQRCode)
-        val textViewQRMessage: TextView = layout.findViewById(R.id.textViewQRMessage)
+//        val textViewQRMessage: TextView = layout.findViewById(R.id.textViewQRMessage)
         imageViewQRCode.setImageDrawable(QRCode)
-        textViewQRMessage.text = description
+//        textViewQRMessage.text = description
     }
 }
