@@ -24,11 +24,36 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ScrollView
+        android:id="@+id/shimmerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/shimmer_feedback_item" />
+
+            <include layout="@layout/shimmer_feedback_item" />
+
+            <include layout="@layout/shimmer_feedback_item" />
+
+            <include layout="@layout/shimmer_feedback_item" />
+
+            <include layout="@layout/shimmer_feedback_item" />
+
+            <include layout="@layout/shimmer_feedback_item" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         tools:context=".activity.Feedback">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout

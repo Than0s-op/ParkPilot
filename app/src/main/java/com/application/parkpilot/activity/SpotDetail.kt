@@ -61,11 +61,7 @@ class SpotDetail : AppCompatActivity(), PaymentResultWithDataListener,
         binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menuButtonReview -> {
-                    if (User.type == User.ANONYMOUS) {
-                        startActivity(Intent(this, Authentication::class.java))
-                    } else {
-                        viewModel.feedback(this, viewModel.stationUID)
-                    }
+                    viewModel.feedback(this, viewModel.stationUID)
                     true
                 }
 

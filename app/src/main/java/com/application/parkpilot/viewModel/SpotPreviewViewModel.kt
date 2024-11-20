@@ -137,10 +137,12 @@ class SpotPreviewViewModel(context: Context) : ViewModel() {
 
     fun redirect(context: Context) {
         stationLocation?.let { station ->
-            currentLocation?.let { current ->
-                val uri =
+            currentLocation.let { current ->
+                val uri: Uri = if (current != null) {
                     Uri.parse("https://www.google.com/maps/dir/?api=1&origin=${current.latitude},${current.longitude}&destination=${station.latitude},${station.longitude}")
-
+                } else {
+                    Uri.parse("https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}")
+                }
                 // Create an Intent to open Google Maps with the specified URI
                 val mapIntent = Intent(Intent.ACTION_VIEW, uri)
                 context.startActivity(mapIntent)

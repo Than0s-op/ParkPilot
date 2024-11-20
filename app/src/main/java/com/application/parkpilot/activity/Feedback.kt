@@ -2,6 +2,7 @@ package com.application.parkpilot.activity
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.application.parkpilot.Feedback
@@ -14,6 +15,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class Feedback : AppCompatActivity(R.layout.feedback) {
     private lateinit var binding: FeedbackBinding
+    private lateinit var formBinding: FeedbackFormBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,11 +27,12 @@ class Feedback : AppCompatActivity(R.layout.feedback) {
 
         setVisibility()
 
-        val formBinding: FeedbackFormBinding = FeedbackFormBinding.inflate(layoutInflater)
+        formBinding = FeedbackFormBinding.inflate(layoutInflater)
         viewModel.loadProfileImage(formBinding.imageViewProfilePicture)
 
         val dialogInflater =
-            MaterialAlertDialogBuilder(this).setView(formBinding.root).create()
+            MaterialAlertDialogBuilder(this)
+                .setView(formBinding.root).create()
 
 
         formBinding.buttonOk.setOnClickListener {
@@ -37,16 +40,18 @@ class Feedback : AppCompatActivity(R.layout.feedback) {
                 formBinding.editTextFeedback.error = "Message must not be blank"
                 return@setOnClickListener
             }
-
+            showReviewSaveProcess()
             viewModel.setFeedback(
                 stationUID,
                 Feedback(
                     User.UID,
                     formBinding.ratingBar.rating,
                     formBinding.editTextFeedback.text.toString()
-                )
-            )
-            dialogInflater.dismiss()
+                ),
+            ) {
+                hideReviewSaveProcess()
+                dialogInflater.dismiss()
+            }
         }
 
         formBinding.buttonCancel.setOnClickListener {
@@ -67,11 +72,17 @@ class Feedback : AppCompatActivity(R.layout.feedback) {
         }
 
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.loadRecycler(this, stationUID, binding.recyclerView)
+            showShimmer()
+            viewModel.loadRecycler(this, stationUID, binding.recyclerView) {
+                hideShimmer()
+            }
             binding.swipeRefreshLayout.isRefreshing = false
         }
 
-        viewModel.loadRecycler(this, stationUID, binding.recyclerView)
+        showShimmer()
+        viewModel.loadRecycler(this, stationUID, binding.recyclerView) {
+            hideShimmer()
+        }
     }
 
     private fun setVisibility() {
@@ -86,5 +97,27 @@ class Feedback : AppCompatActivity(R.layout.feedback) {
                 }
             }
         }
+    }
+
+    private fun showShimmer() {
+        binding.shimmerLayout.visibility = View.VISIBLE
+        binding.swipeRefreshLayout.visibility = View.GONE
+    }
+
+    private fun hideShimmer() {
+        binding.shimmerLayout.visibility = View.GONE
+        binding.swipeRefreshLayout.visibility = View.VISIBLE
+    }
+
+    private fun showReviewSaveProcess() {
+        formBinding.progressBar.visibility = View.VISIBLE
+        formBinding.buttonOk.visibility = View.GONE
+        formBinding.buttonCancel.visibility = View.GONE
+    }
+
+    private fun hideReviewSaveProcess() {
+        formBinding.progressBar.visibility = View.GONE
+        formBinding.buttonOk.visibility = View.VISIBLE
+        formBinding.buttonCancel.visibility = View.VISIBLE
     }
 }

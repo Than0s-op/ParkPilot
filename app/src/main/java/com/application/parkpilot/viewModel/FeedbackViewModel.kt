@@ -22,7 +22,12 @@ class FeedbackViewModel : ViewModel() {
     private val fireStoreFeedback by lazy { FS_Feedback() }
     private val userBasic by lazy { UserBasic() }
     private val storage by lazy { Storage() }
-    fun loadRecycler(context: Context, stationUid: String, recyclerView: RecyclerView) {
+    fun loadRecycler(
+        context: Context,
+        stationUid: String,
+        recyclerView: RecyclerView,
+        onComplete: () -> Unit
+    ) {
         viewModelScope.launch {
             val list = fireStoreFeedback.feedGet(stationUid)
             val layoutManger = LinearLayoutManager(context)
@@ -33,13 +38,19 @@ class FeedbackViewModel : ViewModel() {
                     R.layout.feedback_item,
                     list.toList()
                 )
+            onComplete()
         }
     }
 
-    fun setFeedback(stationUid: String, feedback: com.application.parkpilot.Feedback) {
+    fun setFeedback(
+        stationUid: String,
+        feedback: com.application.parkpilot.Feedback,
+        onComplete: () -> Unit
+    ) {
         viewModelScope.launch {
             // required parking spot UID
             fireStoreFeedback.feedSet(feedback, stationUid)
+            onComplete()
         }
     }
 

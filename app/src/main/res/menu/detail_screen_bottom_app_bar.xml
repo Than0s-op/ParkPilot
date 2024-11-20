@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menuButtonReview"
-        android:icon="@drawable/comment_icon"
-        android:title="Feedback"
+        android:icon="@drawable/reviews"
+        android:title="Reviews"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/menuButtonNavigate"
-        android:icon="@drawable/near_me"
+        android:icon="@drawable/assistant_direction_24px"
         android:title="Navigate"
         app:showAsAction="always" />
 
