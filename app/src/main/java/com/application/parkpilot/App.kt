@@ -98,6 +98,7 @@ object Utils {
                         currentLocation = GeoPoint(location.latitude, location.longitude)
                     }
                 }.addOnFailureListener {
+                    println("location service: $it")
                     Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 }.await()
         }

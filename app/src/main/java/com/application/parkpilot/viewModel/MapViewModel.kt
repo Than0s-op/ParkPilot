@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.parkpilot.ParkPilotMapLegend
+import com.application.parkpilot.Utils
 import com.application.parkpilot.fragment.bottomSheet.SpotPreview
 import com.application.parkpilot.module.OSM
 import com.application.parkpilot.module.firebase.database.FreeSpot
@@ -31,7 +32,7 @@ class MapViewModel : ViewModel() {
             // when search method got the search result without empty body
             address?.let {
                 mapViewOSM.setCenter(GeoPoint(it.latitude, it.longitude))
-            }?: Toast.makeText(context, "No result found", Toast.LENGTH_SHORT).show()
+            } ?: Toast.makeText(context, "No result found", Toast.LENGTH_SHORT).show()
             delay(2000)
             onComplete()
         }
@@ -40,12 +41,11 @@ class MapViewModel : ViewModel() {
     fun getCurrentLocation(context: Context) {
         viewModelScope.launch {
             // suspend function. It will block the processes/UI thread
-            val currentLocation = mapViewOSM.getLastKnowLocation(context)
-
+            val currentLocation = Utils.getLastKnowLocation(context)
             // when we got user current location
             currentLocation?.let {
                 // set the user's current location as center of map
-                mapViewOSM.setCenter(it)
+                mapViewOSM.setCenter(GeoPoint(it.latitude, it.longitude))
             }
         }
     }
