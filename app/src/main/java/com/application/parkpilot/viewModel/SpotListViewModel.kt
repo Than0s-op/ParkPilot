@@ -127,10 +127,12 @@ class SpotListViewModel : ViewModel() {
     ): SpotListCardDetails {
         var result = SpotListCardDetails(documentId = documentId)
         val doc = freeSpot.getDetails(documentId)
-        result = result.copy(
-            name = doc.landMark,
-            images = doc.images,
-        )
+        doc?.let {
+            result = result.copy(
+                name = it.landMark,
+                images = it.images,
+            )
+        }
         currentLocation?.let {
             result = result.copy(
                 distance = getDistance(it, location)

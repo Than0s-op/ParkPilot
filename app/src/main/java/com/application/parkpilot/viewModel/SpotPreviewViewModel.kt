@@ -155,7 +155,7 @@ class SpotPreviewViewModel(context: Context) : ViewModel() {
             val freeSpot = FreeSpot()
             freeSpot.getDetails(stationUID).let {
                 freeSpotInfo.value = it
-                stationLocation = it.location
+                stationLocation = it?.location
             }
         }
     }

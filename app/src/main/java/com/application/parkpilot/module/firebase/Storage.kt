@@ -25,8 +25,11 @@ class Storage {
     suspend fun userProfilePhotoPut(uid: String, uri: Uri?): Uri? {
         val childRef = storageRef.child("user_profile_photo/${uid}")
         if (uri == null) return null
-        if (Utils.isLocalUri(uri)) {
-            childRef.putFile(uri)
+        try {
+            if (Utils.isLocalUri(uri)) {
+                childRef.putFile(uri).await()
+            }
+        } catch (_: Exception) {
         }
         return userProfilePhotoGet(uid)
     }
@@ -40,19 +43,25 @@ class Storage {
     }
 
     suspend fun parkSpotPhotoGet(uid: String): List<Uri> {
-        val list = storageRef.child("$SPOT${uid}/").listAll().await()
         val imagesUri = ArrayList<Uri>()
-        for (i in list.items) {
-            imagesUri.add(i.downloadUrl.await())
+        try {
+            val list = storageRef.child("$SPOT${uid}/").listAll().await()
+            for (i in list.items) {
+                imagesUri.add(i.downloadUrl.await())
+            }
+        } catch (_: Exception) {
         }
         return imagesUri
     }
 
     suspend fun getFreeSpotImages(uid: String): List<Uri> {
-        val list = storageRef.child("$FREE_SPOT${uid}/").listAll().await()
         val imageList = mutableListOf<Uri>()
-        for (image in list.items) {
-            imageList.add(image.downloadUrl.await())
+        try {
+            val list = storageRef.child("$FREE_SPOT${uid}/").listAll().await()
+            for (image in list.items) {
+                imageList.add(image.downloadUrl.await())
+            }
+        } catch (_: Exception) {
         }
         return imageList
     }
