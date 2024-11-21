@@ -22,7 +22,19 @@ class BookingHistory : Fragment(R.layout.booking_history) {
         // viewModel creation
         val viewModel = ViewModelProvider(this)[BookingHistoryViewModel::class.java]
 
-        viewModel.loadRecycler(requireContext(), binding.recyclerView, ::hideShimmer)
+        viewModel.loadRecycler(
+            requireContext(),
+            binding.recyclerView,
+        ) {
+            hideShimmer()
+            if (viewModel.bookingList.isEmpty()) {
+                binding.noHistoryTextView.visibility = View.VISIBLE
+                binding.recyclerView.visibility = View.GONE
+            } else {
+                binding.noHistoryTextView.visibility = View.GONE
+                binding.recyclerView.visibility = View.VISIBLE
+            }
+        }
 
         binding.searchView.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -31,7 +43,7 @@ class BookingHistory : Fragment(R.layout.booking_history) {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val filteredList = viewModel.bookingList.filter {
-                    it.stationID.contains(newText ?: "",true)
+                    it.stationID.contains(newText ?: "", true)
                 }
                 binding.recyclerView.adapter =
                     History(requireContext(), R.layout.history_card, ArrayList(filteredList))
@@ -42,6 +54,5 @@ class BookingHistory : Fragment(R.layout.booking_history) {
 
     private fun hideShimmer() {
         binding.shimmerScrollView.visibility = View.GONE
-        binding.recyclerView.visibility = View.VISIBLE
     }
 }

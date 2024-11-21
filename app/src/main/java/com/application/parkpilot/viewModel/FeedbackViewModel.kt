@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.application.parkpilot.Feedback
 import com.application.parkpilot.R
 import com.application.parkpilot.User
 import com.application.parkpilot.module.firebase.Storage
@@ -22,6 +23,7 @@ class FeedbackViewModel : ViewModel() {
     private val fireStoreFeedback by lazy { FS_Feedback() }
     private val userBasic by lazy { UserBasic() }
     private val storage by lazy { Storage() }
+    var reviewMap: Map<String, Feedback> = emptyMap()
     fun loadRecycler(
         context: Context,
         stationUid: String,
@@ -29,14 +31,14 @@ class FeedbackViewModel : ViewModel() {
         onComplete: () -> Unit
     ) {
         viewModelScope.launch {
-            val list = fireStoreFeedback.feedGet(stationUid)
+            reviewMap = fireStoreFeedback.feedGet(stationUid)
             val layoutManger = LinearLayoutManager(context)
             recyclerView.layoutManager = layoutManger
             recyclerView.adapter =
                 com.application.parkpilot.adapter.recycler.Feedback(
                     context,
                     R.layout.feedback_item,
-                    list.toList()
+                    reviewMap.toList()
                 )
             onComplete()
         }

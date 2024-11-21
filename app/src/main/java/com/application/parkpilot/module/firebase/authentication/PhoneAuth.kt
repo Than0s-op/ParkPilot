@@ -112,24 +112,29 @@ class PhoneAuth(private val context: Context) {
     }
 
     private suspend fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential): Boolean {
-        var result = false
-        auth.signInWithCredential(credential).addOnCompleteListener(context as Activity) { task ->
-            // entered OTP is correct
-            if (task.isSuccessful) {
-                // Sign in success, update UI with the signed-in user's information
-                Log.d("PhoneAuthActivity", "signInWithCredential:success")
-
-            } else {
-                // Sign in failed, display a message and update the UI
-                Log.w("PhoneAuthActivity", "signInWithCredential:failure", task.exception)
-
-                if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                    // The verification code entered was invalid
-
-                }
-            }
-            result = task.isSuccessful
-        }.await()
+        var result: Boolean
+//        auth.signInWithCredential(credential).addOnCompleteListener(context as Activity) { task ->
+//            // entered OTP is correct
+//            if (task.isSuccessful) {
+//                // Sign in success, update UI with the signed-in user's information
+//                Log.d("PhoneAuthActivity", "signInWithCredential:success")
+//
+//            } else {
+//                // Sign in failed, display a message and update the UI
+//                Log.w("PhoneAuthActivity", "signInWithCredential:failure", task.exception)
+//
+//                if (task.exception is FirebaseAuthInvalidCredentialsException) {
+//                    result = false
+//                }
+//            }
+//            result = task.isSuccessful
+//        }
+        try {
+            result = auth.signInWithCredential(credential).await() != null
+        } catch (e: Exception) {
+            println("phone auth Exception: $e")
+            result = false
+        }
         return result
     }
 }

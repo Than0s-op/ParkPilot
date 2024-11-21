@@ -2,8 +2,8 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -76,5 +76,17 @@
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/noHistoryTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center_vertical"
+        android:text="No Review found"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>

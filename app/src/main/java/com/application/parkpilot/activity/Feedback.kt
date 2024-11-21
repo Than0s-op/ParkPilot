@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.size
 import androidx.lifecycle.ViewModelProvider
 import com.application.parkpilot.Feedback
 import com.application.parkpilot.R
@@ -16,6 +17,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class Feedback : AppCompatActivity(R.layout.feedback) {
     private lateinit var binding: FeedbackBinding
     private lateinit var formBinding: FeedbackFormBinding
+    private lateinit var viewModel: FeedbackViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +25,7 @@ class Feedback : AppCompatActivity(R.layout.feedback) {
         setContentView(binding.root)
 
         val stationUID = intent.getStringExtra("stationUID")!!
-        val viewModel = ViewModelProvider(this)[FeedbackViewModel::class.java]
+        viewModel = ViewModelProvider(this)[FeedbackViewModel::class.java]
 
         setVisibility()
 
@@ -102,11 +104,18 @@ class Feedback : AppCompatActivity(R.layout.feedback) {
     private fun showShimmer() {
         binding.shimmerLayout.visibility = View.VISIBLE
         binding.swipeRefreshLayout.visibility = View.GONE
+        binding.noHistoryTextView.visibility = View.GONE
     }
 
     private fun hideShimmer() {
         binding.shimmerLayout.visibility = View.GONE
-        binding.swipeRefreshLayout.visibility = View.VISIBLE
+        if (viewModel.reviewMap.isEmpty()) {
+            binding.swipeRefreshLayout.visibility = View.GONE
+            binding.noHistoryTextView.visibility = View.VISIBLE
+        } else {
+            binding.swipeRefreshLayout.visibility = View.VISIBLE
+            binding.noHistoryTextView.visibility = View.GONE
+        }
     }
 
     private fun showReviewSaveProcess() {

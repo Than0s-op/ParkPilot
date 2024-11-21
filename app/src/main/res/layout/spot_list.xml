@@ -84,6 +84,17 @@
                 android:layout_height="match_parent"
                 android:visibility="gone" />
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/noHistoryTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:text="No Spot found"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/buttonSort"
                 android:layout_width="wrap_content"

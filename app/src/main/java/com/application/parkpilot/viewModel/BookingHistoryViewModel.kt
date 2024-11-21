@@ -13,7 +13,11 @@ import kotlinx.coroutines.launch
 
 class BookingHistoryViewModel : ViewModel() {
     var bookingList = emptyList<Ticket>()
-    fun loadRecycler(context: Context, recyclerView: RecyclerView, onComplete: () -> Unit) {
+    fun loadRecycler(
+        context: Context,
+        recyclerView: RecyclerView,
+        onComplete: () -> Unit
+    ) {
         viewModelScope.launch {
             val booking = Booking()
             bookingList = booking.getTicket(User.UID)
