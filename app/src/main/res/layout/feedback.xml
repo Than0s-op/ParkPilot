@@ -63,6 +63,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
+                android:visibility="visible"
                 android:layout_height="wrap_content" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -73,20 +74,21 @@
                 android:layout_margin="15dp"
                 app:icon="@drawable/edit" />
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/noHistoryTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:text="No Review found"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/noHistoryTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center_vertical"
-        android:text="No Review found"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:visibility="gone" />
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

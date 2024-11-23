@@ -110,10 +110,10 @@ class Feedback : AppCompatActivity(R.layout.feedback) {
     private fun hideShimmer() {
         binding.shimmerLayout.visibility = View.GONE
         if (viewModel.reviewMap.isEmpty()) {
-            binding.swipeRefreshLayout.visibility = View.GONE
+            binding.recyclerView.visibility = View.GONE
             binding.noHistoryTextView.visibility = View.VISIBLE
         } else {
-            binding.swipeRefreshLayout.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.VISIBLE
             binding.noHistoryTextView.visibility = View.GONE
         }
     }
