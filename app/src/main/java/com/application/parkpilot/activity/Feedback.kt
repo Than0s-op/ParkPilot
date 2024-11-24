@@ -103,7 +103,7 @@ class Feedback : AppCompatActivity(R.layout.feedback) {
 
     private fun showShimmer() {
         binding.shimmerLayout.visibility = View.VISIBLE
-        binding.swipeRefreshLayout.visibility = View.GONE
+        binding.recyclerView.visibility = View.GONE
         binding.noHistoryTextView.visibility = View.GONE
     }
 
