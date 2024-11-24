@@ -95,13 +95,13 @@ class SpotList : Fragment(R.layout.spot_list),
     }
 
     private fun showShimmer() {
-        binding.shimmerLayout.visibility = View.VISIBLE
+        binding.scrollView.visibility = View.VISIBLE
         binding.recyclerView.visibility = View.GONE
         binding.noHistoryTextView.visibility = View.GONE
     }
 
     private fun hideShimmer() {
-        binding.shimmerLayout.visibility = View.GONE
+        binding.scrollView.visibility = View.GONE
         if (viewModel.liveDataStationList.value.isNullOrEmpty()) {
             binding.recyclerView.visibility = View.GONE
             binding.noHistoryTextView.visibility = View.VISIBLE
