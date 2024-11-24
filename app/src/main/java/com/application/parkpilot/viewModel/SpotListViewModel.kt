@@ -35,6 +35,7 @@ class SpotListViewModel : ViewModel() {
     private val feedback = Feedback()
     private val location = FS_StationLocation()
     private val freeSpot = FreeSpot()
+    var stationList = emptyList<SpotListCardDetails>()
     val liveDataStationList = MutableLiveData<List<SpotListCardDetails>>()
 
     fun loadStations(context: Context) {
@@ -61,6 +62,7 @@ class SpotListViewModel : ViewModel() {
                     )
                 )
             }
+            stationList = result
             liveDataStationList.value = result
         }
     }
@@ -75,6 +77,11 @@ class SpotListViewModel : ViewModel() {
             val numberOfUsers = it.rating?.second ?: 1
             rating / numberOfUsers
         }
+    }
+
+    fun applyFilter(list: List<Boolean>) {
+        liveDataStationList.value =
+            stationList.filter { if (it.isFree) list[0] else list[1] }
     }
 
     private suspend fun getSpotListCardDetails(

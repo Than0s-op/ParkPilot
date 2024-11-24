@@ -14,10 +14,11 @@ import com.application.parkpilot.fragment.bottomSheet.SortFragment
 import com.application.parkpilot.viewModel.SpotListViewModel
 
 class SpotList : Fragment(R.layout.spot_list),
-    SortFragment.OnRadioButtonSelectedListener {
+    SortFragment.OnRadioButtonSelectedListener, SortFragment.OnFilterSelectedListener {
     companion object {
         // Default
         private var sortingType: Int = 0
+        private var filterSelection = listOf(true, true)
     }
 
     private lateinit var viewModel: SpotListViewModel
@@ -32,8 +33,9 @@ class SpotList : Fragment(R.layout.spot_list),
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         binding.buttonSort.setOnClickListener {
-            val dialog = SortFragment.newInstance(sortingType)
+            val dialog = SortFragment.newInstance(sortingType, filterSelection)
             dialog.onRadioButtonSelectedListener = this
+            dialog.onFilterSelectedListener = this
             dialog.show(childFragmentManager, SortFragment.TAG)
         }
 
@@ -82,10 +84,10 @@ class SpotList : Fragment(R.layout.spot_list),
 
     override fun onRadioButtonSelected(selectedRadioButtonId: Int) {
         sortingType = selectedRadioButtonId
-        triggerSorting()
     }
 
     private fun triggerSorting() {
+        viewModel.applyFilter(filterSelection)
         when (sortingType) {
             1 -> viewModel.sortByDistance()
             2 -> viewModel.sortByRating()
@@ -106,6 +108,12 @@ class SpotList : Fragment(R.layout.spot_list),
         } else {
             binding.recyclerView.visibility = View.VISIBLE
             binding.noHistoryTextView.visibility = View.GONE
+            binding.buttonSort.visibility = View.VISIBLE
         }
+    }
+
+    override fun onFilterSelected(list: List<Boolean>) {
+        filterSelection = list
+        triggerSorting()
     }
 }

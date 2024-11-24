@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:divider="@drawable/empty_mid_divider"
+    app:showDividers="middle"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
@@ -17,31 +21,81 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="10dp" />
 
-    <RadioButton
-        android:id="@+id/defaultFilter"
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/defaultFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layoutDirection="rtl"
+            android:text="Random" />
+
+        <RadioButton
+            android:id="@+id/distanceFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layoutDirection="rtl"
+            android:text="Distance: Low To High" />
+
+        <RadioButton
+            android:id="@+id/ratingsFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layoutDirection="rtl"
+            android:text="Rating: High To Low" />
+
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:hint="Filter"
+        android:textColorHint="@color/black"
+        android:textSize="20sp" />
+
+    <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layoutDirection="rtl"
-        android:text="Random" />
+        android:layout_marginVertical="10dp" />
 
-    <RadioButton
-        android:id="@+id/distanceFilter"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layoutDirection="rtl"
-        android:text="Distance: Low To High" />
+        android:orientation="horizontal"
+        app:divider="@drawable/empty_mid_divider"
+        app:showDividers="middle">
 
-    <RadioButton
-        android:id="@+id/ratingsFilter"
-        android:layout_width="match_parent"
+        <CheckBox
+            android:id="@+id/freeCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Free" />
+
+        <CheckBox
+            android:id="@+id/paidCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Paid" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/applyButton"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layoutDirection="rtl"
-        android:text="Rating: High To Low" />
+        android:text="Apply" />
 
-</RadioGroup>
+</androidx.appcompat.widget.LinearLayoutCompat>
