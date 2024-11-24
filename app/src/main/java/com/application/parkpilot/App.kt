@@ -46,31 +46,33 @@ object Utils {
     }
 
     fun errorToast(context: Context, message: String) {
-        val toast = Toast(context)
-        toast.duration = Toast.LENGTH_LONG
-        val inflate =
-            (context as AppCompatActivity).layoutInflater.inflate(R.layout.toast, null).apply {
-                findViewById<LinearLayout>(R.id.linearLayout).backgroundTintList =
-                    ColorStateList.valueOf(Color.RED)
-                findViewById<ImageView>(R.id.imageView).setImageResource(R.drawable.block_icon)
-                findViewById<TextView>(R.id.textView).text = message
-            }
-        toast.view = inflate
-        toast.show()
+//        val toast = Toast(context)
+//        toast.duration = Toast.LENGTH_LONG
+//        val inflate =
+//            (context as AppCompatActivity).layoutInflater.inflate(R.layout.toast, null).apply {
+//                findViewById<LinearLayout>(R.id.linearLayout).backgroundTintList =
+//                    ColorStateList.valueOf(Color.RED)
+//                findViewById<ImageView>(R.id.imageView).setImageResource(R.drawable.block_icon)
+//                findViewById<TextView>(R.id.textView).text = message
+//            }
+//        toast.view = inflate
+//        toast.show()
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
     fun truthToast(context: Context, message: String) {
-        val toast = Toast(context)
-        toast.duration = Toast.LENGTH_LONG
-        val inflate =
-            (context as AppCompatActivity).layoutInflater.inflate(R.layout.toast, null).apply {
-                findViewById<LinearLayout>(R.id.linearLayout).backgroundTintList =
-                    ColorStateList.valueOf(Color.GREEN)
-                findViewById<ImageView>(R.id.imageView).setImageResource(R.drawable.check_circle_icon)
-                findViewById<TextView>(R.id.textView).text = message
-            }
-        toast.view = inflate
-        toast.show()
+//        val toast = Toast(context)
+//        toast.duration = Toast.LENGTH_LONG
+//        val inflate =
+//            (context as AppCompatActivity).layoutInflater.inflate(R.layout.toast, null).apply {
+//                findViewById<LinearLayout>(R.id.linearLayout).backgroundTintList =
+//                    ColorStateList.valueOf(Color.GREEN)
+//                findViewById<ImageView>(R.id.imageView).setImageResource(R.drawable.check_circle_icon)
+//                findViewById<TextView>(R.id.textView).text = message
+//            }
+//        toast.view = inflate
+//        toast.show()
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
     fun startActivityWithCleanStack(context: Context, intent: Intent) {
