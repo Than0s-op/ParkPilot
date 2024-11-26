@@ -58,122 +58,132 @@
                 <com.google.android.material.card.MaterialCardView
                     style="?attr/materialCardViewElevatedStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:contentPadding="10dp">
+                    android:layout_height="wrap_content">
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         app:divider="@drawable/empty_mid_divider"
-                        app:showDividers="middle">
+                        app:showDividers="middle"
+                        android:orientation="vertical">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recycleView"
                             android:layout_width="match_parent"
+                            android:layout_margin="4dp"
                             android:layout_height="300dp" />
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraintLayout"
+                        <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:divider="@drawable/empty_mid_divider"
+                            android:layout_margin="8dp"
+                            app:showDividers="middle">
 
-                            <TextView
-                                android:id="@+id/textViewName"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:hint="Name"
-                                android:textSize="35sp"
-                                android:textStyle="bold"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <androidx.appcompat.widget.LinearLayoutCompat
-                                android:id="@+id/priceLayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:orientation="vertical"
-                                app:drawableStartCompat="@drawable/currency_rupee_icon"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/textViewName">
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/constraintLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
 
                                 <TextView
+                                    android:id="@+id/textViewName"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="starts from"
-                                    android:textSize="12sp" />
+                                    android:hint="Name"
+                                    android:textSize="35sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
-                                <TextView
-                                    android:id="@+id/textViewPrice"
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:id="@+id/priceLayout"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:drawableStart="@drawable/currency_rupee_icon"
-                                    android:textSize="32sp"
-                                    android:textStyle="bold" />
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="vertical"
+                                    app:drawableStartCompat="@drawable/currency_rupee_icon"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/textViewName">
 
-                            </androidx.appcompat.widget.LinearLayoutCompat>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="starts from"
+                                        android:textSize="12sp" />
 
-                            <LinearLayout
-                                android:id="@+id/linearLayout2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/round_corner_background"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
+                                    <TextView
+                                        android:id="@+id/textViewPrice"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:drawableStart="@drawable/currency_rupee_icon"
+                                        android:textSize="32sp"
+                                        android:textStyle="bold" />
 
-                                <TextView
-                                    android:id="@+id/textViewRating"
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                                <LinearLayout
+                                    android:id="@+id/linearLayout2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginHorizontal="2dp"
-                                    android:layout_marginTop="2dp"
                                     android:background="@drawable/round_corner_background"
                                     android:gravity="center"
-                                    android:paddingHorizontal="5dp"
-                                    android:textColor="@color/white"
-                                    app:drawableStartCompat="@drawable/star_icon"
-                                    app:drawableTint="@color/white" />
+                                    android:orientation="vertical"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
 
-                                <TextView
-                                    android:id="@+id/textViewNumberOfUser"
+                                    <TextView
+                                        android:id="@+id/textViewRating"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginHorizontal="2dp"
+                                        android:layout_marginTop="2dp"
+                                        android:background="@drawable/round_corner_background"
+                                        android:gravity="center"
+                                        android:paddingHorizontal="5dp"
+                                        android:textColor="@color/white"
+                                        app:drawableStartCompat="@drawable/star_icon"
+                                        app:drawableTint="@color/white" />
+
+                                    <TextView
+                                        android:id="@+id/textViewNumberOfUser"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textSize="12sp" />
+
+                                </LinearLayout>
+
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:id="@+id/distanceLayout"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="12sp" />
+                                    android:orientation="horizontal"
+                                    app:layout_constraintBottom_toBottomOf="@+id/priceLayout"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="@+id/priceLayout">
 
-                            </LinearLayout>
+                                    <TextView
+                                        android:id="@+id/textViewDistance"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="bottom"
+                                        android:text="_"
+                                        android:textSize="22sp"
+                                        app:drawableStartCompat="@drawable/near_me" />
 
-                            <androidx.appcompat.widget.LinearLayoutCompat
-                                android:id="@+id/distanceLayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                app:layout_constraintBottom_toBottomOf="@+id/priceLayout"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="@+id/priceLayout">
+                                    <TextView
+                                        android:id="@+id/textView"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="bottom"
+                                        android:text=" away"
+                                        android:textSize="12sp" />
 
-                                <TextView
-                                    android:id="@+id/textViewDistance"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="bottom"
-                                    android:text="_"
-                                    android:textSize="22sp"
-                                    app:drawableStartCompat="@drawable/near_me" />
+                                </androidx.appcompat.widget.LinearLayoutCompat>
 
-                                <TextView
-                                    android:id="@+id/textView"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="bottom"
-                                    android:text=" away"
-                                    android:textSize="12sp" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                            </androidx.appcompat.widget.LinearLayoutCompat>
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 

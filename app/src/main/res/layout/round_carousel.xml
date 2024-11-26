@@ -4,9 +4,8 @@
     android:id="@+id/carousel_item_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="5dp"
-    android:foreground="?attr/selectableItemBackground"
-    app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge">
+    android:layout_marginEnd="4dp"
+    app:shapeAppearance="?attr/shapeAppearanceCornerMedium">
 
     <ImageView
         android:id="@+id/list_item_image"

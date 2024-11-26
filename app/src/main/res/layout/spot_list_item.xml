@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    app:cardBackgroundColor="@color/white"
-    app:contentPadding="10dp">
+    app:cardBackgroundColor="@color/white">
 
     <include
         android:id="@+id/shimmerLayout"
@@ -25,10 +24,12 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
+            android:layout_margin="4dp"
             android:layout_height="220dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:padding="8dp"
             android:layout_height="wrap_content">
 
             <TextView
