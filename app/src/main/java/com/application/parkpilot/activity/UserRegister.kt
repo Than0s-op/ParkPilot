@@ -43,7 +43,7 @@ class UserRegister : AppCompatActivity() {
 
         binding.editTextBirthDate.setOnClickListener {
             // start and end dates format should be yyyy-mm-dd (modify this function)
-            viewModel.datePicker.show(this,"Pick birth date")
+            viewModel.datePicker.show(this, "Pick birth date")
         }
 
         binding.imageViewProfilePicture.setOnClickListener {
@@ -141,7 +141,7 @@ class UserRegister : AppCompatActivity() {
             date?.let {
                 val date = viewModel.datePicker.format(it)
                 binding.editTextBirthDate.setText(date)
-                binding.editTextAge.setText(date)
+                binding.editTextAge.setText(viewModel.getAge(date))
             }
         }
 
