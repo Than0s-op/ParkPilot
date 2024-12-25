@@ -73,9 +73,9 @@ class SpotListViewModel : ViewModel() {
 
     fun sortByRating() {
         liveDataStationList.value = liveDataStationList.value?.sortedByDescending {
-            val rating = it.rating?.first ?: 1f
-            val numberOfUsers = it.rating?.second ?: 1
-            rating / numberOfUsers
+            val rating = it.rating?.first ?: Float.NEGATIVE_INFINITY
+            val numberOfUsers = if(it.rating?.second == 0) 1 else it.rating?.second ?: 1
+            return@sortedByDescending rating / numberOfUsers
         }
     }
 
