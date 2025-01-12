@@ -116,6 +116,30 @@
         .social-icons a:hover {
             color: #1DA1F2; /* Linktree theme color */
         }
+
+        .iframe-container {
+            margin: 20px auto;
+            max-width: 850px;
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .iframe-container iframe {
+            display: block;
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+
+        .iframe-header {
+            color: black;
+            padding: 10px;
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -124,6 +148,11 @@
         <p>By Pratham Subhash Patil & Himanshu Vasantrao Patil</p>
         <p>MCA Program, IMCC, Pune</p>
     </header>
+
+    <section class="iframe-container">
+        <div class="iframe-header">Project Presentation</div>
+        <iframe src="./presentation.pdf" allowfullscreen></iframe>
+    </section>
 
     <section>
         <h2 style="color:#000000;">Project Scope</h2>
